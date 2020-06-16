@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const routes = require("./routes");
 
-const workout = require("./routes/workout.route");
 const database = require("./config/database");
 
 const app = express();
@@ -16,7 +16,8 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: false }));
-app.use("/workout", workout);
+//app.use("/workout", workout);
+app.use("/", routes);
 
 const hostname = "127.0.0.1";
 const port = 3000;
