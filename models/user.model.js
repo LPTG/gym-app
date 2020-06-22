@@ -13,4 +13,4 @@ let UserSchema = new Schema({
   prevex: [{ type: String }], // Need to add exercise title here on new exercise creation
 });
 
-module.exports = mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema, "users");
