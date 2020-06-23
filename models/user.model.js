@@ -1,15 +1,36 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const WorkoutSchema = require("../models/workout.model");
+const Workout = require("../models/workout.model");
+
+function emailValidator(email) {
+  const regex = RegExp(
+    "A[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?z"
+  );
+  return regex.text(email);
+}
+
+// Need to validate username length / regex
 
 // Model for a single user
 let UserSchema = new Schema({
-  user: { type: String, required: true, minlength: 2, maxlength: 15 },
-  email: { type: String, required: true, maxlength: 320 },
+  username: {
+    type: String,
+    required: true,
+    minlength: 2,
+    maxlength: 15,
+    unique: true, // Note: this does not insure that duplicates are not inserted
+    index: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    validate: emailValidator,
+    maxlength: 320,
+    unique: true,
+  },
   pwd: { type: String, required: true },
-  salt: { type: String, required: true },
-  type: { type: String, required: true },
-  workouts: [WorkoutSchema.schema],
+  type: { type: String, enumValues: ["Member", "Admin"], default: "Member", required: true },
+  workouts: [{ type: Schema.Types.ObjectId, ref: "Workout" }], // Consider having an array of refs instead of embedding workouts, DONE and DONE
   prevex: [{ type: String }], // Need to add exercise title here on new exercise creation
 });
 

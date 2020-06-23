@@ -1,9 +1,8 @@
+const User = require("../models/user.model");
 const Workout = require("../models/workout.model");
 
-exports.test = function (req, res) {
-  res.send("Greetings from the test controller!");
-};
-
+// Need user authentication later
+// Takes user _id, new workout, and user auth token (later)
 exports.workout_create = function (req, res) {
   console.log("Creating workout");
   let workout = new Workout({
