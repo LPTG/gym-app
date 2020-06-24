@@ -93,7 +93,26 @@ exports.register = async function (req, res) {
 // Returns status
 exports.delete = function (req, res) {};
 
-exports.update = function (req, res) {};
+// Takes user _id and update option
+// Returns update status
+exports.update = function (req, res) {
+  // Check that we have all required data
+  if (req.body.userID && req.body.update) {
+    // See if user exists
+    User.findById(req.body.userID, function (err, res1) {
+      res1.update(req.body.update, function (err) {
+        if (err) {
+          console.log(err);
+          res.send("User could not be updated.");
+        } else {
+          res.send("User updated successfully!");
+        }
+      });
+    });
+  } else {
+    res.send("Missing required data.");
+  }
+};
 
 // exports.checkUser = function (req, res) {
 //   User.findOne({ user: req.body.user }, function (err, user) {
