@@ -7,39 +7,90 @@ exports.workout_create = function (req, res) {
   // Need to test if this works since adding user ref updating <---------
   // Check that we have all required data
   if (req.body.userID && req.body.workout) {
-    // validate that we have a valid workout?
-
     // See if user exists
     User.findById(req.body.userID, function (err, res1) {
       if (err) return err;
 
       if (res1) {
         let workout = new Workout({
-          name: req.body.name,
-          desc: req.body.desc,
-          notes: req.body.notes,
-          exercises: req.body.exercises,
+          name: req.body.workout.name,
+          desc: req.body.workout.desc,
+          notes: req.body.workout.notes,
+          exercises: req.body.workout.exercises,
         });
+        console.log(workout);
 
         // Save workout in Workouts collection
         workout.save(function (err, product) {
           if (err) {
-            return next(err); // how should we handle errors?
+            console.log(err); // how should we handle errors?
+            res.send("Workout could not be created. " + err);
+          } else {
+            // Append workout ref to end of workouts array in Users collection
+            res1.update({ $push: { workouts: product._id } }, function (err) {
+              if (err) {
+                console.log(err);
+                res.send("Workout could not be created.");
+              } else {
+                res.send("Workout added successfully!");
+              }
+            });
           }
-
-          // Append workout ref to end of workouts array in Users collection
-          res1.update({ $push: { workouts: product._id } }, function (err) {
-            if (err) {
-              console.log(err);
-              res.send("Workout could not be created.");
-            } else {
-              res.send("Workout added successfully!");
-            }
-          });
         });
       } else {
         res.send("User not found.");
       }
     });
+  }
+};
+
+// Takes workout _id and update option
+// Returns update status
+exports.workout_update = function (req, res) {
+  // Check that we have all required data
+  if (req.body.workoutID && req.body.update) {
+    // See if user exists
+    Workout.findById(req.body.workoutID, function (err, res1) {
+      if (err) {
+        res.send("Could not update workout.");
+      } else {
+        res1.update(req.body.update, function (err) {
+          if (err) {
+            console.log(err);
+            res.send("Workout could not be updated.");
+          } else {
+            res.send("Workout updated successfully!");
+          }
+        });
+      }
+    });
+  } else {
+    res.send("Missing required data.");
+  }
+};
+
+// Takes user _id and workout _id
+exports.workout_delete = function (req, res) {
+  if (req.body.userID && req.body.workoutID) {
+    // See if user exists and update it
+    User.update({ _id: req.body.userID }, { $pull: { workouts: req.body.workoutID } }, function (
+      err,
+      res1
+    ) {
+      if (err) {
+        res.send("Unable to delete workout.");
+      } else {
+        // Delete workout from Workouts collection
+        Workout.findByIdAndDelete(req.body.workoutID, function (err1, res2) {
+          if (err1) {
+            res.send("Invalid workout id.");
+          } else {
+            res.send("Workout deleted successfully!");
+          }
+        });
+      }
+    });
+  } else {
+    res.send("Missing required data.");
   }
 };

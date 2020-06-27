@@ -34,4 +34,7 @@ let UserSchema = new Schema({
   prevex: [{ type: String }], // Need to add exercise title here on new exercise creation
 });
 
+// Middleware
+// Need to delete all referenced workouts?
+
 module.exports = mongoose.model("User", UserSchema, "users");

@@ -89,7 +89,7 @@ exports.register = async function (req, res) {
 };
 
 // Requires authentication
-// Takes user id
+// Takes user _id
 // Returns status
 exports.delete = function (req, res) {};
 
