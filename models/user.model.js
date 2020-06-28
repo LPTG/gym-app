@@ -16,7 +16,7 @@ let UserSchema = new Schema({
   username: {
     type: String,
     required: true,
-    minlength: 2,
+    minlength: 3,
     maxlength: 15,
     unique: true, // Note: this does not insure that duplicates are not inserted
     index: true,
@@ -24,7 +24,7 @@ let UserSchema = new Schema({
   email: {
     type: String,
     required: true,
-    validate: emailValidator,
+    //validate: emailValidator,
     maxlength: 320,
     unique: true,
   },

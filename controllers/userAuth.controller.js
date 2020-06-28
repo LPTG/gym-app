@@ -49,6 +49,12 @@ exports.register = async function (req, res) {
       if (err) {
         console.log(err);
       }
+
+      if (req.body.pwd.length < 8) {
+        // Further constrainsts needed (special chars, etc.)
+        return res.send("Password must be at least 8 characters");
+      }
+
       // If the user already exists
       if (user) {
         console.log("Username '" + user.username + "' is already taken.");
@@ -68,6 +74,8 @@ exports.register = async function (req, res) {
               workouts: [],
               prevex: [],
             });
+
+            console.log(user);
 
             // Insert the user into the User collection
             user.save(function (err2) {

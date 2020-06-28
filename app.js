@@ -20,7 +20,7 @@ app.use(bodyParser.json());
 app.use("/", routes);
 
 const hostname = "127.0.0.1";
-const port = 3000;
+const port = 3001;
 
 app.listen(port, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
