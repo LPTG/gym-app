@@ -41,7 +41,6 @@ exports.login = function (req, res) {
 exports.register = async function (req, res) {
   // in the future we will check if the username/email is taken in real time
   // we will also validate input
-
   // Check that we have all required data
   if (req.body.username && req.body.email && req.body.pwd) {
     // Search to see if user already exists
