@@ -56,17 +56,14 @@ class ExerciseForm extends React.Component {
   }
 
   handleWeightChange(event) {
-    console.log("Weight changed on " + event.target.id);
     this.props.handleWeightSetRepChange(event);
   }
 
   handleSetChange(event) {
-    console.log("Set changed on " + event.target.id);
     this.props.handleWeightSetRepChange(event);
   }
 
   handleRepChange(event) {
-    console.log("Rep changed on " + event.target.id);
     this.props.handleWeightSetRepChange(event);
   }
 
@@ -159,7 +156,6 @@ class WorkoutCreator extends React.Component {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    console.log("Setting state of " + name + " to " + value);
     this.setState({ [name]: value });
   }
 
@@ -214,7 +210,39 @@ class WorkoutCreator extends React.Component {
     this.setState(stateCopy);
   }
 
-  createWorkout() {}
+  // Format input to send to server
+  createWorkout() {
+    // Framework for our workout object
+    var workout = {
+      name: this.state.name,
+      desc: this.state.desc,
+      exercises: [],
+    };
+
+    var exercises = [];
+    // Build a json object for each exercise created
+    this.state.exercises.forEach((exercise) => {
+      var sets = [];
+      // Build a json object for each wsr field for this exercise
+      exercise.setsAndReps.forEach((set) => {
+        sets.push({ weight: set.weight, sets: set.sets, reps: set.reps });
+      });
+
+      exercises.push({ name: exercise.name, wsr: sets });
+    });
+
+    workout.exercises = exercises;
+
+    var postData = {
+      userID: "5ef1388db4e22d4280fe896d",
+      workout: workout,
+    };
+
+    console.log("Sending workout to server...");
+    axios.post("http://localhost:3001/workout/create", postData).then((response) => {
+      console.log(response);
+    });
+  }
 
   render() {
     return (

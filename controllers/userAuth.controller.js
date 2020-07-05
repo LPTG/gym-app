@@ -1,13 +1,23 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
+const session = require("express-session");
 const saltRounds = 10;
+
+exports.loginForm = function (req, res) {
+  if (req.session.userID) {
+    console.log("Already logged in as " + req.session.userID);
+    res.send("Already logged in as " + req.session.userID);
+  } else {
+    res.redirect("http://localhost:3000/login");
+  }
+};
 
 // Takes username and password
 // Returns status
 exports.login = function (req, res) {
   // Check that we have all required data
   if (req.body.username && req.body.pwd) {
-    User.findOne({ username: req.body.username }, "username pwd", function (err, user) {
+    User.findOne({ username: req.body.username }, "_id username pwd", function (err, user) {
       if (err) {
         console.log(err);
       }
@@ -18,7 +28,9 @@ exports.login = function (req, res) {
         // Compare stored user hash with newly inputted password
         bcrypt.compare(req.body.pwd, userHash, function (err1, same) {
           if (same) {
-            res.send("Logged in as '" + user.username + "'!");
+            req.session.username = user.username;
+            req.session.userID = user._id;
+            res.status(200).send("Logged in as '" + user.username + "'!");
           } else {
             res.send("Incorrect username or password.");
           }

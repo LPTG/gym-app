@@ -1,11 +1,12 @@
 import React from "react";
 import axios from "axios";
 import "./Register.css";
+import { Redirect } from "react-router-dom";
 
 class Register extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { registerView: false };
+    this.state = { registerView: false, redirect: false };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -42,8 +43,11 @@ class Register extends React.Component {
       // username must be at least 3 characters long
       // password must be at least 8 characters long and contain a special char, regex check?
 
-      axios.post("/login", postData).then((res) => {
+      axios.post("http://localhost:3001/login", postData).then((res) => {
         console.log(res.data);
+        if (res.status === 200) {
+          this.setState({ redirect: true });
+        }
       });
     }
   }
@@ -65,6 +69,11 @@ class Register extends React.Component {
   }
 
   render() {
+    if (this.state.redirect) {
+      // Redirect to workoutlist api?
+      return <Redirect to={{ pathname: "/workoutlist" }} />;
+    }
+
     return (
       <div className="loginOrRegister">
         <form onSubmit={this.handleSubmit}>

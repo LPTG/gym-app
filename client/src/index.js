@@ -1,13 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import Register from "./Register.js";
-import Workouts from "./Workouts.js";
+import App from "./App.js";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Workouts />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

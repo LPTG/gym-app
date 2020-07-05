@@ -4,7 +4,11 @@ const Workout = require("../models/workout.model");
 // Need user authentication later
 // Takes user _id, new workout, and user auth token (later)
 exports.workout_create = function (req, res) {
-  // Need to test if this works since adding user ref updating <---------
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  //if (!req.session.userID) {
+  //  res.redirect("/login");
+  //}
+
   // Check that we have all required data
   if (req.body.userID && req.body.workout) {
     // See if user exists
