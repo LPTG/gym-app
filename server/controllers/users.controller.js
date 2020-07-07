@@ -4,7 +4,13 @@ const Workout = require("../models/workout.model");
 
 const saltRounds = 10;
 
-exports.read_all = function (req, res) {};
+exports.read_all = function (req, res) {
+  User.find({}, function (err, res1) {
+    if (err) throw err;
+
+    res.send(res1);
+  }).select("type username email -_id");
+};
 
 exports.create_user = function (req, res) {
   if (!req.body.username || !req.body.email || !req.body.pwd) {
@@ -59,7 +65,15 @@ exports.create_user = function (req, res) {
   });
 };
 
-exports.read_user = function (req, res) {};
+exports.read_user = function (req, res) {
+  User.findOne({ username: req.params.username }, function (err, res1) {
+    if (err) throw err;
+
+    res.send(res1);
+  })
+    .populate("workouts")
+    .select("-pwd -_id");
+};
 
 exports.update_user = function (req, res) {
   if (!req.body.userID || !req.body.update) {
@@ -78,63 +92,82 @@ exports.update_user = function (req, res) {
   });
 };
 
-exports.read_workouts = function (req, res) {};
+exports.read_workouts = function (req, res) {
+  User.findOne({ username: req.params.username }, function (err, workouts) {
+    if (err) throw err;
+
+    res.send(workouts);
+  })
+    .populate("workouts")
+    .select("workouts -_id");
+};
 
 exports.create_workout = function (req, res) {
-  if (!req.body.userID || !req.body.workout) {
+  if (!req.params.username || !req.body.workout) {
     res.send("User not found.");
   }
 
   // See if user exists
-  User.findById(req.body.userID, function (err, res1) {
+  // TODO: Is it better to search by _id than username? probably
+  User.findOne({ username: req.params.username }, function (err, user) {
     if (err) return err;
 
-    if (res1) {
-      let workout = new Workout({
-        name: req.body.workout.name,
-        desc: req.body.workout.desc,
-        notes: req.body.workout.notes,
-        exercises: req.body.workout.exercises,
-      });
-      console.log(workout);
-
-      // Save workout in Workouts collection
-      workout.save(function (err, product) {
-        if (err) {
-          console.log(err); // how should we handle errors?
-          res.send("Workout could not be created. " + err);
-        } else {
-          // Append workout ref to end of workouts array in Users collection
-          res1.update({ $push: { workouts: product._id } }, function (err) {
-            if (err) {
-              console.log(err);
-              res.send("Workout could not be created.");
-            } else {
-              res.send("Workout added successfully!");
-            }
-          });
-        }
-      });
+    if (!user) {
+      res.send("Workout could not be created.");
     }
+
+    let workout = new Workout({
+      name: req.body.workout.name,
+      desc: req.body.workout.desc,
+      notes: req.body.workout.notes,
+      exercises: req.body.workout.exercises,
+    });
+
+    // Save workout in Workouts collection
+    workout.save(function (err, product) {
+      if (err) {
+        res.send("Workout could not be created.");
+      } else {
+        // Append workout ref to end of workouts array in Users collection
+        user.update({ $push: { workouts: product._id } }, function (err1) {
+          if (err1) {
+            res.send("Workout could not be created.");
+          } else {
+            res.send("Workout added successfully!");
+          }
+        });
+      }
+    });
   });
 };
 
-exports.read_workout = function (req, res) {};
+exports.read_workout = function (req, res) {
+  User.findOne({ username: req.params.username }, function (err, user) {
+    if (err) throw err;
+
+    let workoutID = user.workouts.find((workout) => workout == req.params.workoutID);
+    Workout.findById(workoutID, function (err1, workout) {
+      if (err1) throw err1;
+
+      res.send(workout);
+    }).select("-_id");
+  });
+};
 
 // Takes workout _id and update option
 exports.update_workout = function (req, res) {
   // Check that we have all required data
-  if (!req.body.workoutID || !req.body.update) {
+  // TODO: Is this even necessary for url params? probably not
+  if (!req.params.username || !req.params.workoutID || !req.body.update) {
     res.send("Missing required data.");
   }
   // See if user exists
-  Workout.findById(req.body.workoutID, function (err, res1) {
+  Workout.findById(req.params.workoutID, function (err, workout) {
     if (err) {
       res.send("Could not update workout.");
     } else {
-      res1.update(req.body.update, function (err) {
+      workout.update(req.body.update, function (err) {
         if (err) {
-          console.log(err);
           res.send("Workout could not be updated.");
         } else {
           res.send("Workout updated successfully!");
@@ -146,25 +179,26 @@ exports.update_workout = function (req, res) {
 
 // Takes user _id and workout _id
 exports.delete_workout = function (req, res) {
-  if (!req.body.userID || !req.body.workoutID) {
+  if (!req.params.username || !req.params.workoutID) {
     res.send("Missing required data.");
   }
   // See if user exists and update it
-  User.update({ _id: req.body.userID }, { $pull: { workouts: req.body.workoutID } }, function (
-    err,
-    res1
-  ) {
-    if (err) {
-      res.send("Unable to delete workout.");
-    } else {
-      // Delete workout from Workouts collection
-      Workout.findByIdAndDelete(req.body.workoutID, function (err1, res2) {
-        if (err1) {
-          res.send("Invalid workout id.");
-        } else {
-          res.send("Workout deleted successfully!");
-        }
-      });
+  User.update(
+    { username: req.params.username },
+    { $pull: { workouts: req.params.workoutID } },
+    function (err, res1) {
+      if (err) {
+        res.send("Unable to delete workout.");
+      } else {
+        // Delete workout from Workouts collection
+        Workout.findByIdAndDelete(req.params.workoutID, function (err1, res2) {
+          if (err1) {
+            res.send("Unable to delete workout.");
+          } else {
+            res.send("Workout deleted successfully!");
+          }
+        });
+      }
     }
-  });
+  );
 };

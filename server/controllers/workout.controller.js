@@ -49,7 +49,6 @@ exports.workout_create = function (req, res) {
 };
 
 // Takes workout _id and update option
-// Returns update status
 exports.workout_update = function (req, res) {
   // Check that we have all required data
   if (req.body.workoutID && req.body.update) {
@@ -97,10 +96,4 @@ exports.workout_delete = function (req, res) {
   } else {
     res.send("Missing required data.");
   }
-};
-
-exports.workout_read = function (req, res) {};
-
-exports.workout_read_by_user = function (req, res, username) {
-  User.findOne(username);
 };

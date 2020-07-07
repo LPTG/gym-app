@@ -9,7 +9,7 @@ const session_controller = require("../controllers/session.controller");
 
 router.post("/", function (req, res, next) {
   passport.authenticate("local", function (err, user, info) {
-    session_controller.create_session(req, res, err, user, info, next);
+    session_controller.create_session(req, res, err, user, info);
   })(req, res, next);
 });
 

@@ -1,4 +1,4 @@
-exports.create_session = function (req, res, err, user, info, next) {
+exports.create_session = function (req, res, err, user, info) {
   if (err) {
     return next(err);
   }
