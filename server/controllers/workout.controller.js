@@ -98,3 +98,9 @@ exports.workout_delete = function (req, res) {
     res.send("Missing required data.");
   }
 };
+
+exports.workout_read = function (req, res) {};
+
+exports.workout_read_by_user = function (req, res, username) {
+  User.findOne(username);
+};

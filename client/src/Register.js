@@ -24,7 +24,7 @@ class Register extends React.Component {
       const postData = {
         username,
         email,
-        pwd: password,
+        password,
       };
 
       // username must be at least 3 characters long
@@ -37,18 +37,27 @@ class Register extends React.Component {
     } else {
       const postData = {
         username,
-        pwd: password,
+        password,
       };
 
       // username must be at least 3 characters long
       // password must be at least 8 characters long and contain a special char, regex check?
-
-      axios.post("http://localhost:3001/login", postData).then((res) => {
-        console.log(res.data);
-        if (res.status === 200) {
-          this.setState({ redirect: true });
-        }
-      });
+      axios
+        .post("/api/login", postData)
+        .then((res) => {
+          console.log(res);
+          // Request sent successfully
+          if (res.status === 200) {
+            if (res.data.success) {
+              this.setState({ redirect: true });
+            } else if (res.data.error) {
+              console.log(res.data.error);
+            }
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }
 
@@ -70,7 +79,6 @@ class Register extends React.Component {
 
   render() {
     if (this.state.redirect) {
-      // Redirect to workoutlist api?
       return <Redirect to={{ pathname: "/workoutlist" }} />;
     }
 

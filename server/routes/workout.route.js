@@ -13,6 +13,7 @@ router.get("/create", (req, res) => {
 });
 
 router.post("/create", workout_controller.workout_create);
+router.get("user");
 router.post("/update", workout_controller.workout_update);
 router.post("/delete", workout_controller.workout_delete);
 

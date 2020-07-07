@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const Workout = require("../models/workout.model");
+const Workout = require("./workout.model");
 
 function emailValidator(email) {
   const regex = RegExp(

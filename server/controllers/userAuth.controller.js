@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/user.model");
-const session = require("express-session");
+const passport = require("passport");
 const saltRounds = 10;
+//require("../passport/setup");
 
 exports.loginForm = function (req, res) {
   if (req.session.userID) {
@@ -14,36 +15,67 @@ exports.loginForm = function (req, res) {
 
 // Takes username and password
 // Returns status
-exports.login = function (req, res) {
-  // Check that we have all required data
-  if (req.body.username && req.body.pwd) {
-    User.findOne({ username: req.body.username }, "_id username pwd", function (err, user) {
-      if (err) {
-        console.log(err);
-      }
-      // If user exists
-      if (user) {
-        let userHash = user.pwd;
-
-        // Compare stored user hash with newly inputted password
-        bcrypt.compare(req.body.pwd, userHash, function (err1, same) {
-          if (same) {
-            req.session.username = user.username;
-            req.session.userID = user._id;
-            res.status(200).send("Logged in as '" + user.username + "'!");
-          } else {
-            res.send("Incorrect username or password.");
-          }
-        });
-        // If user does not exist
-      } else {
-        res.send("User not found.");
-      }
-    });
-  } else {
-    res.send("Missing required data.");
+exports.login = function (req, res, err, user, info, next) {
+  if (err) {
+    return next(err);
   }
+
+  // If user does not exist
+  if (!user) {
+    return res.json(info);
+  }
+
+  // Log user in
+  req.logIn(user, function (err1) {
+    if (err1) {
+      return next(err1);
+    }
+
+    return res.json(info);
+  });
+  // if (!req.body.username) {
+  //   return res.status(200).json({ errors: "No user found" });
+  // } else {
+  //   console.log("redirecting");
+  //   return res.status(200).json({ success: `logged in as ${user.username}` });
+  // }
 };
+
+exports.logout = function (req, res) {
+  if (req.user) {
+    req.logout();
+  }
+
+  res.send("Logged out");
+};
+// // Check that we have all required data
+// if (req.body.username && req.body.pwd) {
+//   User.findOne({ username: req.body.username }, function (err, user) {
+//     if (err) {
+//       console.log(err);
+//     }
+//     // If user exists
+//     if (user) {
+//       let userHash = user.pwd;
+
+//       // Compare stored user hash with newly inputted password
+//       bcrypt.compare(req.body.pwd, userHash, function (err1, same) {
+//         if (same) {
+//           //req.session.username = user.username;
+//           //req.session.userID = user._id;
+//           res.status(200).send("'message': 'Success', 'user':" + user);
+//         } else {
+//           res.status(200).send("{'message': 'Incorrect information'}");
+//         }
+//       });
+//       // If user does not exist
+//     } else {
+//       res.status(200).send("{'message': 'User not found'}");
+//     }
+//   });
+// } else {
+//   res.status(200).send("{'message': 'Missing data'}");
+// }
 
 // Possible problem: Internet was lagging and was testing register functionality... two users with same username were created
 // Possible fix: Changed User schema to have unique username
