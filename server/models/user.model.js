@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const Workout = require("./workout.model");
+const Template = require("../models/template.model");
 
 function emailValidator(email) {
   const regex = RegExp(
@@ -30,7 +31,8 @@ let UserSchema = new Schema({
   },
   pwd: { type: String, required: true },
   type: { type: String, enumValues: ["Member", "Admin"], default: "Member", required: true },
-  workouts: [{ type: Schema.Types.ObjectId, ref: "Workout" }], // Consider having an array of refs instead of embedding workouts, DONE and DONE
+  workouts: [{ type: Schema.Types.ObjectId, ref: "Workout" }],
+  templates: [{ type: Schema.Types.ObjectId, ref: "Template" }],
   prevex: [{ type: String }], // Need to add exercise title here on new exercise creation
 });
 
