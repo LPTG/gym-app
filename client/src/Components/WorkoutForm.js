@@ -1,106 +1,19 @@
 import React from "react";
 import axios from "axios";
 import "./Workouts.css";
-
-class SetsAndReps extends React.Component {
-  render() {
-    return (
-      <div>
-        <label>
-          Weight:
-          <input
-            type="text"
-            id={this.props.parent + "-" + this.props.id + "-w"}
-            onChange={this.props.onWeightChange}
-          />
-        </label>
-        <label>
-          Sets:
-          <input
-            type="text"
-            id={this.props.parent + "-" + this.props.id + "-s"}
-            onChange={this.props.onSetChange}
-          />
-        </label>
-        <label>
-          Reps:
-          <input
-            type="text"
-            id={this.props.parent + "-" + this.props.id + "-r"}
-            onChange={this.props.onRepChange}
-          />
-        </label>
-      </div>
-    );
-  }
-}
-
-class ExerciseForm extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.handleClick = this.handleClick.bind(this);
-    this.handleExerciseChange = this.handleExerciseChange.bind(this);
-    this.handleWeightChange = this.handleWeightChange.bind(this);
-    this.handleSetChange = this.handleSetChange.bind(this);
-    this.handleRepChange = this.handleRepChange.bind(this);
-  }
-
-  handleClick() {
-    // Add a set to the current exercise
-    this.props.addSet(this.props.exercise.id);
-  }
-
-  handleExerciseChange(event) {
-    this.props.handleExerciseChange(event);
-  }
-
-  handleWeightChange(event) {
-    this.props.handleWeightSetRepChange(event);
-  }
-
-  handleSetChange(event) {
-    this.props.handleWeightSetRepChange(event);
-  }
-
-  handleRepChange(event) {
-    this.props.handleWeightSetRepChange(event);
-  }
-
-  render() {
-    return (
-      <div className="exerciseForm">
-        <label>
-          Exercise:
-          <input
-            type="text"
-            id={this.props.exercise.id}
-            name={this.props.exercise.id}
-            onChange={this.handleExerciseChange}
-          />
-        </label>
-
-        {this.props.exercise.setsAndReps.map((sets) => (
-          <SetsAndReps
-            key={sets.id}
-            wsr={sets}
-            parent={this.props.id}
-            id={sets.id}
-            onWeightChange={this.handleWeightChange}
-            onSetChange={this.handleSetChange}
-            onRepChange={this.handleRepChange}
-          />
-        ))}
-
-        <input type="button" value="Add another set" onClick={this.handleClick} />
-      </div>
-    );
-  }
-}
+import ExerciseForm from "./ExerciseForm";
 
 class WorkoutCreator extends React.Component {
   constructor(props) {
     super(props);
+
+    this.addExercise = this.addExercise.bind(this);
+    this.addSet = this.addSet.bind(this);
+    this.handleDetailsChange = this.handleDetailsChange.bind(this);
+    this.handleExerciseChange = this.handleExerciseChange.bind(this);
+    this.handleWeightSetRepChange = this.handleWeightSetRepChange.bind(this);
+    this.createWorkout = this.createWorkout.bind(this);
+
     // Set initial state of workout: 1 exercise with 1 set
     this.state = {
       name: "",
@@ -109,32 +22,57 @@ class WorkoutCreator extends React.Component {
         {
           id: "exercise1",
           name: "",
-          setsAndReps: [{ id: "wsr1", weight: "", sets: "", reps: "" }],
+          wsr: [{ id: "wsr1", weight: "", sets: "", reps: "" }],
         },
       ],
     };
+  }
 
-    this.addExercise = this.addExercise.bind(this);
-    this.addSet = this.addSet.bind(this);
-    this.handleDetailsChange = this.handleDetailsChange.bind(this);
-    this.handleExerciseChange = this.handleExerciseChange.bind(this);
-    this.handleWeightSetRepChange = this.handleWeightSetRepChange.bind(this);
-    this.createWorkout = this.createWorkout.bind(this);
+  // componentDidMount() {
+  //   console.log(this.props.template);
+  //   if (this.props.template != []) {
+  //     this.buildFromTemplate();
+  //   }
+  // }
+
+  buildFromTemplate() {
+    if (this.props.template !== []) {
+      console.log(this.props.template);
+      this.setState({
+        name: this.props.template.name,
+        desc: this.props.template.desc,
+        exercises: [],
+      });
+
+      this.props.template.forEach((exercise) => {
+        console.log(exercise.name);
+        let exerciseID = this.addExercise();
+
+        exercise.forEach((wsr) => {
+          console.log("set");
+          this.addSet(exerciseID);
+        });
+      });
+    }
   }
 
   addExercise() {
     // Copy the exercises array
     const exercises = this.state.exercises.slice();
 
+    const id = "exercise " + (this.state.exercises.length + 1);
+
     // Add a new exercise with a single set
     const updatedExercises = exercises.concat([
       {
-        id: "exercise" + (this.state.exercises.length + 1),
-        setsAndReps: [{ id: "wsr1", weight: "", sets: "", reps: "" }],
+        id: id,
+        wsr: [{ id: "wsr1", weight: "", sets: "", reps: "" }],
       },
     ]);
 
     this.setState({ exercises: updatedExercises });
+
+    return id;
   }
 
   addSet(exerciseID) {
@@ -145,8 +83,8 @@ class WorkoutCreator extends React.Component {
     const exerciseIndex = exerciseCopy.findIndex((x) => x.id === exerciseID);
 
     // Add a new set to the current exercise
-    exerciseCopy[exerciseIndex].setsAndReps = exerciseCopy[exerciseIndex].setsAndReps.concat([
-      { id: "wsr" + (exerciseCopy[exerciseIndex].setsAndReps.length + 1) },
+    exerciseCopy[exerciseIndex].wsr = exerciseCopy[exerciseIndex].wsr.concat([
+      { id: "wsr" + (exerciseCopy[exerciseIndex].wsr.length + 1) },
     ]);
 
     this.setState({ exercises: exerciseCopy });
@@ -192,11 +130,9 @@ class WorkoutCreator extends React.Component {
     // Find the index of the modified exercise name
     var exerciseIndex = this.state.exercises.findIndex((ex) => ex.id === exerciseID);
     // Find the index of the modified weight, set, or rep
-    var wsrIndex = this.state.exercises[exerciseIndex].setsAndReps.findIndex(
-      (wsr) => wsr.id === wsrID
-    );
+    var wsrIndex = this.state.exercises[exerciseIndex].wsr.findIndex((wsr) => wsr.id === wsrID);
     // Create a copy of that wsr
-    var wsrCopy = { ...this.state.exercises[exerciseIndex].setsAndReps[wsrIndex] };
+    var wsrCopy = { ...this.state.exercises[exerciseIndex].wsr[wsrIndex] };
     // Update the value of the weight, set, or rep
     if (targetSplit[2] === "w") wsrCopy.weight = target.value;
     if (targetSplit[2] === "s") wsrCopy.sets = target.value;
@@ -205,7 +141,7 @@ class WorkoutCreator extends React.Component {
     // Create a copy of the current state
     var stateCopy = { ...this.state };
     // Replace the current state's wsr with our updated version
-    stateCopy.exercises[exerciseIndex].setsAndReps[wsrIndex] = wsrCopy;
+    stateCopy.exercises[exerciseIndex].wsr[wsrIndex] = wsrCopy;
 
     this.setState(stateCopy);
   }
@@ -224,7 +160,7 @@ class WorkoutCreator extends React.Component {
     this.state.exercises.forEach((exercise) => {
       var sets = [];
       // Build a json object for each wsr field for this exercise
-      exercise.setsAndReps.forEach((set) => {
+      exercise.wsr.forEach((set) => {
         sets.push({ weight: set.weight, sets: set.sets, reps: set.reps });
       });
 

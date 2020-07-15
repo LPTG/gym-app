@@ -1,6 +1,6 @@
 import React from "react";
-import ListItem from "./Components/ListItem";
-import WorkoutListBody from "./Components/WorkoutListBody";
+import ListItem from "./ListItem";
+import WorkoutListBody from "./WorkoutListBody";
 import _ from "lodash";
 import axios from "axios";
 
