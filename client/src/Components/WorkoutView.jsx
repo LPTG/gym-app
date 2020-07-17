@@ -6,17 +6,30 @@ class WorkoutView extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { workouts: [] };
+    this.state = { workout: [] };
   }
 
   componentDidMount() {
     axios.get("/api/users/lukas/workouts/5ef3ab5135291e460cf67688").then((res) => {
-      this.setState({ workouts: res.data });
+      let workout = res.data;
+      let updatedExercises = workout.exercises;
+
+      updatedExercises.forEach((exercise, index) => {
+        let id = "exercise" + (index + 1);
+        exercise.id = id;
+
+        exercise.wsr.forEach((wsr, index) => {
+          let currentWsrID = "wsr" + (index + 1);
+          wsr.id = currentWsrID;
+        });
+      });
+
+      this.setState({ workout: workout });
     });
   }
 
   render() {
-    return <WorkoutForm template={this.state.workouts} edit={true} />;
+    return <WorkoutForm template={this.state.workout} edit={true} />;
   }
 }
 

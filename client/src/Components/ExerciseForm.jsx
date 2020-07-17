@@ -43,25 +43,26 @@ class ExerciseForm extends React.Component {
             type="text"
             id={this.props.id}
             name={this.props.id}
-            placeholder={this.props.exerciseName}
+            placeholder={this.props.exercisePlaceholder}
             onChange={this.handleExerciseChange}
           />
         </label>
 
-        {this.props.wsr.map((wsr) => (
+        {this.props.wsr.map((wsr, index) => (
           <WeightSetReps
             key={wsr.id}
-            //wsr={wsr}
             parent={this.props.id}
             id={wsr.id}
-            weightText={wsr.weight}
-            setsText={wsr.sets}
-            repsText={wsr.reps}
+            weightText={this.props.wsrPlaceholders[index].weight}
+            setsText={this.props.wsrPlaceholders[index].sets}
+            repsText={this.props.wsrPlaceholders[index].reps}
             onWeightChange={this.handleWeightChange}
             onSetChange={this.handleSetChange}
             onRepChange={this.handleRepChange}
           />
         ))}
+
+        {this.props.wsrPlaceholders[0].weight}
 
         <input type="button" value="Add another set" onClick={this.handleClick} />
       </div>

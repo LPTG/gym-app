@@ -2,7 +2,7 @@ import React from "react";
 import axios from "axios";
 import "./Workouts.css";
 import ExerciseForm from "./ExerciseForm";
-import { update } from "lodash";
+import { cloneDeep } from "lodash";
 
 class WorkoutCreator extends React.Component {
   constructor(props) {
@@ -14,6 +14,8 @@ class WorkoutCreator extends React.Component {
     this.handleExerciseChange = this.handleExerciseChange.bind(this);
     this.handleWeightSetRepChange = this.handleWeightSetRepChange.bind(this);
     this.createWorkout = this.createWorkout.bind(this);
+    this.getName = this.getName.bind(this);
+    this.getWsr = this.getWsr.bind(this);
     //this.buildFromTemplate = this.buildFromTemplate.bind(this);
 
     // Set initial state of workout: 1 exercise with 1 set
@@ -40,24 +42,12 @@ class WorkoutCreator extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (this.props.template !== prevProps.template) {
-      this.buildFromTemplate();
-    }
-  }
-
-  buildFromTemplate() {
-    let updatedExercises = this.props.template.exercises;
-
-    updatedExercises.forEach((exercise, index) => {
-      let id = "exercise" + (index + 1);
-      exercise.id = id;
-
-      exercise.wsr.forEach((wsr, index) => {
-        let currentWsrID = "wsr" + (index + 1);
-        wsr.id = currentWsrID;
+      this.setState({
+        name: this.props.template.name,
+        desc: this.props.template.desc,
+        exercises: this.props.template.exercises,
       });
-    });
-
-    this.setState({ exercises: updatedExercises });
+    }
   }
 
   addExercise() {
@@ -65,7 +55,6 @@ class WorkoutCreator extends React.Component {
     const exercises = this.state.exercises.slice();
 
     const id = "exercise" + (this.state.exercises.length + 1);
-    console.log(id);
 
     // Add a new exercise with a single set
     const updatedExercises = exercises.concat([
@@ -125,6 +114,7 @@ class WorkoutCreator extends React.Component {
     this.setState(stateCopy);
   }
 
+  // Try having a seperate event handler for weight/sets/reps
   handleWeightSetRepChange(event) {
     const target = event.target;
 
@@ -144,7 +134,8 @@ class WorkoutCreator extends React.Component {
     if (targetSplit[2] === "r") wsrCopy.reps = target.value;
 
     // Create a copy of the current state
-    var stateCopy = { ...this.state };
+    var stateCopy = cloneDeep(this.state);
+
     // Replace the current state's wsr with our updated version
     stateCopy.exercises[exerciseIndex].wsr[wsrIndex] = wsrCopy;
 
@@ -185,10 +176,19 @@ class WorkoutCreator extends React.Component {
     });
   }
 
-  test() {}
+  getName(index) {
+    return this.props.template.exercises[index] ? this.props.template.exercises[index].name : "";
+  }
+
+  getWsr(index) {
+    if (this.props.template.exercises[index]) {
+      return this.props.template.exercises[index].wsr;
+    } else {
+      return this.state.exercises[index].wsr;
+    }
+  }
 
   render() {
-    console.log(this.state.exercises);
     return (
       <div className="workoutCreator">
         <label>
@@ -212,13 +212,13 @@ class WorkoutCreator extends React.Component {
           />
         </label>
 
-        {this.state.exercises.map((exercise) => (
-          // TODO: NEED TO PASS PLACEHOLDERS AS PROPS INSTEAD OF STATE ===> FORMAT TEMPLATE BEFORE PASSING IT TO WORKOUTFORM COMPONENT?
+        {this.state.exercises.map((exercise, index) => (
           <ExerciseForm
             key={exercise.id}
             id={exercise.id}
             wsr={exercise.wsr}
-            exerciseName={exercise.name}
+            wsrPlaceholders={this.getWsr(index)}
+            exercisePlaceholder={this.getName(index)}
             handleExerciseChange={this.handleExerciseChange}
             handleWeightSetRepChange={this.handleWeightSetRepChange}
             addSet={this.addSet}
