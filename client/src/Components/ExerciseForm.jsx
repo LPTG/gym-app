@@ -14,7 +14,7 @@ class ExerciseForm extends React.Component {
 
   handleClick() {
     // Add a set to the current exercise
-    this.props.addSet(this.props.exercise.id);
+    this.props.addSet(this.props.id);
   }
 
   handleExerciseChange(event) {
@@ -34,24 +34,29 @@ class ExerciseForm extends React.Component {
   }
 
   render() {
+    // TODO: Need to make placeholder always show if there is nothing in the input
     return (
       <div className="exerciseForm">
         <label>
           Exercise:
           <input
             type="text"
-            id={this.props.exercise.id}
-            name={this.props.exercise.id}
+            id={this.props.id}
+            name={this.props.id}
+            placeholder={this.props.exerciseName}
             onChange={this.handleExerciseChange}
           />
         </label>
 
-        {this.props.exercise.wsr.map((sets) => (
+        {this.props.wsr.map((wsr) => (
           <WeightSetReps
-            key={sets.id}
-            wsr={sets}
+            key={wsr.id}
+            //wsr={wsr}
             parent={this.props.id}
-            id={sets.id}
+            id={wsr.id}
+            weightText={wsr.weight}
+            setsText={wsr.sets}
+            repsText={wsr.reps}
             onWeightChange={this.handleWeightChange}
             onSetChange={this.handleSetChange}
             onRepChange={this.handleRepChange}

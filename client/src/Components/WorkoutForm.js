@@ -2,6 +2,7 @@ import React from "react";
 import axios from "axios";
 import "./Workouts.css";
 import ExerciseForm from "./ExerciseForm";
+import { update } from "lodash";
 
 class WorkoutCreator extends React.Component {
   constructor(props) {
@@ -13,54 +14,58 @@ class WorkoutCreator extends React.Component {
     this.handleExerciseChange = this.handleExerciseChange.bind(this);
     this.handleWeightSetRepChange = this.handleWeightSetRepChange.bind(this);
     this.createWorkout = this.createWorkout.bind(this);
+    //this.buildFromTemplate = this.buildFromTemplate.bind(this);
 
     // Set initial state of workout: 1 exercise with 1 set
-    this.state = {
-      name: "",
-      desc: "",
-      exercises: [
-        {
-          id: "exercise1",
-          name: "",
-          wsr: [{ id: "wsr1", weight: "", sets: "", reps: "" }],
-        },
-      ],
-    };
+    if (this.props.edit === true) {
+      this.state = {
+        name: "",
+        desc: "",
+        exercises: [],
+      };
+    } else {
+      this.state = {
+        name: "",
+        desc: "",
+        exercises: [
+          {
+            id: "exercise1",
+            name: "",
+            wsr: [{ id: "wsr1", weight: "", sets: "", reps: "" }],
+          },
+        ],
+      };
+    }
   }
 
-  // componentDidMount() {
-  //   console.log(this.props.template);
-  //   if (this.props.template != []) {
-  //     this.buildFromTemplate();
-  //   }
-  // }
+  componentDidUpdate(prevProps) {
+    if (this.props.template !== prevProps.template) {
+      this.buildFromTemplate();
+    }
+  }
 
   buildFromTemplate() {
-    if (this.props.template !== []) {
-      console.log(this.props.template);
-      this.setState({
-        name: this.props.template.name,
-        desc: this.props.template.desc,
-        exercises: [],
-      });
+    let updatedExercises = this.props.template.exercises;
 
-      this.props.template.forEach((exercise) => {
-        console.log(exercise.name);
-        let exerciseID = this.addExercise();
+    updatedExercises.forEach((exercise, index) => {
+      let id = "exercise" + (index + 1);
+      exercise.id = id;
 
-        exercise.forEach((wsr) => {
-          console.log("set");
-          this.addSet(exerciseID);
-        });
+      exercise.wsr.forEach((wsr, index) => {
+        let currentWsrID = "wsr" + (index + 1);
+        wsr.id = currentWsrID;
       });
-    }
+    });
+
+    this.setState({ exercises: updatedExercises });
   }
 
   addExercise() {
     // Copy the exercises array
     const exercises = this.state.exercises.slice();
 
-    const id = "exercise " + (this.state.exercises.length + 1);
+    const id = "exercise" + (this.state.exercises.length + 1);
+    console.log(id);
 
     // Add a new exercise with a single set
     const updatedExercises = exercises.concat([
@@ -180,30 +185,57 @@ class WorkoutCreator extends React.Component {
     });
   }
 
+  test() {}
+
   render() {
+    console.log(this.state.exercises);
     return (
       <div className="workoutCreator">
         <label>
           Workout Name:
-          <input type="text" name="name" onChange={this.handleDetailsChange} />
+          <input
+            type="text"
+            name="name"
+            placeholder={this.props.template.name}
+            onChange={this.handleDetailsChange}
+          />
         </label>
         <br />
 
         <label>
           Description:
-          <input type="text" name="desc" onChange={this.handleDetailsChange} />
+          <input
+            type="text"
+            name="desc"
+            placeholder={this.props.template.desc}
+            onChange={this.handleDetailsChange}
+          />
         </label>
 
         {this.state.exercises.map((exercise) => (
+          // TODO: NEED TO PASS PLACEHOLDERS AS PROPS INSTEAD OF STATE ===> FORMAT TEMPLATE BEFORE PASSING IT TO WORKOUTFORM COMPONENT?
           <ExerciseForm
             key={exercise.id}
             id={exercise.id}
-            exercise={exercise}
+            wsr={exercise.wsr}
+            exerciseName={exercise.name}
             handleExerciseChange={this.handleExerciseChange}
             handleWeightSetRepChange={this.handleWeightSetRepChange}
             addSet={this.addSet}
           />
         ))}
+
+        {/* {this.props.edit && this.state.exercises.map((exercise) => (
+          <ExerciseForm
+            key={this.test()}
+            id={exercise.id}
+            wsr={exercise.wsr}
+            exercise={exercise}
+            handleExerciseChange={this.handleExerciseChange}
+            handleWeightSetRepChange={this.handleWeightSetRepChange}
+            addSet={this.addSet}
+          />
+        ))} */}
 
         <input type="button" value="Add another exercise" onClick={this.addExercise} />
         <input type="button" value="Create Workout" onClick={this.createWorkout} />

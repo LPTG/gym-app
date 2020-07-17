@@ -16,7 +16,7 @@ class WorkoutView extends React.Component {
   }
 
   render() {
-    return <WorkoutForm template={this.state.workouts} />;
+    return <WorkoutForm template={this.state.workouts} edit={true} />;
   }
 }
 
