@@ -1,7 +1,7 @@
 import React from "react";
-import axios from "axios";
 import "./Register.css";
 import { Redirect } from "react-router-dom";
+import auth from "../Auth";
 
 class Register extends React.Component {
   constructor(props) {
@@ -31,9 +31,7 @@ class Register extends React.Component {
       // password must be at least 8 characters long and contain a special char, regex check?
       // regex check email
 
-      axios.post("/register", postData).then((res) => {
-        console.log(res.data);
-      });
+      auth.register(postData);
     } else {
       const postData = {
         username,
@@ -42,22 +40,15 @@ class Register extends React.Component {
 
       // username must be at least 3 characters long
       // password must be at least 8 characters long and contain a special char, regex check?
-      axios
-        .post("/api/login", postData)
-        .then((res) => {
-          console.log(res);
-          // Request sent successfully
-          if (res.status === 200) {
-            if (res.data.success) {
-              this.setState({ redirect: true });
-            } else if (res.data.error) {
-              console.log(res.data.error);
-            }
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+
+      auth.login(postData, () => {
+        if (auth.isAuthenticated()) {
+          console.log("Logged in successfully!");
+          this.props.history.push("/workout-list");
+        } else {
+          console.log("Not logged in");
+        }
+      });
     }
   }
 
@@ -87,23 +78,48 @@ class Register extends React.Component {
         <form onSubmit={this.handleSubmit}>
           <label>
             Username:
-            <input type="text" name="username" onChange={this.handleChange} />
+            <input
+              type="text"
+              name="username"
+              autoComplete="username"
+              onChange={this.handleChange}
+            />
             <br />
           </label>
 
           {this.state.registerView && (
+            <div>
+              <label>
+                Email:
+                <input type="text" name="email" autoComplete="email" onChange={this.handleChange} />
+                <br />
+              </label>
+              <label>
+                Password:
+                <input
+                  type="password"
+                  name="password"
+                  autoComplete="new-password"
+                  onChange={this.handleChange}
+                />
+                <br />
+              </label>
+            </div>
+          )}
+
+          {!this.state.registerView && (
             <label>
-              Email:
-              <input type="text" name="email" onChange={this.handleChange} />
+              Password:
+              <input
+                type="password"
+                name="password"
+                autoComplete="current-password"
+                onChange={this.handleChange}
+              />
               <br />
             </label>
           )}
 
-          <label>
-            Password:
-            <input type="password" name="password" onChange={this.handleChange} />
-            <br />
-          </label>
           <input type="submit" value={this.state.registerView ? "Register" : "Login"} />
           <input
             type="button"

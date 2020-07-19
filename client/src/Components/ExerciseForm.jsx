@@ -62,8 +62,6 @@ class ExerciseForm extends React.Component {
           />
         ))}
 
-        {this.props.wsrPlaceholders[0].weight}
-
         <input type="button" value="Add another set" onClick={this.handleClick} />
       </div>
     );

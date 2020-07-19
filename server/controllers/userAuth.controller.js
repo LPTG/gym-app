@@ -44,9 +44,10 @@ exports.login = function (req, res, err, user, info, next) {
 exports.logout = function (req, res) {
   if (req.user) {
     req.logout();
+    res.send({ message: "Logged out" });
+  } else {
+    res.send({ message: "Already logged out" });
   }
-
-  res.send("Logged out");
 };
 // // Check that we have all required data
 // if (req.body.username && req.body.pwd) {

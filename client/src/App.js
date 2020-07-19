@@ -6,6 +6,7 @@ import WorkoutView from "./Components/WorkoutView";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import "./App.css";
 import TemplateList from "./Components/TemplateList.js";
+import { ProtectedRoute } from "./Components/ProtectedRoute";
 
 function App() {
   return (
@@ -13,10 +14,11 @@ function App() {
       <Switch>
         <Route path="/" exact component={Register} />
         <Route path="/login" component={Register} />
-        <Route path="/workout-form" component={WorkoutForm} />
-        <Route path="/workout-list" component={WorkoutList} />
-        <Route path="/template-list" component={TemplateList} />
-        <Route path="/view-workout" component={WorkoutView} />
+        <ProtectedRoute path="/workout-form" component={WorkoutForm} />
+        <ProtectedRoute path="/workout-list" component={WorkoutList} />
+        <ProtectedRoute path="/template-list" component={TemplateList} />
+        <ProtectedRoute path="/view-workout" component={WorkoutView} />
+        <Route path="*" component={() => "404 NOT FOUND"} />
       </Switch>
     </Router>
   );
