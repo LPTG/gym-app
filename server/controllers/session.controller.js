@@ -14,7 +14,7 @@ exports.create_session = function (req, res, err, user, info) {
       return next(err1);
     }
 
-    return res.json({ message: "Logged in" });
+    return res.json({ loggedIn: true });
   });
 };
 
@@ -24,4 +24,21 @@ exports.destroy_session = function (req, res) {
   }
 
   res.json({ message: "Logged out" });
+};
+
+exports.check_session = function (req, res) {
+  if (req.user) {
+    safeUser = {
+      type: req.user.type,
+      workouts: req.user.workouts,
+      templates: req.user.templates,
+      prevex: req.user.prevex,
+      username: req.user.username,
+      email: req.user.email,
+    };
+
+    return res.json({ loggedIn: true, user: safeUser });
+  }
+
+  return res.json({ loggedIn: false });
 };

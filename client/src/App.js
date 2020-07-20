@@ -14,10 +14,10 @@ function App() {
       <Switch>
         <Route path="/" exact component={Register} />
         <Route path="/login" component={Register} />
-        <ProtectedRoute path="/workout-form" component={WorkoutForm} />
-        <ProtectedRoute path="/workout-list" component={WorkoutList} />
-        <ProtectedRoute path="/template-list" component={TemplateList} />
-        <ProtectedRoute path="/view-workout" component={WorkoutView} />
+        <ProtectedRoute path="/:user/workout-form" component={WorkoutForm} />
+        <ProtectedRoute path="/:user/workouts/:workoutID" component={WorkoutView} />
+        <ProtectedRoute path="/:user/workouts" component={WorkoutList} />
+        <ProtectedRoute path="/:user/templates" component={TemplateList} />
         <Route path="*" component={() => "404 NOT FOUND"} />
       </Switch>
     </Router>

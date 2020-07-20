@@ -19,19 +19,15 @@ class Auth {
     axios
       .post("/api/session", postData)
       .then((res) => {
-        // Need to make a call to server to check if req.user exists instead of this garbage
-        if (res.data.message === "Logged in") {
-          console.log(res);
+        if (res.loggedIn) {
           this.authenticated = true;
-        } else if (res.data.error) {
-          // Not sure where res.data.error is set or if it is
+        } else {
           this.authenticated = false;
         }
 
         cb();
       })
       .catch((err) => {
-        console.log(err);
         this.authenticated = false;
         cb();
       });
@@ -39,14 +35,30 @@ class Auth {
 
   logout(cb) {
     axios.delete("/api/session").then((res) => {
-      console.log(res);
       this.authenticated = false;
+
       cb();
     });
   }
 
-  isAuthenticated() {
+  // Do we need to check session everytime a user navigates to a new page?
+  checkSession(cb) {
+    axios.get("/api/session").then((res) => {
+      this.authenticated = res.data.loggedIn;
+
+      if (this.authenticated) {
+        this.user = res.data.user;
+        cb();
+      }
+    });
+  }
+
+  getAuth() {
     return this.authenticated;
+  }
+
+  getUser() {
+    return this.user;
   }
 }
 

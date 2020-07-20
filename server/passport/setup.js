@@ -25,7 +25,9 @@ passport.use(
         } else {
           // Compare stored user hash with newly inputted password
           bcrypt.compare(password, user.pwd, function (err1, same) {
-            if (err1) throw err1;
+            if (err1) {
+              return done(null, false, { message: "Error validating user" });
+            }
 
             if (same) {
               return done(null, user);
@@ -38,5 +40,5 @@ passport.use(
       .catch((err) => {
         return done(null, false, { message: err });
       });
-  })
+  }) // Change what is sent in user object
 );

@@ -16,17 +16,21 @@ class WorkoutList extends React.Component {
   }
 
   componentDidMount() {
-    axios.get("/api/users/lukas/workouts").then((res) => {
+    const { user } = this.props.match.params;
+    axios.get(`/api/users/${user}/workouts`).then((res) => {
       this.setState({ workouts: res.data.workouts });
     });
   }
 
   handleOnClick(id) {
+    const { user } = this.props.match.params;
     const workouts = _.cloneDeep(this.state.workouts);
 
     for (let workout of workouts) {
       if (workout._id === id) {
         // Do things with workout
+        console.log(`/${user}/workouts/${id}`);
+        this.props.history.push(`/${user}/workouts/${id}`);
         console.log(workout._id);
         break;
       }

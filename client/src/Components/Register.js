@@ -42,12 +42,12 @@ class Register extends React.Component {
       // password must be at least 8 characters long and contain a special char, regex check?
 
       auth.login(postData, () => {
-        if (auth.isAuthenticated()) {
-          console.log("Logged in successfully!");
-          this.props.history.push("/workout-list");
-        } else {
-          console.log("Not logged in");
-        }
+        auth.checkSession(() => {
+          if (auth.getAuth()) {
+            const user = auth.getUser().username;
+            this.props.history.push(`/${user}/workouts`);
+          }
+        });
       });
     }
   }

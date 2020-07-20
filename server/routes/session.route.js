@@ -4,6 +4,7 @@ const session_controller = require("../controllers/session.controller");
 
 // POST     /session                        // log user in
 // DELETE   /session                        // log user out
+// GET      /session                        // check if user is logged in
 
 //router.get("/new", session_controller.create_session);
 router.post("/", function (req, res, next) {
@@ -13,5 +14,6 @@ router.post("/", function (req, res, next) {
 });
 
 router.delete("/", session_controller.destroy_session);
+router.get("/", session_controller.check_session);
 
 module.exports = router;
