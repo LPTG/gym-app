@@ -3,6 +3,8 @@ import axios from "axios";
 import "./Workouts.css";
 import ExerciseForm from "./ExerciseForm";
 import { cloneDeep } from "lodash";
+import NavBar from "./Navbar";
+import { withRouter } from "react-router-dom";
 
 class WorkoutCreator extends React.Component {
   constructor(props) {
@@ -190,42 +192,45 @@ class WorkoutCreator extends React.Component {
 
   render() {
     return (
-      <div className="workoutCreator">
-        <label>
-          Workout Name:
-          <input
-            type="text"
-            name="name"
-            placeholder={this.props.template.name}
-            onChange={this.handleDetailsChange}
-          />
-        </label>
-        <br />
+      <div>
+        <NavBar user={this.props.match.params.user} />
 
-        <label>
-          Description:
-          <input
-            type="text"
-            name="desc"
-            placeholder={this.props.template.desc}
-            onChange={this.handleDetailsChange}
-          />
-        </label>
+        <div className="workoutCreator">
+          <label>
+            Workout Name:
+            <input
+              type="text"
+              name="name"
+              placeholder={this.props.template.name}
+              onChange={this.handleDetailsChange}
+            />
+          </label>
+          <br />
 
-        {this.state.exercises.map((exercise, index) => (
-          <ExerciseForm
-            key={exercise.id}
-            id={exercise.id}
-            wsr={exercise.wsr}
-            wsrPlaceholders={this.getWsr(index)}
-            exercisePlaceholder={this.getName(index)}
-            handleExerciseChange={this.handleExerciseChange}
-            handleWeightSetRepChange={this.handleWeightSetRepChange}
-            addSet={this.addSet}
-          />
-        ))}
+          <label>
+            Description:
+            <input
+              type="text"
+              name="desc"
+              placeholder={this.props.template.desc}
+              onChange={this.handleDetailsChange}
+            />
+          </label>
 
-        {/* {this.props.edit && this.state.exercises.map((exercise) => (
+          {this.state.exercises.map((exercise, index) => (
+            <ExerciseForm
+              key={exercise.id}
+              id={exercise.id}
+              wsr={exercise.wsr}
+              wsrPlaceholders={this.getWsr(index)}
+              exercisePlaceholder={this.getName(index)}
+              handleExerciseChange={this.handleExerciseChange}
+              handleWeightSetRepChange={this.handleWeightSetRepChange}
+              addSet={this.addSet}
+            />
+          ))}
+
+          {/* {this.props.edit && this.state.exercises.map((exercise) => (
           <ExerciseForm
             key={this.test()}
             id={exercise.id}
@@ -237,11 +242,12 @@ class WorkoutCreator extends React.Component {
           />
         ))} */}
 
-        <input type="button" value="Add another exercise" onClick={this.addExercise} />
-        <input type="button" value="Create Workout" onClick={this.createWorkout} />
+          <input type="button" value="Add another exercise" onClick={this.addExercise} />
+          <input type="button" value="Create Workout" onClick={this.createWorkout} />
+        </div>
       </div>
     );
   }
 }
 
-export default WorkoutCreator;
+export default withRouter(WorkoutCreator);

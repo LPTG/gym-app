@@ -3,6 +3,7 @@ import ListItem from "./ListItem";
 import WorkoutListBody from "./WorkoutListBody";
 import _ from "lodash";
 import axios from "axios";
+import NavBar from "./Navbar";
 
 class WorkoutList extends React.Component {
   constructor(props) {
@@ -43,6 +44,7 @@ class WorkoutList extends React.Component {
     const { workouts } = this.state;
     return (
       <div>
+        <NavBar user={this.props.match.params.user} />
         <h1>Workout List</h1>
         <ul>
           {workouts.map((workout) => (

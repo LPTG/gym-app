@@ -10,22 +10,26 @@ class WorkoutView extends React.Component {
   }
 
   componentDidMount() {
-    axios.get("/api/users/lukas/workouts/5ef3ab5135291e460cf67688").then((res) => {
-      let workout = res.data;
-      let updatedExercises = workout.exercises;
+    axios
+      .get(
+        `/api/users/${this.props.match.params.user}/workouts/${this.props.match.params.workoutID}`
+      )
+      .then((res) => {
+        let workout = res.data;
+        let updatedExercises = workout.exercises;
 
-      updatedExercises.forEach((exercise, index) => {
-        let id = "exercise" + (index + 1);
-        exercise.id = id;
+        updatedExercises.forEach((exercise, index) => {
+          let id = "exercise" + (index + 1);
+          exercise.id = id;
 
-        exercise.wsr.forEach((wsr, index) => {
-          let currentWsrID = "wsr" + (index + 1);
-          wsr.id = currentWsrID;
+          exercise.wsr.forEach((wsr, index) => {
+            let currentWsrID = "wsr" + (index + 1);
+            wsr.id = currentWsrID;
+          });
         });
-      });
 
-      this.setState({ workout: workout });
-    });
+        this.setState({ workout: workout });
+      });
   }
 
   render() {
