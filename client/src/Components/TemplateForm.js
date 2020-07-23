@@ -6,7 +6,7 @@ import { cloneDeep } from "lodash";
 import NavBar from "./Navbar";
 import { withRouter } from "react-router-dom";
 
-class WorkoutCreator extends React.Component {
+class TemplateCreator extends React.Component {
   constructor(props) {
     super(props);
 
@@ -18,9 +18,8 @@ class WorkoutCreator extends React.Component {
     this.createWorkout = this.createWorkout.bind(this);
     this.getName = this.getName.bind(this);
     this.getWsr = this.getWsr.bind(this);
-    //this.buildFromTemplate = this.buildFromTemplate.bind(this);
 
-    // Set initial state of workout: 1 exercise with 1 set
+    // If we're editing then we want a blank slate to start with
     if (this.props.edit === true) {
       this.state = {
         name: "",
@@ -28,6 +27,7 @@ class WorkoutCreator extends React.Component {
         exercises: [],
       };
     } else {
+      // Set initial state of workout: 1 exercise with 1 set
       this.state = {
         name: "",
         desc: "",
@@ -179,13 +179,11 @@ class WorkoutCreator extends React.Component {
   }
 
   getName(index) {
-    return this.props.template && this.props.template.exercises[index]
-      ? this.props.template.exercises[index].name
-      : "";
+    return this.props.template.exercises[index] ? this.props.template.exercises[index].name : "";
   }
 
   getWsr(index) {
-    if (this.props.template && this.props.template.exercises[index]) {
+    if (this.props.template.exercises[index]) {
       return this.props.template.exercises[index].wsr;
     } else {
       return this.state.exercises[index].wsr;
@@ -200,33 +198,23 @@ class WorkoutCreator extends React.Component {
         <div className="workoutCreator">
           <label>
             Workout Name:
-            {this.props.template && (
-              <input
-                type="text"
-                name="name"
-                placeholder={this.props.template.name}
-                onChange={this.handleDetailsChange}
-              />
-            )}
-            {!this.props.template && (
-              <input type="text" name="name" onChange={this.handleDetailsChange} />
-            )}
+            <input
+              type="text"
+              name="name"
+              placeholder={this.props.template.name}
+              onChange={this.handleDetailsChange}
+            />
           </label>
           <br />
 
           <label>
             Description:
-            {this.props.template && (
-              <input
-                type="text"
-                name="desc"
-                placeholder={this.props.template.desc}
-                onChange={this.handleDetailsChange}
-              />
-            )}
-            {!this.props.template && (
-              <input type="text" name="desc" onChange={this.handleDetailsChange} />
-            )}
+            <input
+              type="text"
+              name="desc"
+              placeholder={this.props.template.desc}
+              onChange={this.handleDetailsChange}
+            />
           </label>
 
           {this.state.exercises.map((exercise, index) => (
@@ -242,18 +230,17 @@ class WorkoutCreator extends React.Component {
             />
           ))}
 
-          {this.props.edit &&
-            this.state.exercises.map((exercise) => (
-              <ExerciseForm
-                key={this.test()}
-                id={exercise.id}
-                wsr={exercise.wsr}
-                exercise={exercise}
-                handleExerciseChange={this.handleExerciseChange}
-                handleWeightSetRepChange={this.handleWeightSetRepChange}
-                addSet={this.addSet}
-              />
-            ))}
+          {/* {this.props.edit && this.state.exercises.map((exercise) => (
+          <ExerciseForm
+            key={this.test()}
+            id={exercise.id}
+            wsr={exercise.wsr}
+            exercise={exercise}
+            handleExerciseChange={this.handleExerciseChange}
+            handleWeightSetRepChange={this.handleWeightSetRepChange}
+            addSet={this.addSet}
+          />
+        ))} */}
 
           <input type="button" value="Add another exercise" onClick={this.addExercise} />
           <input type="button" value="Create Workout" onClick={this.createWorkout} />
@@ -263,4 +250,4 @@ class WorkoutCreator extends React.Component {
   }
 }
 
-export default withRouter(WorkoutCreator);
+export default withRouter(TemplateCreator);

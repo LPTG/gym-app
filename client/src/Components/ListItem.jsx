@@ -15,7 +15,7 @@ const styles = {
 class ListItem extends React.PureComponent {
   render() {
     return (
-      <li style={styles.li} onClick={() => this.props.handleOnClick(this.props.id)}>
+      <li style={styles.li} onClick={() => this.props.handleClick(this.props.id)}>
         {this.props.children}
       </li>
     );

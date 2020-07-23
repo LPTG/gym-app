@@ -13,7 +13,7 @@ class WorkoutList extends React.Component {
       workouts: [],
     };
 
-    this.handleOnClick = this.handleOnClick.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
 
   componentDidMount() {
@@ -23,7 +23,7 @@ class WorkoutList extends React.Component {
     });
   }
 
-  handleOnClick(id) {
+  handleClick(id) {
     const { user } = this.props.match.params;
     const workouts = _.cloneDeep(this.state.workouts);
 
@@ -48,11 +48,18 @@ class WorkoutList extends React.Component {
         <h1>Workout List</h1>
         <ul>
           {workouts.map((workout) => (
-            <ListItem key={workout._id} id={workout._id} handleOnClick={this.handleOnClick}>
+            <ListItem key={workout._id} id={workout._id} handleClick={this.handleClick}>
               <WorkoutListBody name={workout.name} description={workout.desc} />
             </ListItem>
           ))}
         </ul>
+        <input
+          type="button"
+          value="Add Workout"
+          onClick={() => {
+            this.props.history.push(`/${this.props.match.params.user}/workout-form`);
+          }}
+        />
       </div>
     );
   }
