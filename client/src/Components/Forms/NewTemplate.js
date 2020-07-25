@@ -15,7 +15,7 @@ class NewTemplate extends React.Component {
     this.handleDetailsChange = this.handleDetailsChange.bind(this);
     this.handleExerciseChange = this.handleExerciseChange.bind(this);
     this.handleWeightSetRepChange = this.handleWeightSetRepChange.bind(this);
-    this.createWorkout = this.createWorkout.bind(this);
+    this.createTemplate = this.createTemplate.bind(this);
 
     // Set initial state of workout: 1 exercise with 1 set
     this.state = {
@@ -95,7 +95,8 @@ class NewTemplate extends React.Component {
     this.setState(stateCopy);
   }
 
-  // Try having a seperate event handler for weight/sets/reps
+  // For a template, weight/sets/reps will all be strings so we can probably create one event handler
+  // for inputs with the same max/min length
   handleWeightSetRepChange(event) {
     const target = event.target;
 
@@ -124,9 +125,9 @@ class NewTemplate extends React.Component {
   }
 
   // Format input to send to server
-  createWorkout() {
+  createTemplate() {
     // Framework for our workout object
-    var workout = {
+    var template = {
       name: this.state.name,
       desc: this.state.desc,
       exercises: [],
@@ -144,17 +145,13 @@ class NewTemplate extends React.Component {
       exercises.push({ name: exercise.name, wsr: sets });
     });
 
-    workout.exercises = exercises;
+    template.exercises = exercises;
 
-    var postData = {
-      userID: "5ef1388db4e22d4280fe896d",
-      workout: workout,
-    };
-
-    console.log("Sending workout to server...");
-    axios.post("http://localhost:3001/template/create", postData).then((response) => {
-      console.log(response);
-    });
+    axios
+      .post(`/api/users/${this.props.match.params.user}/templates`, { template })
+      .then((response) => {
+        console.log(response);
+      });
   }
 
   render() {
@@ -188,7 +185,7 @@ class NewTemplate extends React.Component {
           ))}
 
           <input type="button" value="Add another exercise" onClick={this.addExercise} />
-          <input type="button" value="Create Workout" onClick={this.createWorkout} />
+          <input type="button" value="Create Template" onClick={this.createTemplate} />
         </div>
       </div>
     );

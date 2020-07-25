@@ -66,7 +66,7 @@ class ListView extends React.Component {
             if (title === "Workout") {
               this.props.history.push(`/${this.props.match.params.user}/new-workout`);
             } else {
-              console.log("Add a template creator");
+              this.props.history.push(`/${this.props.match.params.user}/new-template`);
             }
           }}
         />

@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Register from "./Components/Register/Register";
 import NewWorkout from "./Components/Forms/NewWorkout";
+import NewTemplate from "./Components/Forms/NewTemplate";
 import ListView from "./Components/ListView/ListView";
 import WorkoutView from "./Components/ListView/WorkoutView";
 import { ProtectedRoute } from "./Components/SiteComponents/ProtectedRoute";
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" exact component={Register} />
         <Route path="/login" component={Register} />
         <ProtectedRoute path="/:user/new-workout" component={NewWorkout} />
+        <ProtectedRoute path="/:user/new-template" component={NewTemplate} />
         <ProtectedRoute path="/:user/workouts/:workoutID" component={WorkoutView} />
         <ProtectedRoute
           path="/:user/workouts"

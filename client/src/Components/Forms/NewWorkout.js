@@ -146,15 +146,11 @@ class NewWorkout extends React.Component {
 
     workout.exercises = exercises;
 
-    var postData = {
-      userID: "5ef1388db4e22d4280fe896d",
-      workout: workout,
-    };
-
-    console.log("Sending workout to server...");
-    axios.post("http://localhost:3001/workout/create", postData).then((response) => {
-      console.log(response);
-    });
+    axios
+      .post(`/api/users/${this.props.match.params.user}/workouts`, { workout })
+      .then((response) => {
+        console.log(response);
+      });
   }
 
   render() {
