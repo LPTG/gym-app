@@ -17,17 +17,20 @@ class TemplateList extends React.Component {
   }
 
   componentDidMount() {
-    axios.get("/api/users/lukas/templates").then((res) => {
+    const { user } = this.props.match.params;
+    axios.get(`/api/${user}/lukas/templates`).then((res) => {
       this.setState({ templates: res.data.templates });
     });
   }
 
   handleOnClick(id) {
+    const { user } = this.props.match.params;
     const templates = _.cloneDeep(this.state.templates);
 
     for (let template of templates) {
       if (template._id === id) {
-        // Do things with template
+        console.log(`/${user}/templates/${id}`);
+        this.props.history.push(`/${user}/templates/${id}`);
         console.log(template._id);
         break;
       }
@@ -50,6 +53,13 @@ class TemplateList extends React.Component {
             </ListItem>
           ))}
         </ul>
+        <input
+          type="button"
+          value="Add Template"
+          onClick={() => {
+            this.props.history.push(`/${this.props.match.params.user}/workout-form`);
+          }}
+        />
       </div>
     );
   }

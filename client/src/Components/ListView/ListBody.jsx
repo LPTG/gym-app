@@ -15,11 +15,11 @@ const styles = {
   },
 };
 
-const WorkoutListBody = ({ name, description }) => (
+const ListBody = ({ name, description }) => (
   <div style={styles.wrapper}>
     <span style={styles.name}>{name}</span>
     <span style={styles.description}>{description}</span>
   </div>
 );
 
-export default WorkoutListBody;
+export default ListBody;

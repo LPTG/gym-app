@@ -1,12 +1,12 @@
 import React from "react";
 import axios from "axios";
-import "./Workouts.css";
-import ExerciseForm from "./ExerciseForm";
-import { cloneDeep } from "lodash";
-import NavBar from "./Navbar";
 import { withRouter } from "react-router-dom";
+import { cloneDeep } from "lodash";
+import ExerciseForm from "../FormComponents/ExerciseForm";
+import NavBar from "../SiteComponents/Navbar";
+import "./formStyle.css";
 
-class TemplateCreator extends React.Component {
+class WorkoutFromTemplate extends React.Component {
   constructor(props) {
     super(props);
 
@@ -19,27 +19,12 @@ class TemplateCreator extends React.Component {
     this.getName = this.getName.bind(this);
     this.getWsr = this.getWsr.bind(this);
 
-    // If we're editing then we want a blank slate to start with
-    if (this.props.edit === true) {
-      this.state = {
-        name: "",
-        desc: "",
-        exercises: [],
-      };
-    } else {
-      // Set initial state of workout: 1 exercise with 1 set
-      this.state = {
-        name: "",
-        desc: "",
-        exercises: [
-          {
-            id: "exercise1",
-            name: "",
-            wsr: [{ id: "wsr1", weight: "", sets: "", reps: "" }],
-          },
-        ],
-      };
-    }
+    // Set initial state of workout: 1 exercise with 1 set
+    this.state = {
+      name: "",
+      desc: "",
+      exercises: [],
+    };
   }
 
   componentDidUpdate(prevProps) {
@@ -179,11 +164,13 @@ class TemplateCreator extends React.Component {
   }
 
   getName(index) {
-    return this.props.template.exercises[index] ? this.props.template.exercises[index].name : "";
+    return this.props.template && this.props.template.exercises[index]
+      ? this.props.template.exercises[index].name
+      : "";
   }
 
   getWsr(index) {
-    if (this.props.template.exercises[index]) {
+    if (this.props.template && this.props.template.exercises[index]) {
       return this.props.template.exercises[index].wsr;
     } else {
       return this.state.exercises[index].wsr;
@@ -198,23 +185,33 @@ class TemplateCreator extends React.Component {
         <div className="workoutCreator">
           <label>
             Workout Name:
-            <input
-              type="text"
-              name="name"
-              placeholder={this.props.template.name}
-              onChange={this.handleDetailsChange}
-            />
+            {this.props.template && (
+              <input
+                type="text"
+                name="name"
+                placeholder={this.props.template.name}
+                onChange={this.handleDetailsChange}
+              />
+            )}
+            {!this.props.template && (
+              <input type="text" name="name" onChange={this.handleDetailsChange} />
+            )}
           </label>
           <br />
 
           <label>
             Description:
-            <input
-              type="text"
-              name="desc"
-              placeholder={this.props.template.desc}
-              onChange={this.handleDetailsChange}
-            />
+            {this.props.template && (
+              <input
+                type="text"
+                name="desc"
+                placeholder={this.props.template.desc}
+                onChange={this.handleDetailsChange}
+              />
+            )}
+            {!this.props.template && (
+              <input type="text" name="desc" onChange={this.handleDetailsChange} />
+            )}
           </label>
 
           {this.state.exercises.map((exercise, index) => (
@@ -227,20 +224,9 @@ class TemplateCreator extends React.Component {
               handleExerciseChange={this.handleExerciseChange}
               handleWeightSetRepChange={this.handleWeightSetRepChange}
               addSet={this.addSet}
+              edit={false}
             />
           ))}
-
-          {/* {this.props.edit && this.state.exercises.map((exercise) => (
-          <ExerciseForm
-            key={this.test()}
-            id={exercise.id}
-            wsr={exercise.wsr}
-            exercise={exercise}
-            handleExerciseChange={this.handleExerciseChange}
-            handleWeightSetRepChange={this.handleWeightSetRepChange}
-            addSet={this.addSet}
-          />
-        ))} */}
 
           <input type="button" value="Add another exercise" onClick={this.addExercise} />
           <input type="button" value="Create Workout" onClick={this.createWorkout} />
@@ -250,4 +236,4 @@ class TemplateCreator extends React.Component {
   }
 }
 
-export default withRouter(TemplateCreator);
+export default withRouter(WorkoutFromTemplate);

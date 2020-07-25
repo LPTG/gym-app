@@ -1,12 +1,11 @@
 import React from "react";
-import Register from "./Components/Register.js";
-import WorkoutForm from "./Components/WorkoutForm.js";
-import WorkoutList from "./Components/WorkoutList.js";
-import WorkoutView from "./Components/WorkoutView";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Register from "./Components/Register/Register";
+import NewWorkout from "./Components/Forms/NewWorkout";
+import ListView from "./Components/ListView/ListView";
+import WorkoutView from "./Components/ListView/WorkoutView";
+import { ProtectedRoute } from "./Components/SiteComponents/ProtectedRoute";
 import "./App.css";
-import TemplateList from "./Components/TemplateList.js";
-import { ProtectedRoute } from "./Components/ProtectedRoute";
 
 function App() {
   return (
@@ -14,10 +13,16 @@ function App() {
       <Switch>
         <Route path="/" exact component={Register} />
         <Route path="/login" component={Register} />
-        <ProtectedRoute path="/:user/workout-form" component={WorkoutForm} />
+        <ProtectedRoute path="/:user/new-workout" component={NewWorkout} />
         <ProtectedRoute path="/:user/workouts/:workoutID" component={WorkoutView} />
-        <ProtectedRoute path="/:user/workouts" component={WorkoutList} />
-        <ProtectedRoute path="/:user/templates" component={TemplateList} />
+        <ProtectedRoute
+          path="/:user/workouts"
+          component={(props) => <ListView {...props} page={"workouts"} />}
+        />
+        <ProtectedRoute
+          path="/:user/templates"
+          component={(props) => <ListView {...props} page={"templates"} />}
+        />
         <Route path="*" component={() => "404 NOT FOUND"} />
       </Switch>
     </Router>

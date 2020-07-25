@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import WorkoutForm from "./WorkoutForm";
+import WorkoutForm from "../Forms/WorkoutFromTemplate";
 
 class WorkoutView extends React.Component {
   constructor(props) {

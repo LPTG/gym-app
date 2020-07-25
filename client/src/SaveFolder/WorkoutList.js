@@ -3,7 +3,7 @@ import ListItem from "./ListItem";
 import WorkoutListBody from "./WorkoutListBody";
 import _ from "lodash";
 import axios from "axios";
-import NavBar from "./Navbar";
+import NavBar from "../Navbar";
 
 class WorkoutList extends React.Component {
   constructor(props) {
@@ -29,7 +29,6 @@ class WorkoutList extends React.Component {
 
     for (let workout of workouts) {
       if (workout._id === id) {
-        // Do things with workout
         console.log(`/${user}/workouts/${id}`);
         this.props.history.push(`/${user}/workouts/${id}`);
         console.log(workout._id);
@@ -45,6 +44,7 @@ class WorkoutList extends React.Component {
     return (
       <div>
         <NavBar user={this.props.match.params.user} />
+
         <h1>Workout List</h1>
         <ul>
           {workouts.map((workout) => (

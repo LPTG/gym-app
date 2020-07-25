@@ -34,7 +34,6 @@ class ExerciseForm extends React.Component {
   }
 
   render() {
-    // TODO: Need to make placeholder always show if there is nothing in the input
     return (
       <div className="exerciseForm">
         <label>
@@ -48,19 +47,32 @@ class ExerciseForm extends React.Component {
           />
         </label>
 
-        {this.props.wsr.map((wsr, index) => (
-          <WeightSetReps
-            key={wsr.id}
-            parent={this.props.id}
-            id={wsr.id}
-            weightText={this.props.wsrPlaceholders[index].weight}
-            setsText={this.props.wsrPlaceholders[index].sets}
-            repsText={this.props.wsrPlaceholders[index].reps}
-            onWeightChange={this.handleWeightChange}
-            onSetChange={this.handleSetChange}
-            onRepChange={this.handleRepChange}
-          />
-        ))}
+        {this.props.wsrPlaceholders &&
+          this.props.wsr.map((wsr, index) => (
+            <WeightSetReps
+              key={wsr.id}
+              parent={this.props.id}
+              id={wsr.id}
+              weightText={this.props.wsrPlaceholders[index].weight}
+              setsText={this.props.wsrPlaceholders[index].sets}
+              repsText={this.props.wsrPlaceholders[index].reps}
+              onWeightChange={this.handleWeightChange}
+              onSetChange={this.handleSetChange}
+              onRepChange={this.handleRepChange}
+            />
+          ))}
+
+        {!this.props.wsrPlaceholders &&
+          this.props.wsr.map((wsr) => (
+            <WeightSetReps
+              key={wsr.id}
+              parent={this.props.id}
+              id={wsr.id}
+              onWeightChange={this.handleWeightChange}
+              onSetChange={this.handleSetChange}
+              onRepChange={this.handleRepChange}
+            />
+          ))}
 
         <input type="button" value="Add another set" onClick={this.handleClick} />
       </div>

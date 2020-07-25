@@ -9,7 +9,7 @@ class WeightSetReps extends React.Component {
           <input
             type="text"
             id={this.props.parent + "-" + this.props.id + "-w"}
-            placeholder={this.props.weightText}
+            placeholder={this.props.weightText || ""}
             onChange={this.props.onWeightChange}
           />
         </label>
@@ -18,7 +18,7 @@ class WeightSetReps extends React.Component {
           <input
             type="text"
             id={this.props.parent + "-" + this.props.id + "-s"}
-            placeholder={this.props.setsText}
+            placeholder={this.props.setsText || ""}
             onChange={this.props.onSetChange}
           />
         </label>
@@ -27,7 +27,7 @@ class WeightSetReps extends React.Component {
           <input
             type="text"
             id={this.props.parent + "-" + this.props.id + "-r"}
-            placeholder={this.props.repsText}
+            placeholder={this.props.repsText || ""}
             onChange={this.props.onRepChange}
           />
         </label>
