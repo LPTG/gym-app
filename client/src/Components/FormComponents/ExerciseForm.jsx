@@ -42,7 +42,8 @@ class ExerciseForm extends React.Component {
             type="text"
             id={this.props.id}
             name={this.props.id}
-            placeholder={this.props.exercisePlaceholder}
+            value={this.props.exerciseValue || ""}
+            placeholder={this.props.exercisePlaceholder || ""}
             onChange={this.handleExerciseChange}
           />
         </label>
@@ -63,6 +64,23 @@ class ExerciseForm extends React.Component {
           ))}
 
         {!this.props.wsrPlaceholders &&
+          this.props.wsrValues &&
+          this.props.wsr.map((wsr, index) => (
+            <WeightSetReps
+              key={wsr.id}
+              parent={this.props.id}
+              id={wsr.id}
+              weightValue={this.props.wsrValues[index].weight}
+              setsValue={this.props.wsrValues[index].sets}
+              repsValue={this.props.wsrValues[index].reps}
+              onWeightChange={this.handleWeightChange}
+              onSetChange={this.handleSetChange}
+              onRepChange={this.handleRepChange}
+            />
+          ))}
+
+        {!this.props.wsrPlaceholders &&
+          !this.props.wsrValues &&
           this.props.wsr.map((wsr) => (
             <WeightSetReps
               key={wsr.id}

@@ -1,12 +1,11 @@
 import React from "react";
 import axios from "axios";
-import { withRouter } from "react-router-dom";
 import { cloneDeep } from "lodash";
 import ExerciseForm from "../FormComponents/ExerciseForm";
 import NavBar from "../SiteComponents/Navbar";
 import "./formStyle.css";
 
-class WorkoutFromTemplate extends React.Component {
+class EditForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -15,26 +14,14 @@ class WorkoutFromTemplate extends React.Component {
     this.handleDetailsChange = this.handleDetailsChange.bind(this);
     this.handleExerciseChange = this.handleExerciseChange.bind(this);
     this.handleWeightSetRepChange = this.handleWeightSetRepChange.bind(this);
-    this.createWorkout = this.createWorkout.bind(this);
-    this.getName = this.getName.bind(this);
-    this.getWsr = this.getWsr.bind(this);
+    this.updateWorkout = this.updateWorkout.bind(this);
 
-    // Set initial state of workout: 1 exercise with 1 set
+    // Assumes that we are passed these props, only called from ItemView
     this.state = {
-      name: "",
-      desc: "",
-      exercises: [],
+      name: props.values.name,
+      desc: props.values.desc,
+      exercises: props.values.exercises,
     };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.template !== prevProps.template) {
-      this.setState({
-        name: this.props.template.name,
-        desc: this.props.template.desc,
-        exercises: this.props.template.exercises,
-      });
-    }
   }
 
   addExercise() {
@@ -52,8 +39,6 @@ class WorkoutFromTemplate extends React.Component {
     ]);
 
     this.setState({ exercises: updatedExercises });
-
-    return id;
   }
 
   addSet(exerciseID) {
@@ -130,13 +115,17 @@ class WorkoutFromTemplate extends React.Component {
   }
 
   // Format input to send to server
-  createWorkout() {
+  updateWorkout() {
     // Framework for our workout object
-    var workout = {
-      name: this.state.name,
-      desc: this.state.desc,
-      exercises: [],
-    };
+    // var workout = {
+    //   name: this.state.name,
+    //   desc: this.state.desc,
+    //   exercises: [],
+    // };
+    const id =
+      this.props.page === "workouts"
+        ? this.props.match.params.workoutID
+        : this.props.match.params.templateID;
 
     var exercises = [];
     // Build a json object for each exercise created
@@ -150,27 +139,22 @@ class WorkoutFromTemplate extends React.Component {
       exercises.push({ name: exercise.name, wsr: sets });
     });
 
-    workout.exercises = exercises;
+    //workout.exercises = exercises;
+
+    var update = {
+      name: this.state.name,
+      desc: this.state.desc,
+      exercises: exercises,
+    };
+
+    console.log(`/api/users/${this.props.page}/${id}`);
+    console.log(update);
 
     axios
-      .post(`/api/users/${this.props.match.params.user}/workouts`, { workout })
+      .put(`/api/users/${this.props.match.params.user}/${this.props.page}/${id}`, { update })
       .then((response) => {
         console.log(response);
       });
-  }
-
-  getName(index) {
-    return this.props.template && this.props.template.exercises[index]
-      ? this.props.template.exercises[index].name
-      : "";
-  }
-
-  getWsr(index) {
-    if (this.props.template && this.props.template.exercises[index]) {
-      return this.props.template.exercises[index].wsr;
-    } else {
-      return this.state.exercises[index].wsr;
-    }
   }
 
   render() {
@@ -181,34 +165,26 @@ class WorkoutFromTemplate extends React.Component {
         <div className="workoutCreator">
           <label>
             Workout Name:
-            {this.props.template && (
+            {this.state.name && (
               <input
                 type="text"
                 name="name"
-                value={this.props.values.name || ""}
-                placeholder={this.props.template.name || ""}
+                value={this.state.name || ""}
                 onChange={this.handleDetailsChange}
               />
-            )}
-            {!this.props.template && (
-              <input type="text" name="name" onChange={this.handleDetailsChange} />
             )}
           </label>
           <br />
 
           <label>
             Description:
-            {this.props.template && (
+            {this.state.desc && (
               <input
                 type="text"
                 name="desc"
-                value={this.props.values.desc || ""}
-                placeholder={this.props.template.desc || ""}
+                value={this.state.desc || ""}
                 onChange={this.handleDetailsChange}
               />
-            )}
-            {!this.props.template && (
-              <input type="text" name="desc" onChange={this.handleDetailsChange} />
             )}
           </label>
 
@@ -217,21 +193,20 @@ class WorkoutFromTemplate extends React.Component {
               key={exercise.id}
               id={exercise.id}
               wsr={exercise.wsr}
-              wsrPlaceholders={this.getWsr(index)}
-              exercisePlaceholder={this.getName(index)}
+              wsrValues={this.state.exercises[index].wsr}
+              exerciseValue={this.state.exercises[index].name}
               handleExerciseChange={this.handleExerciseChange}
               handleWeightSetRepChange={this.handleWeightSetRepChange}
               addSet={this.addSet}
-              edit={false}
             />
           ))}
 
           <input type="button" value="Add another exercise" onClick={this.addExercise} />
-          <input type="button" value="Create Workout" onClick={this.createWorkout} />
+          <input type="button" value={`Update ${this.props.page}`} onClick={this.updateWorkout} />
         </div>
       </div>
     );
   }
 }
 
-export default withRouter(WorkoutFromTemplate);
+export default EditForm;

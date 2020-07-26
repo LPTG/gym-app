@@ -3,7 +3,6 @@ const router = express.Router();
 
 const session = require("./session.route");
 const users = require("./users.route");
-const template = require("./template.route");
 
 // API routes
 
@@ -19,6 +18,5 @@ const template = require("./template.route");
 
 router.use("/session", session);
 router.use("/users", users);
-router.use("/template", template);
 
 module.exports = router;

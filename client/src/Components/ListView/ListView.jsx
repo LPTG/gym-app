@@ -44,14 +44,13 @@ class ListView extends React.Component {
 
   render() {
     const { list } = this.state;
-    const page = this.props.page;
     const title = this.props.page === "workouts" ? "Workout" : "Template";
 
     return (
       <div>
         <NavBar user={this.props.match.params.user} />
 
-        <h1>{page} List</h1>
+        <h1>{title} List</h1>
         <ul>
           {list.map((item) => (
             <ListItem key={item._id} id={item._id} handleClick={this.handleClick}>

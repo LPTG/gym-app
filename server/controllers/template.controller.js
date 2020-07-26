@@ -43,9 +43,10 @@ exports.create_template = function (req, res) {
   });
 };
 
-// Do we really need the username in uri?
+// Need to check if templateID is in user templates array
 // Takes template _id and update option
 exports.read_template = function (req, res) {
+  console.log("looking for template");
   Template.findById(req.params.templateID, function (err, template) {
     if (err) {
       return res.send("Could not find template.");
@@ -81,9 +82,15 @@ exports.update_template = function (req, res) {
     return res.send("Missing required data.");
   }
 
+  console.log(req.params.templateID);
+
   // See if template exists
   Template.findById(req.params.templateID, function (err, template) {
     if (err) {
+      return res.send("Could not update template.");
+    }
+
+    if (!template) {
       return res.send("Could not find template.");
     }
 

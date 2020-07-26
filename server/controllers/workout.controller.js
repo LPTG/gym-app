@@ -150,6 +150,7 @@ exports.create_workout = function (req, res) {
 };
 
 exports.read_workout = function (req, res) {
+  console.log(req.params.workoutID);
   User.findOne({ username: req.username }, function (err, user) {
     if (err) throw err;
 
