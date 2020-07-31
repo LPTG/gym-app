@@ -14,6 +14,10 @@ function App() {
       <Switch>
         <Route path="/" exact component={Register} />
         <Route path="/login" component={Register} />
+        <ProtectedRoute
+          path="/:user/new-workout/:templateID"
+          component={(props) => <ItemView {...props} page="templated" />}
+        />
         <ProtectedRoute path="/:user/new-workout" component={NewWorkout} />
         <ProtectedRoute path="/:user/new-template" component={NewTemplate} />
         <ProtectedRoute

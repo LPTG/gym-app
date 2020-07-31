@@ -88,7 +88,7 @@ class NewWorkout extends React.Component {
     exerciseListCopy[exerciseIndex] = exerciseCopy;
 
     // Create a copy of the current state
-    var stateCopy = { ...this.state };
+    var stateCopy = cloneDeep(this.state);
     // Replace the current state's exercises with our updated version
     stateCopy.exercises = exerciseListCopy;
 
@@ -154,6 +154,7 @@ class NewWorkout extends React.Component {
   }
 
   render() {
+    console.log(this.state.exercises);
     return (
       <div>
         <NavBar user={this.props.match.params.user} />
@@ -176,10 +177,11 @@ class NewWorkout extends React.Component {
               id={exercise.id}
               wsr={exercise.wsr}
               exercise={exercise}
+              exerciseValue={exercise.name}
+              wsrValues={exercise.wsr}
               handleExerciseChange={this.handleExerciseChange}
               handleWeightSetRepChange={this.handleWeightSetRepChange}
               addSet={this.addSet}
-              edit={true}
             />
           ))}
 

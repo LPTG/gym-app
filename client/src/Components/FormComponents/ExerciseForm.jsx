@@ -36,30 +36,69 @@ class ExerciseForm extends React.Component {
   render() {
     return (
       <div className="exerciseForm">
-        <label>
-          Exercise:
-          <input
-            type="text"
-            id={this.props.id}
-            name={this.props.id}
-            value={this.props.exerciseValue || ""}
-            placeholder={this.props.exercisePlaceholder || ""}
-            onChange={this.handleExerciseChange}
-          />
-        </label>
+        {this.props.fromTemplate && (
+          <label>
+            Exercise:
+            <input
+              type="text"
+              id={this.props.id}
+              name={this.props.id}
+              placeholder={this.props.exercisePlaceholder || ""}
+              onChange={this.handleExerciseChange}
+            />
+          </label>
+        )}
+
+        {!this.props.fromTemplate && (
+          <label>
+            Exercise:
+            <input
+              type="text"
+              id={this.props.id}
+              name={this.props.id}
+              value={this.props.exerciseValue || ""}
+              placeholder={this.props.exercisePlaceholder || ""}
+              onChange={this.handleExerciseChange}
+            />
+          </label>
+        )}
 
         {this.props.wsrPlaceholders &&
+          this.props.wsrValues &&
           this.props.wsr.map((wsr, index) => (
             <WeightSetReps
               key={wsr.id}
               parent={this.props.id}
               id={wsr.id}
-              weightText={this.props.wsrPlaceholders[index].weight}
-              setsText={this.props.wsrPlaceholders[index].sets}
-              repsText={this.props.wsrPlaceholders[index].reps}
+              weightText={
+                // Is checking for this.props.wsrPlaceholders necessary?
+                this.props.wsrPlaceholders
+                  ? this.props.wsrPlaceholders[index]
+                    ? this.props.wsrPlaceholders[index].weight
+                    : ""
+                  : ""
+              }
+              setsText={
+                this.props.wsrPlaceholders
+                  ? this.props.wsrPlaceholders[index]
+                    ? this.props.wsrPlaceholders[index].sets
+                    : ""
+                  : ""
+              }
+              repsText={
+                this.props.wsrPlaceholders
+                  ? this.props.wsrPlaceholders[index]
+                    ? this.props.wsrPlaceholders[index].reps
+                    : ""
+                  : ""
+              }
+              weightValue={this.props.wsrValues[index].weight}
+              setsValue={this.props.wsrValues[index].sets}
+              repsValue={this.props.wsrValues[index].reps}
               onWeightChange={this.handleWeightChange}
               onSetChange={this.handleSetChange}
               onRepChange={this.handleRepChange}
+              fromTemplate={true}
             />
           ))}
 

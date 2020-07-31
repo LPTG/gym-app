@@ -4,6 +4,7 @@ import ListItem from "./ListItem";
 import _ from "lodash";
 import axios from "axios";
 import NavBar from "../SiteComponents/Navbar";
+import { Link } from "react-router-dom";
 
 class ListView extends React.Component {
   constructor(props) {
@@ -53,9 +54,16 @@ class ListView extends React.Component {
         <h1>{title} List</h1>
         <ul>
           {list.map((item) => (
-            <ListItem key={item._id} id={item._id} handleClick={this.handleClick}>
-              <ListBody name={item.name} description={item.desc} />
-            </ListItem>
+            <div>
+              {title === "Template" && (
+                <Link to={`/${this.props.match.params.user}/new-workout/${item._id}`}>
+                  <input type="button" value="Use This Template" />
+                </Link>
+              )}
+              <ListItem key={item._id} id={item._id} handleClick={this.handleClick}>
+                <ListBody name={item.name} description={item.desc} />
+              </ListItem>
+            </div>
           ))}
         </ul>
         <input

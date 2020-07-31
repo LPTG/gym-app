@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import { withRouter } from "react-router-dom";
 import { cloneDeep } from "lodash";
 import ExerciseForm from "../FormComponents/ExerciseForm";
 import NavBar from "../SiteComponents/Navbar";
@@ -16,25 +15,14 @@ class WorkoutFromTemplate extends React.Component {
     this.handleExerciseChange = this.handleExerciseChange.bind(this);
     this.handleWeightSetRepChange = this.handleWeightSetRepChange.bind(this);
     this.createWorkout = this.createWorkout.bind(this);
-    this.getName = this.getName.bind(this);
-    this.getWsr = this.getWsr.bind(this);
+    this.getWsrPlaceholders = this.getWsrPlaceholders.bind(this);
+    this.getExercisePlaceholders = this.getExercisePlaceholders.bind(this);
 
-    // Set initial state of workout: 1 exercise with 1 set
     this.state = {
-      name: "",
-      desc: "",
-      exercises: [],
+      name: this.props.frame.name,
+      desc: this.props.frame.desc,
+      exercises: this.props.frame.exercises,
     };
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.template !== prevProps.template) {
-      this.setState({
-        name: this.props.template.name,
-        desc: this.props.template.desc,
-        exercises: this.props.template.exercises,
-      });
-    }
   }
 
   addExercise() {
@@ -159,21 +147,16 @@ class WorkoutFromTemplate extends React.Component {
       });
   }
 
-  getName(index) {
-    return this.props.template && this.props.template.exercises[index]
-      ? this.props.template.exercises[index].name
-      : "";
+  getWsrPlaceholders(index) {
+    return this.props.template.exercises[index] ? this.props.template.exercises[index].wsr : null;
   }
 
-  getWsr(index) {
-    if (this.props.template && this.props.template.exercises[index]) {
-      return this.props.template.exercises[index].wsr;
-    } else {
-      return this.state.exercises[index].wsr;
-    }
+  getExercisePlaceholders(index) {
+    return this.props.template.exercises[index] ? this.props.template.exercises[index].name : null;
   }
 
   render() {
+    //console.log(this.state);
     return (
       <div>
         <NavBar user={this.props.match.params.user} />
@@ -181,48 +164,43 @@ class WorkoutFromTemplate extends React.Component {
         <div className="workoutCreator">
           <label>
             Workout Name:
-            {this.props.template && (
+            {
               <input
                 type="text"
                 name="name"
-                value={this.props.values.name || ""}
                 placeholder={this.props.template.name || ""}
                 onChange={this.handleDetailsChange}
               />
-            )}
-            {!this.props.template && (
-              <input type="text" name="name" onChange={this.handleDetailsChange} />
-            )}
+            }
           </label>
           <br />
 
           <label>
             Description:
-            {this.props.template && (
+            {
               <input
                 type="text"
                 name="desc"
-                value={this.props.values.desc || ""}
                 placeholder={this.props.template.desc || ""}
                 onChange={this.handleDetailsChange}
               />
-            )}
-            {!this.props.template && (
-              <input type="text" name="desc" onChange={this.handleDetailsChange} />
-            )}
+            }
           </label>
 
+          {console.log(this.state.exercises)}
           {this.state.exercises.map((exercise, index) => (
             <ExerciseForm
               key={exercise.id}
               id={exercise.id}
               wsr={exercise.wsr}
-              wsrPlaceholders={this.getWsr(index)}
-              exercisePlaceholder={this.getName(index)}
+              wsrPlaceholders={this.getWsrPlaceholders(index)}
+              exercisePlaceholder={this.getExercisePlaceholders(index)}
+              exerciseValue={exercise.name}
+              wsrValues={exercise.wsr}
               handleExerciseChange={this.handleExerciseChange}
               handleWeightSetRepChange={this.handleWeightSetRepChange}
               addSet={this.addSet}
-              edit={false}
+              fromTemplate={true}
             />
           ))}
 
@@ -234,4 +212,4 @@ class WorkoutFromTemplate extends React.Component {
   }
 }
 
-export default withRouter(WorkoutFromTemplate);
+export default WorkoutFromTemplate;

@@ -177,10 +177,11 @@ class NewTemplate extends React.Component {
               id={exercise.id}
               wsr={exercise.wsr}
               exercise={exercise}
+              exerciseValue={exercise.name}
+              wsrValues={exercise.wsr}
               handleExerciseChange={this.handleExerciseChange}
               handleWeightSetRepChange={this.handleWeightSetRepChange}
               addSet={this.addSet}
-              edit={true}
             />
           ))}
 
