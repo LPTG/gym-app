@@ -1,12 +1,13 @@
 import React from "react";
 import "./Register.css";
-import { Redirect } from "react-router-dom";
+import { Box, Paper, TextField, Grid } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import auth from "../../Auth";
 
 class Register extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { registerView: false, redirect: false };
+    this.state = { registerView: false };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -69,64 +70,83 @@ class Register extends React.Component {
   }
 
   render() {
-    if (this.state.redirect) {
-      return <Redirect to={{ pathname: "/workoutlist" }} />;
-    }
-
     return (
       <div className="loginOrRegister">
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Username:
-            <input
-              type="text"
-              name="username"
-              autoComplete="username"
-              onChange={this.handleChange}
-            />
-            <br />
-          </label>
+        <Grid container direction="column" alignItems="center" spacing={3}>
+          <Paper variant="outlined">
+            <Box m={3}>
+              <form onSubmit={this.handleSubmit}>
+                <Box mt={2}>
+                  <TextField
+                    name="username"
+                    label="Username"
+                    autoComplete="username"
+                    size="small"
+                    variant="outlined"
+                    onChange={this.handleChange}
+                    required={true}
+                  ></TextField>
+                </Box>
 
-          {this.state.registerView && (
-            <div>
-              <label>
-                Email:
-                <input type="text" name="email" autoComplete="email" onChange={this.handleChange} />
-                <br />
-              </label>
-              <label>
-                Password:
-                <input
-                  type="password"
-                  name="password"
-                  autoComplete="new-password"
-                  onChange={this.handleChange}
-                />
-                <br />
-              </label>
-            </div>
-          )}
+                {this.state.registerView && (
+                  <div>
+                    <Box mt={2}>
+                      <TextField
+                        name="email"
+                        label="Email"
+                        autoComplete="email"
+                        size="small"
+                        variant="outlined"
+                        onChange={this.handleChange}
+                        required={true}
+                      ></TextField>
+                    </Box>
 
-          {!this.state.registerView && (
-            <label>
-              Password:
-              <input
-                type="password"
-                name="password"
-                autoComplete="current-password"
-                onChange={this.handleChange}
-              />
-              <br />
-            </label>
-          )}
+                    <Box mt={2}>
+                      <TextField
+                        type="password"
+                        name="password"
+                        label="Password"
+                        autoComplete="password"
+                        size="small"
+                        variant="outlined"
+                        onChange={this.handleChange}
+                        required={true}
+                      ></TextField>
+                    </Box>
+                  </div>
+                )}
 
-          <input type="submit" value={this.state.registerView ? "Register" : "Login"} />
-          <input
-            type="button"
-            value={this.state.registerView ? "Already Registered?" : "Need to Register?"}
-            onClick={this.handleClick}
-          />
-        </form>
+                {!this.state.registerView && (
+                  <div>
+                    <Box mt={2}>
+                      <TextField
+                        type="password"
+                        name="password"
+                        label="Password"
+                        autoComplete="password"
+                        size="small"
+                        variant="outlined"
+                        onChange={this.handleChange}
+                        required={true}
+                      ></TextField>
+                    </Box>
+                  </div>
+                )}
+                <Box mt={1}>
+                  <Button onClick={this.handleClick} color="secondary">
+                    {this.state.registerView ? "Already Registered?" : "Need to Register?"}
+                  </Button>
+                </Box>
+                <Box mt={2}>
+                  <Button type="submit" variant="contained" color="primary">
+                    {this.state.registerView ? "Register" : "Login"}
+                  </Button>
+                </Box>
+              </form>
+            </Box>
+          </Paper>
+        </Grid>
       </div>
     );
   }
