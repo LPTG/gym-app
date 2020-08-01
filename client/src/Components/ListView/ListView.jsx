@@ -1,10 +1,10 @@
 import React from "react";
-import ListBody from "./ListBody";
-import ListItem from "./ListItem";
 import _ from "lodash";
 import axios from "axios";
 import NavBar from "../SiteComponents/Navbar";
 import { Link } from "react-router-dom";
+import ItemCard from "./ItemCard";
+import { Grid, Typography, Paper, Button } from "@material-ui/core";
 
 class ListView extends React.Component {
   constructor(props) {
@@ -32,6 +32,8 @@ class ListView extends React.Component {
     const page = this.props.page;
     let list = [];
 
+    console.log(id);
+
     if (page === "workouts") list = _.cloneDeep(this.state.list);
     else list = _.cloneDeep(this.state.list);
 
@@ -50,33 +52,47 @@ class ListView extends React.Component {
     return (
       <div>
         <NavBar user={this.props.match.params.user} />
-
-        <h1>{title} List</h1>
-        <ul>
+        <Grid container justify="center" spacing={2}>
+          <Typography variant="h2" component="h2" color="textPrimary">
+            {title} List
+          </Typography>
+        </Grid>
+        <Grid container justify="center" spacing={2}>
           {list.map((item) => (
-            <div>
-              {title === "Template" && (
-                <Link to={`/${this.props.match.params.user}/new-workout/${item._id}`}>
-                  <input type="button" value="Use This Template" />
-                </Link>
-              )}
-              <ListItem key={item._id} id={item._id} handleClick={this.handleClick}>
-                <ListBody name={item.name} description={item.desc} />
-              </ListItem>
-            </div>
+            <Grid item xs={8}>
+              <Paper onClick={() => this.handleClick(item._id)}>
+                {/* {title === "Template" && (
+                  <Link to={`/${this.props.match.params.user}/new-workout/${item._id}`}>
+                    <input type="button" value="Use This Template" />
+                  </Link>
+                )} */}
+                <ItemCard
+                  raised
+                  width="100%"
+                  key={item._id}
+                  name={item.name}
+                  description={item.desc}
+                />
+              </Paper>
+            </Grid>
           ))}
-        </ul>
-        <input
-          type="button"
-          value={`Add ${title}`}
-          onClick={() => {
-            if (title === "Workout") {
-              this.props.history.push(`/${this.props.match.params.user}/new-workout`);
-            } else {
-              this.props.history.push(`/${this.props.match.params.user}/new-template`);
-            }
-          }}
-        />
+        </Grid>
+        <Grid container justify="center" spacing={2}>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                if (title === "Workout") {
+                  this.props.history.push(`/${this.props.match.params.user}/new-workout`);
+                } else {
+                  this.props.history.push(`/${this.props.match.params.user}/new-template`);
+                }
+              }}
+              xs={8}
+            >{`Add ${title}`}</Button>
+          </Grid>
+        </Grid>
       </div>
     );
   }

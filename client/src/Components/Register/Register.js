@@ -1,7 +1,6 @@
 import React from "react";
 import "./Register.css";
-import { Box, Paper, TextField, Grid } from "@material-ui/core";
-import { Button } from "@material-ui/core";
+import { Box, Button, Paper, TextField, Grid } from "@material-ui/core";
 import auth from "../../Auth";
 
 class Register extends React.Component {
