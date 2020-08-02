@@ -2,7 +2,6 @@ import React from "react";
 import _ from "lodash";
 import axios from "axios";
 import NavBar from "../SiteComponents/Navbar";
-import { Link } from "react-router-dom";
 import ItemCard from "./ItemCard";
 import { Grid, Typography, Paper, Button } from "@material-ui/core";
 

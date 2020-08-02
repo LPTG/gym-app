@@ -71,80 +71,89 @@ class Register extends React.Component {
   render() {
     return (
       <div className="loginOrRegister">
-        <Grid container direction="column" alignItems="center" spacing={3}>
-          <Paper variant="outlined">
-            <Box m={3}>
-              <form onSubmit={this.handleSubmit}>
-                <Box mt={2}>
-                  <TextField
-                    name="username"
-                    label="Username"
-                    autoComplete="username"
-                    size="small"
-                    variant="outlined"
-                    onChange={this.handleChange}
-                    required={true}
-                  ></TextField>
-                </Box>
+        <Grid
+          container
+          direction="column"
+          alignItems="center"
+          justify="center"
+          spacing={0}
+          style={{ minHeight: "10vh" }}
+        >
+          <Grid item xs={3}>
+            <Paper variant="outlined">
+              <Box m={3}>
+                <form onSubmit={this.handleSubmit}>
+                  <Box mt={2}>
+                    <TextField
+                      name="username"
+                      label="Username"
+                      autoComplete="username"
+                      size="small"
+                      variant="outlined"
+                      onChange={this.handleChange}
+                      required={true}
+                    ></TextField>
+                  </Box>
 
-                {this.state.registerView && (
-                  <div>
-                    <Box mt={2}>
-                      <TextField
-                        name="email"
-                        label="Email"
-                        autoComplete="email"
-                        size="small"
-                        variant="outlined"
-                        onChange={this.handleChange}
-                        required={true}
-                      ></TextField>
-                    </Box>
+                  {this.state.registerView && (
+                    <div>
+                      <Box mt={2}>
+                        <TextField
+                          name="email"
+                          label="Email"
+                          autoComplete="email"
+                          size="small"
+                          variant="outlined"
+                          onChange={this.handleChange}
+                          required={true}
+                        ></TextField>
+                      </Box>
 
-                    <Box mt={2}>
-                      <TextField
-                        type="password"
-                        name="password"
-                        label="Password"
-                        autoComplete="password"
-                        size="small"
-                        variant="outlined"
-                        onChange={this.handleChange}
-                        required={true}
-                      ></TextField>
-                    </Box>
-                  </div>
-                )}
+                      <Box mt={2}>
+                        <TextField
+                          type="password"
+                          name="password"
+                          label="Password"
+                          autoComplete="password"
+                          size="small"
+                          variant="outlined"
+                          onChange={this.handleChange}
+                          required={true}
+                        ></TextField>
+                      </Box>
+                    </div>
+                  )}
 
-                {!this.state.registerView && (
-                  <div>
-                    <Box mt={2}>
-                      <TextField
-                        type="password"
-                        name="password"
-                        label="Password"
-                        autoComplete="password"
-                        size="small"
-                        variant="outlined"
-                        onChange={this.handleChange}
-                        required={true}
-                      ></TextField>
-                    </Box>
-                  </div>
-                )}
-                <Box mt={1}>
-                  <Button onClick={this.handleClick} color="secondary">
-                    {this.state.registerView ? "Already Registered?" : "Need to Register?"}
-                  </Button>
-                </Box>
-                <Box mt={2}>
-                  <Button type="submit" variant="contained" color="primary">
-                    {this.state.registerView ? "Register" : "Login"}
-                  </Button>
-                </Box>
-              </form>
-            </Box>
-          </Paper>
+                  {!this.state.registerView && (
+                    <div>
+                      <Box mt={2}>
+                        <TextField
+                          type="password"
+                          name="password"
+                          label="Password"
+                          autoComplete="password"
+                          size="small"
+                          variant="outlined"
+                          onChange={this.handleChange}
+                          required={true}
+                        ></TextField>
+                      </Box>
+                    </div>
+                  )}
+                  <Box mt={1}>
+                    <Button onClick={this.handleClick} color="secondary">
+                      {this.state.registerView ? "Already Registered?" : "Need to Register?"}
+                    </Button>
+                  </Box>
+                  <Box mt={2}>
+                    <Button type="submit" variant="contained" color="primary">
+                      {this.state.registerView ? "Register" : "Login"}
+                    </Button>
+                  </Box>
+                </form>
+              </Box>
+            </Paper>
+          </Grid>
         </Grid>
       </div>
     );
