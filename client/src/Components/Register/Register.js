@@ -26,6 +26,15 @@ class Register extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
+  componentDidMount() {
+    auth.checkSession(() => {
+      if (auth.getAuth()) {
+        const user = auth.getUser().username;
+        this.props.history.push(`/${user}/workouts`);
+      }
+    });
+  }
+
   handleSubmit(event) {
     event.preventDefault();
 
@@ -88,13 +97,6 @@ class Register extends React.Component {
       justify: "flex-end",
       spacing: 1,
     };
-
-    auth.checkSession(() => {
-      if (auth.getAuth()) {
-        const user = auth.getUser().username;
-        this.props.history.push(`/${user}/workouts`);
-      }
-    });
 
     return (
       <Grid

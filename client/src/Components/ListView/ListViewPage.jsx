@@ -2,8 +2,8 @@ import React from "react";
 import _ from "lodash";
 import axios from "axios";
 import NavBar from "../SiteComponents/Navbar";
-import ItemCard from "./ItemCard";
-import { Grid, Typography, Paper, Button } from "@material-ui/core";
+import ItemList from "./ItemList";
+import { Grid, Typography, Button } from "@material-ui/core";
 import auth from "../../Auth";
 
 class ListView extends React.Component {
@@ -18,10 +18,9 @@ class ListView extends React.Component {
   }
 
   componentDidMount() {
-    const { user } = this.props.match.params;
     const page = this.props.page;
 
-    axios.get(`/api/users/${user}/${page}`).then((res) => {
+    axios.get(`/api/users/${auth.user.username}/${page}`).then((res) => {
       if (page === "workouts") this.setState({ list: res.data.workouts });
       else if (page === "templates") this.setState({ list: res.data.templates });
     });
@@ -31,8 +30,6 @@ class ListView extends React.Component {
     const { user } = this.props.match.params;
     const page = this.props.page;
     let list = [];
-
-    console.log(id);
 
     if (page === "workouts") list = _.cloneDeep(this.state.list);
     else list = _.cloneDeep(this.state.list);
@@ -52,31 +49,25 @@ class ListView extends React.Component {
     return (
       <div>
         <NavBar {...this.props} />
-        <Grid container justify="center" spacing={2}>
-          <Typography variant="h2" component="h2" color="textPrimary">
-            {title} List
-          </Typography>
+        <Grid
+          container
+          direction="column"
+          justify="center"
+          alignItems="center"
+          styles={{ backgroundColor: "blue" }}
+        >
+          <Grid item>
+            <Typography variant="h2" component="h2" color="textPrimary">
+              {title}s
+            </Typography>
+          </Grid>
         </Grid>
-        <Grid container justify="center" spacing={2}>
-          {list.map((item) => (
-            <Grid item xs={8}>
-              <Paper onClick={() => this.handleClick(item._id)}>
-                {/* {title === "Template" && (
-                  <Link to={`/${this.props.match.params.user}/new-workout/${item._id}`}>
-                    <input type="button" value="Use This Template" />
-                  </Link>
-                )} */}
-                <ItemCard
-                  raised
-                  width="100%"
-                  key={item._id}
-                  name={item.name}
-                  description={item.desc}
-                />
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
+
+        {title === "Workout" && <ItemList list={list} handleClick={this.handleClick} />}
+        {title === "Template" && (
+          <ItemList list={list} handleClick={this.handleClick} templateCard={true} />
+        )}
+
         <Grid container justify="center" spacing={2}>
           <Grid item>
             <Button
@@ -89,7 +80,6 @@ class ListView extends React.Component {
                   this.props.history.push(`/${this.props.match.params.user}/new-template`);
                 }
               }}
-              xs={8}
             >{`Add ${title}`}</Button>
           </Grid>
         </Grid>

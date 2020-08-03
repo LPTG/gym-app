@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Register from "./Components/Register/Register";
 import NewWorkout from "./Components/Forms/NewWorkout";
 import NewTemplate from "./Components/Forms/NewTemplate";
-import ListView from "./Components/ListView/ListView";
+import ListView from "./Components/ListView/ListViewPage";
 import ItemView from "./Components/ListView/ItemView";
 import { ProtectedRoute } from "./Components/SiteComponents/ProtectedRoute";
 import auth from "./Auth";
@@ -37,12 +37,12 @@ function App() {
         />
         <ProtectedRoute
           path="/:user/workouts"
-          component={(props) => <ListView {...props} page={"workouts"} />}
+          component={(props) => <ListView {...props} page="workouts" />}
         />
         <ProtectedRoute
           path="/:user/templates"
           userAuth={authObj}
-          component={(props) => <ListView {...props} page={"templates"} />}
+          component={(props) => <ListView {...props} page="templates" />}
         />
         <Route path="*" component={() => "404 NOT FOUND"} />
       </Switch>
