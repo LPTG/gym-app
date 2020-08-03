@@ -48,8 +48,8 @@ class Auth {
 
       if (this.authenticated) {
         this.user = res.data.user;
-        cb();
       }
+      cb();
     });
   }
 

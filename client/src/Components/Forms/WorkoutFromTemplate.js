@@ -159,7 +159,7 @@ class WorkoutFromTemplate extends React.Component {
     //console.log(this.state);
     return (
       <div>
-        <NavBar user={this.props.match.params.user} />
+        <NavBar {...this.props} />
 
         <div className="workoutCreator">
           <label>

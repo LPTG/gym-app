@@ -1,32 +1,48 @@
 import React from "react";
-import { withRouter } from "react-router-dom";
+import auth from "../../Auth";
 import { Grid, Button, AppBar, Toolbar } from "@material-ui/core";
 
 class Navbar extends React.Component {
+  logout() {
+    auth.logout(() => {
+      auth.checkSession(() => {
+        if (!auth.getAuth()) {
+          this.props.history.push(`/`);
+        }
+      });
+    });
+  }
+
   render() {
     return (
       <AppBar position="static">
         <Toolbar>
-          <Grid container justify="space-between" spacing={24}>
+          <Grid container justify="space-between" spacing={2}>
             <Grid item>
               <Button
-                flexGrow={1}
                 color="inherit"
-                onClick={() => this.props.history.push(`/${this.props.user}/workouts`)}
+                onClick={() => this.props.history.push(`/${auth.user.username}/workouts`)}
               >
                 Workouts
               </Button>
 
               <Button
                 color="inherit"
-                onClick={() => this.props.history.push(`/${this.props.user}/templates`)}
+                onClick={() => this.props.history.push(`/${auth.user.username}/templates`)}
               >
                 Templates
               </Button>
             </Grid>
 
             <Grid item>
-              <Button color="inherit">Logout</Button>
+              <Button
+                color="inherit"
+                onClick={() => {
+                  this.logout();
+                }}
+              >
+                Logout
+              </Button>
             </Grid>
           </Grid>
         </Toolbar>
@@ -35,4 +51,4 @@ class Navbar extends React.Component {
   }
 }
 
-export default withRouter(Navbar);
+export default Navbar;

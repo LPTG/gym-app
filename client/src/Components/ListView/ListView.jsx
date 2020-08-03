@@ -4,6 +4,7 @@ import axios from "axios";
 import NavBar from "../SiteComponents/Navbar";
 import ItemCard from "./ItemCard";
 import { Grid, Typography, Paper, Button } from "@material-ui/core";
+import auth from "../../Auth";
 
 class ListView extends React.Component {
   constructor(props) {
@@ -50,7 +51,7 @@ class ListView extends React.Component {
 
     return (
       <div>
-        <NavBar user={this.props.match.params.user} />
+        <NavBar {...this.props} />
         <Grid container justify="center" spacing={2}>
           <Typography variant="h2" component="h2" color="textPrimary">
             {title} List

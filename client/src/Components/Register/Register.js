@@ -1,7 +1,20 @@
 import React from "react";
 import "./Register.css";
-import { Box, Button, Paper, TextField, Grid } from "@material-ui/core";
+import RegisterForm from "./RegisterForm";
+import LoginForm from "./LoginForm";
 import auth from "../../Auth";
+import { withStyles } from "@material-ui/core/styles";
+import { Paper, Grid, Typography } from "@material-ui/core";
+
+const useStyles = (theme) => ({
+  title: {
+    textAlign: "center",
+  },
+  paper: {
+    padding: theme.spacing(2),
+    maxWidth: 500,
+  },
+});
 
 class Register extends React.Component {
   constructor(props) {
@@ -65,99 +78,63 @@ class Register extends React.Component {
 
   handleClick(event) {
     // Toggle to show email field or not
+    console.log("Changing registerView");
     this.setState({ registerView: !this.state.registerView });
   }
 
   render() {
+    const { classes } = this.props;
+    const containerProps = {
+      justify: "flex-end",
+      spacing: 1,
+    };
+
+    auth.checkSession(() => {
+      if (auth.getAuth()) {
+        const user = auth.getUser().username;
+        this.props.history.push(`/${user}/workouts`);
+      }
+    });
+
     return (
-      <div className="loginOrRegister">
-        <Grid
-          container
-          direction="column"
-          alignItems="center"
-          justify="center"
-          spacing={0}
-          style={{ minHeight: "10vh" }}
-        >
-          <Grid item xs={3}>
-            <Paper variant="outlined">
-              <Box m={3}>
-                <form onSubmit={this.handleSubmit}>
-                  <Box mt={2}>
-                    <TextField
-                      name="username"
-                      label="Username"
-                      autoComplete="username"
-                      size="small"
-                      variant="outlined"
-                      onChange={this.handleChange}
-                      required={true}
-                    ></TextField>
-                  </Box>
-
-                  {this.state.registerView && (
-                    <div>
-                      <Box mt={2}>
-                        <TextField
-                          name="email"
-                          label="Email"
-                          autoComplete="email"
-                          size="small"
-                          variant="outlined"
-                          onChange={this.handleChange}
-                          required={true}
-                        ></TextField>
-                      </Box>
-
-                      <Box mt={2}>
-                        <TextField
-                          type="password"
-                          name="password"
-                          label="Password"
-                          autoComplete="password"
-                          size="small"
-                          variant="outlined"
-                          onChange={this.handleChange}
-                          required={true}
-                        ></TextField>
-                      </Box>
-                    </div>
-                  )}
-
-                  {!this.state.registerView && (
-                    <div>
-                      <Box mt={2}>
-                        <TextField
-                          type="password"
-                          name="password"
-                          label="Password"
-                          autoComplete="password"
-                          size="small"
-                          variant="outlined"
-                          onChange={this.handleChange}
-                          required={true}
-                        ></TextField>
-                      </Box>
-                    </div>
-                  )}
-                  <Box mt={1}>
-                    <Button onClick={this.handleClick} color="secondary">
-                      {this.state.registerView ? "Already Registered?" : "Need to Register?"}
-                    </Button>
-                  </Box>
-                  <Box mt={2}>
-                    <Button type="submit" variant="contained" color="primary">
-                      {this.state.registerView ? "Register" : "Login"}
-                    </Button>
-                  </Box>
-                </form>
-              </Box>
-            </Paper>
-          </Grid>
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        alignItems="center"
+        justify="space-evenly"
+        style={{ minHeight: "100vh", backgroundColor: "#90DDF0" }}
+      >
+        <Grid item />
+        <Grid item xs={12} md={8}>
+          <Typography className={classes.title} variant="h1" component="h1" color="textPrimary">
+            Workout Creator
+          </Typography>
         </Grid>
-      </div>
+
+        <Grid item xs={6} md={2}>
+          <Paper className={classes.paper} elevation={10} style={{ backgroundColor: "#F0EDEE" }}>
+            {this.state.registerView ? (
+              <RegisterForm
+                containerProps={containerProps}
+                handleSubmit={this.handleSubmit}
+                handleChange={this.handleChange}
+                handleClick={this.handleClick}
+              />
+            ) : (
+              <LoginForm
+                containerProps={containerProps}
+                handleSubmit={this.handleSubmit}
+                handleChange={this.handleChange}
+                handleClick={this.handleClick}
+              />
+            )}
+          </Paper>
+        </Grid>
+        <Grid item />
+      </Grid>
     );
   }
 }
 
-export default Register;
+export default withStyles(useStyles)(Register);

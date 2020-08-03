@@ -157,7 +157,7 @@ class NewTemplate extends React.Component {
   render() {
     return (
       <div>
-        <NavBar user={this.props.match.params.user} />
+        <NavBar {...this.props} />
 
         <div className="workoutCreator">
           <label>
