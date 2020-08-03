@@ -15,7 +15,7 @@ class Navbar extends React.Component {
 
   render() {
     return (
-      <AppBar position="static">
+      <AppBar position="static" variant="outlined">
         <Toolbar>
           <Grid container justify="space-between" spacing={2}>
             <Grid item>
