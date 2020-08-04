@@ -1,9 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { cloneDeep } from "lodash";
-import ExerciseForm from "../FormComponents/ExerciseForm";
+import MaterialExerciseForm from "../FormComponents/MaterialExerciseForm";
 import NavBar from "../SiteComponents/Navbar";
-import "./formStyle.css";
+import { Box, Paper, Grid, TextField, Button } from "@material-ui/core";
 
 class WorkoutFromTemplate extends React.Component {
   constructor(props) {
@@ -160,53 +160,75 @@ class WorkoutFromTemplate extends React.Component {
     return (
       <div>
         <NavBar {...this.props} />
+        <Grid container justify="center">
+          <Grid item xs={12} sm={6}>
+            <Paper variant="outlined">
+              <Box m="1rem">
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    {/* // Removed 'placeholder' */}
+                    <TextField
+                      name="name"
+                      label="Template Name"
+                      defaultValue={this.props.template.name || ""}
+                      variant="outlined"
+                      size="small"
+                      onChange={this.handleDetailsChange}
+                      required={true}
+                    ></TextField>
+                  </Grid>
 
-        <div className="workoutCreator">
-          <label>
-            Workout Name:
-            {
-              <input
-                type="text"
-                name="name"
-                placeholder={this.props.template.name || ""}
-                onChange={this.handleDetailsChange}
-              />
-            }
-          </label>
-          <br />
+                  <Grid item xs={12}>
+                    <TextField
+                      name="desc"
+                      label="Description"
+                      defaultValue={this.props.template.desc || ""}
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                      multiline
+                      rows={3}
+                      onChange={this.handleDetailsChange}
+                    ></TextField>
+                  </Grid>
 
-          <label>
-            Description:
-            {
-              <input
-                type="text"
-                name="desc"
-                placeholder={this.props.template.desc || ""}
-                onChange={this.handleDetailsChange}
-              />
-            }
-          </label>
+                  <Grid item xs={12}>
+                    {this.state.exercises.map((exercise, index) => (
+                      <Box my="1rem">
+                        <Paper variant="outlined">
+                          <Box m="1rem">
+                            <MaterialExerciseForm
+                              key={exercise.id}
+                              id={exercise.id}
+                              wsr={exercise.wsr}
+                              wsrPlaceholders={this.getWsrPlaceholders(index)}
+                              exercisePlaceholder={this.getExercisePlaceholders(index)}
+                              exerciseValue={exercise.name}
+                              wsrValues={exercise.wsr}
+                              handleExerciseChange={this.handleExerciseChange}
+                              handleWeightSetRepChange={this.handleWeightSetRepChange}
+                              addSet={this.addSet}
+                              fromTemplate={true}
+                            />
+                          </Box>
+                        </Paper>
+                      </Box>
+                    ))}
+                  </Grid>
 
-          {console.log(this.state.exercises)}
-          {this.state.exercises.map((exercise, index) => (
-            <ExerciseForm
-              key={exercise.id}
-              id={exercise.id}
-              wsr={exercise.wsr}
-              wsrPlaceholders={this.getWsrPlaceholders(index)}
-              exercisePlaceholder={this.getExercisePlaceholders(index)}
-              exerciseValue={exercise.name}
-              wsrValues={exercise.wsr}
-              handleExerciseChange={this.handleExerciseChange}
-              handleWeightSetRepChange={this.handleWeightSetRepChange}
-              addSet={this.addSet}
-              fromTemplate={true}
-            />
-          ))}
-
-          <input type="button" value="Add another exercise" onClick={this.addExercise} />
-          <input type="button" value="Create Workout" onClick={this.createWorkout} />
-        </div>
+                  <Grid container item justify="space-between" xs={12}>
+                    <Button variant="contained" color="secondary" onClick={this.addExercise}>
+                      Add Exercise
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={this.createWorkout}>
+                      Create Workout
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
       </div>
     );
   }

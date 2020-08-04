@@ -42,7 +42,8 @@ class MaterialExerciseForm extends React.Component {
             <TextField
               id={this.props.id}
               name={this.props.id}
-              label="Exercise"
+              label="Exercise Name"
+              variant="outlined"
               placeholder={this.props.exercisePlaceholder || ""}
               size="small"
               onChange={this.handleExerciseChange}
@@ -54,13 +55,16 @@ class MaterialExerciseForm extends React.Component {
               id={this.props.id}
               name={this.props.id}
               label="Exercise Name"
+              variant="outlined"
               value={this.props.exerciseValue || ""}
               placeholder={this.props.exercisePlaceholder || ""}
               size="small"
               onChange={this.handleExerciseChange}
             ></TextField>
           )}
+        </Grid>
 
+        <Grid item xs={12}>
           {this.props.wsrPlaceholders &&
             this.props.wsrValues &&
             this.props.wsr.map((wsr, index) => (

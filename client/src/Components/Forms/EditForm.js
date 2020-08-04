@@ -2,7 +2,9 @@ import React from "react";
 import axios from "axios";
 import { cloneDeep } from "lodash";
 import ExerciseForm from "../FormComponents/ExerciseForm";
+import MaterialExerciseForm from "../FormComponents/MaterialExerciseForm";
 import NavBar from "../SiteComponents/Navbar";
+import { Box, Paper, Grid, TextField, Button } from "@material-ui/core";
 import "./formStyle.css";
 
 class EditForm extends React.Component {
@@ -161,49 +163,72 @@ class EditForm extends React.Component {
     return (
       <div>
         <NavBar {...this.props} />
+        <Grid container justify="center">
+          <Grid item xs={12} sm={6}>
+            <Paper variant="outlined">
+              <Box m="1rem">
+                <Grid container spacing={2}>
+                  <Grid item xs={12}>
+                    {/* // Removed 'placeholder' */}
+                    <TextField
+                      name="name"
+                      label="Template Name"
+                      value={this.state.name || ""}
+                      variant="outlined"
+                      size="small"
+                      onChange={this.handleDetailsChange}
+                      required={true}
+                    ></TextField>
+                  </Grid>
 
-        <div className="workoutCreator">
-          <label>
-            Workout Name:
-            {this.state.name && (
-              <input
-                type="text"
-                name="name"
-                value={this.state.name || ""}
-                onChange={this.handleDetailsChange}
-              />
-            )}
-          </label>
-          <br />
+                  <Grid item xs={12}>
+                    <TextField
+                      name="desc"
+                      label="Description"
+                      value={this.state.desc || ""}
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                      multiline
+                      rows={3}
+                      onChange={this.handleDetailsChange}
+                    ></TextField>
+                  </Grid>
 
-          <label>
-            Description:
-            {this.state.desc && (
-              <input
-                type="text"
-                name="desc"
-                value={this.state.desc || ""}
-                onChange={this.handleDetailsChange}
-              />
-            )}
-          </label>
+                  <Grid item xs={12}>
+                    {this.state.exercises.map((exercise, index) => (
+                      <Box my="1rem">
+                        <Paper variant="outlined">
+                          <Box m="1rem">
+                            <MaterialExerciseForm
+                              key={exercise.id}
+                              id={exercise.id}
+                              wsr={exercise.wsr}
+                              exerciseValue={exercise.name}
+                              wsrValues={exercise.wsr}
+                              handleExerciseChange={this.handleExerciseChange}
+                              handleWeightSetRepChange={this.handleWeightSetRepChange}
+                              addSet={this.addSet}
+                            />
+                          </Box>
+                        </Paper>
+                      </Box>
+                    ))}
+                  </Grid>
 
-          {this.state.exercises.map((exercise, index) => (
-            <ExerciseForm
-              key={exercise.id}
-              id={exercise.id}
-              wsr={exercise.wsr}
-              wsrValues={this.state.exercises[index].wsr}
-              exerciseValue={this.state.exercises[index].name}
-              handleExerciseChange={this.handleExerciseChange}
-              handleWeightSetRepChange={this.handleWeightSetRepChange}
-              addSet={this.addSet}
-            />
-          ))}
-
-          <input type="button" value="Add another exercise" onClick={this.addExercise} />
-          <input type="button" value={`Update ${this.props.page}`} onClick={this.updateWorkout} />
-        </div>
+                  <Grid container item justify="space-between" xs={12}>
+                    <Button variant="contained" color="secondary" onClick={this.addExercise}>
+                      Add Exercise
+                    </Button>
+                    <Button variant="contained" color="primary" onClick={this.updateWorkout}>
+                      Update {this.props.page}
+                    </Button>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Paper>
+          </Grid>
+        </Grid>
       </div>
     );
   }

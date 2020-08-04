@@ -5,7 +5,6 @@ import { withRouter } from "react-router-dom";
 import MaterialExerciseForm from "../FormComponents/MaterialExerciseForm";
 import NavBar from "../SiteComponents/Navbar";
 import { Box, Paper, Grid, TextField, Button } from "@material-ui/core";
-import "./formStyle.css";
 
 class NewWorkout extends React.Component {
   constructor(props) {
@@ -167,6 +166,7 @@ class NewWorkout extends React.Component {
                     <TextField
                       name="name"
                       label="Workout Name"
+                      variant="outlined"
                       size="small"
                       onChange={this.handleDetailsChange}
                       required={true}
@@ -177,6 +177,7 @@ class NewWorkout extends React.Component {
                     <TextField
                       name="desc"
                       label="Description"
+                      variant="outlined"
                       size="small"
                       fullWidth
                       multiline
@@ -189,7 +190,7 @@ class NewWorkout extends React.Component {
                     {this.state.exercises.map((exercise) => (
                       <Box my="1rem">
                         <Paper variant="outlined">
-                          <Box m="2rem">
+                          <Box m="1rem">
                             <MaterialExerciseForm
                               key={exercise.id}
                               id={exercise.id}
