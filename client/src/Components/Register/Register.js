@@ -26,7 +26,7 @@ class Register extends React.Component {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
+  componentWillMount() {
     auth.checkSession(() => {
       if (auth.getAuth()) {
         const user = auth.getUser().username;

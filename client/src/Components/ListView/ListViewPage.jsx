@@ -1,7 +1,6 @@
 import React from "react";
 import _ from "lodash";
 import axios from "axios";
-import NavBar from "../SiteComponents/Navbar";
 import ItemList from "./ItemList";
 import { Grid, Typography, Button } from "@material-ui/core";
 import auth from "../../Auth";
@@ -48,7 +47,6 @@ class ListView extends React.Component {
 
     return (
       <div>
-        <NavBar {...this.props} />
         <Grid
           container
           direction="column"

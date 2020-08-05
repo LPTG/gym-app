@@ -2,7 +2,7 @@ import React from "react";
 import MaterialWeightSetReps from "./MaterialWeightSetReps";
 import { Button, Grid, TextField } from "@material-ui/core";
 
-class MaterialExerciseForm extends React.Component {
+class MaterialExerciseForm extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -134,10 +134,26 @@ class MaterialExerciseForm extends React.Component {
             ))}
         </Grid>
 
-        <Grid item>
-          <Button variant="contained" color="secondary" onClick={this.handleClick}>
-            Add Set
-          </Button>
+        <Grid container item spacing={1}>
+          <Grid item>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => this.props.addSet(this.props.id)}
+            >
+              Add Set
+            </Button>
+          </Grid>
+
+          <Grid item>
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => this.props.removeSet(this.props.id)}
+            >
+              Remove Set
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     );

@@ -9,7 +9,7 @@ import {
   CardActions,
 } from "@material-ui/core";
 import auth from "../../Auth";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 function ItemCard(props) {
   const { name, description, templateCard, itemId } = props;
   const classes = useStyles();
-  const theme = useTheme();
+  //const theme = useTheme();
 
   return (
     <Card className={classes.root} variant="outlined">

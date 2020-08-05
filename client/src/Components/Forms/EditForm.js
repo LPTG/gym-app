@@ -1,11 +1,8 @@
 import React from "react";
 import axios from "axios";
 import { cloneDeep } from "lodash";
-import ExerciseForm from "../FormComponents/ExerciseForm";
 import MaterialExerciseForm from "../FormComponents/MaterialExerciseForm";
-import NavBar from "../SiteComponents/Navbar";
 import { Box, Paper, Grid, TextField, Button } from "@material-ui/core";
-import "./formStyle.css";
 
 class EditForm extends React.Component {
   constructor(props) {
@@ -162,7 +159,6 @@ class EditForm extends React.Component {
   render() {
     return (
       <div>
-        <NavBar {...this.props} />
         <Grid container justify="center">
           <Grid item xs={12} sm={6}>
             <Paper variant="outlined">

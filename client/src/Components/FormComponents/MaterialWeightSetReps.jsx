@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid, TextField } from "@material-ui/core";
 
-class MaterialWeightSetReps extends React.Component {
+class MaterialWeightSetReps extends React.PureComponent {
   render() {
     return (
       <div>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
+import NavBar from "../SiteComponents/Navbar";
 import auth from "../../Auth";
 
 export const ProtectedRoute = ({ component: Component, ...rest }) => {
@@ -8,7 +9,12 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
       {...rest}
       render={(props) => {
         if (auth.getAuth()) {
-          return <Component {...props} />;
+          return (
+            <div>
+              <NavBar {...props} />
+              <Component {...rest} {...props} />
+            </div>
+          );
         } else {
           return (
             <Redirect

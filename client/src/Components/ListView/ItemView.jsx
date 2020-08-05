@@ -16,7 +16,6 @@ class ItemView extends React.Component {
     const id =
       page === "workouts" ? this.props.match.params.workoutID : this.props.match.params.templateID;
 
-    console.log(this.props.page);
     if (this.props.page !== "templated") {
       axios.get(`/api/users/${user}/${page}/${id}`).then((res) => {
         let workout = res.data;
@@ -35,7 +34,6 @@ class ItemView extends React.Component {
         this.setState({ workout: workout });
       });
     } else {
-      console.log("");
       axios.get(`/api/users/${user}/${page}/${id}`).then((res) => {
         let template = res.data;
         let emptyWorkout = {
