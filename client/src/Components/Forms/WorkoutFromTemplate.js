@@ -46,13 +46,13 @@ class WorkoutFromTemplate extends React.Component {
   }
 
   // Adds another set to the exercise specified by the given exercise id
-  addSet(exerciseID) {
-    this.setState({ exercises: addSetFunc(this.state.exercises, exerciseID) });
+  addSet(exerciseID, wsrID) {
+    this.setState({ exercises: addSetFunc(this.state.exercises, exerciseID, wsrID) });
   }
 
   // Removes the last set from the exercise specified by the given exercise id
-  removeSet(exerciseID) {
-    this.setState({ exercises: removeSetFunc(this.state.exercises, exerciseID) });
+  removeSet(exerciseID, wsrID) {
+    this.setState({ exercises: removeSetFunc(this.state.exercises, exerciseID, wsrID) });
   }
 
   // Updates state when workout name or description are changed
@@ -70,7 +70,9 @@ class WorkoutFromTemplate extends React.Component {
   }
 
   // Format input to send to server
-  createWorkout() {
+  createWorkout(event) {
+    event.preventDefault();
+
     // Framework for our workout object
     var workout = {
       name: this.state.name,
@@ -117,82 +119,88 @@ class WorkoutFromTemplate extends React.Component {
           <Grid item xs={12} md={6}>
             <Paper variant="outlined">
               <Box m="1rem">
-                <Grid container spacing={2}>
-                  <Grid item xs={4}>
-                    <TextField
-                      name="name"
-                      label="Workout Name"
-                      defaultValue={this.props.template.name || ""}
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                      onChange={this.handleDetailsChange}
-                      required={true}
-                    ></TextField>
-                  </Grid>
+                <form onSubmit={this.createWorkout}>
+                  <Grid container spacing={2}>
+                    <Grid item xs={4}>
+                      <TextField
+                        name="name"
+                        label="Workout Name"
+                        defaultValue={this.props.template.name || ""}
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                        onChange={this.handleDetailsChange}
+                        required={true}
+                      ></TextField>
+                    </Grid>
 
-                  <Grid item xs={12}>
-                    <TextField
-                      name="desc"
-                      label="Description"
-                      defaultValue={this.props.template.desc || ""}
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                      multiline
-                      rows={3}
-                      onChange={this.handleDetailsChange}
-                    ></TextField>
-                  </Grid>
+                    <Grid item xs={12}>
+                      <TextField
+                        name="desc"
+                        label="Description"
+                        defaultValue={this.props.template.desc || ""}
+                        variant="outlined"
+                        size="small"
+                        fullWidth
+                        multiline
+                        rows={3}
+                        onChange={this.handleDetailsChange}
+                      ></TextField>
+                    </Grid>
 
-                  <Grid item xs={12}>
-                    {this.state.exercises.map((exercise, index) => (
-                      <Box key={exercise.id} my="1rem">
-                        <Paper variant="outlined">
-                          <Box m="1rem">
-                            <MaterialExerciseForm
-                              key={exercise.id}
-                              id={exercise.id}
-                              wsr={exercise.wsr}
-                              wsrPlaceholders={this.getWsrPlaceholders(index)}
-                              exercisePlaceholder={this.getExercisePlaceholders(index)}
-                              exerciseValue={exercise.name}
-                              wsrValues={exercise.wsr}
-                              handleExerciseChange={this.handleExerciseChange}
-                              handleWeightSetRepChange={this.handleWeightSetRepChange}
-                              addSet={this.addSet}
-                              removeSet={this.removeSet}
-                              removeExercise={this.removeExercise}
-                              newTemplate
-                            />
-                          </Box>
-                        </Paper>
-                      </Box>
-                    ))}
-                  </Grid>
+                    <Grid item xs={12}>
+                      {this.state.exercises.map((exercise, index) => (
+                        <Box key={exercise.id} my="1rem">
+                          <Paper variant="outlined">
+                            <Box m="1rem">
+                              <MaterialExerciseForm
+                                key={exercise.id}
+                                id={exercise.id}
+                                wsr={exercise.wsr}
+                                wsrPlaceholders={this.getWsrPlaceholders(index)}
+                                exercisePlaceholder={this.getExercisePlaceholders(index)}
+                                exerciseValue={exercise.name}
+                                wsrValues={exercise.wsr}
+                                handleExerciseChange={this.handleExerciseChange}
+                                handleWeightSetRepChange={this.handleWeightSetRepChange}
+                                addSet={this.addSet}
+                                removeSet={this.removeSet}
+                                removeExercise={this.removeExercise}
+                                newTemplate
+                              />
+                            </Box>
+                          </Paper>
+                        </Box>
+                      ))}
+                    </Grid>
 
-                  <Grid container item justify="space-between" xs={12}>
-                    <Grid container item spacing={1} xs={8}>
-                      <Grid item>
-                        <Button variant="contained" color="secondary" onClick={this.addExercise}>
-                          Add Exercise
-                        </Button>
+                    <Grid container item justify="space-between" xs={12}>
+                      <Grid container item spacing={1} xs={8}>
+                        <Grid item>
+                          <Button variant="contained" color="secondary" onClick={this.addExercise}>
+                            Add Exercise
+                          </Button>
+                        </Grid>
+
+                        <Grid item>
+                          <Button
+                            variant="contained"
+                            color="secondary"
+                            onClick={this.removeExercise}
+                          >
+                            Remove Exercise
+                          </Button>
+                        </Grid>
                       </Grid>
 
                       <Grid item>
-                        <Button variant="contained" color="secondary" onClick={this.removeExercise}>
-                          Remove Exercise
+                        <Button variant="contained" color="primary" onClick={this.createWorkout}>
+                          Create Workout
                         </Button>
                       </Grid>
                     </Grid>
-
-                    <Grid item>
-                      <Button variant="contained" color="primary" onClick={this.createWorkout}>
-                        Create Workout
-                      </Button>
-                    </Grid>
                   </Grid>
-                </Grid>
+                </form>
               </Box>
             </Paper>
           </Grid>

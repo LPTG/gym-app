@@ -47,13 +47,13 @@ class EditForm extends React.Component {
   }
 
   // Adds another set to the exercise specified by the given exercise id
-  addSet(exerciseID) {
-    this.setState({ exercises: addSetFunc(this.state.exercises, exerciseID) });
+  addSet(exerciseID, wsrID) {
+    this.setState({ exercises: addSetFunc(this.state.exercises, exerciseID, wsrID) });
   }
 
   // Removes the last set from the exercise specified by the given exercise id
-  removeSet(exerciseID) {
-    this.setState({ exercises: removeSetFunc(this.state.exercises, exerciseID) });
+  removeSet(exerciseID, wsrID) {
+    this.setState({ exercises: removeSetFunc(this.state.exercises, exerciseID, wsrID) });
   }
 
   // Updates state when workout name or description are changed
@@ -71,7 +71,9 @@ class EditForm extends React.Component {
   }
 
   // Format input to send to server
-  updateWorkout() {
+  updateWorkout(event) {
+    event.preventDefault();
+
     const id =
       this.props.page === "workouts"
         ? this.props.match.params.workoutID
@@ -137,86 +139,82 @@ class EditForm extends React.Component {
           <Grid item xs={12} md={6}>
             <Paper variant="outlined">
               <Box m="1rem">
-                <Grid container spacing={2}>
-                  <Grid container item justify="space-between" xs={12}>
-                    <Grid item xs={4}>
+                <form onSubmit={this.updateWorkout}>
+                  <Grid container spacing={2}>
+                    <Grid container item justify="space-between" xs={12}>
+                      <Grid item xs={4}>
+                        <TextField
+                          name="name"
+                          label="Template Name"
+                          value={this.state.name || ""}
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          onChange={this.handleDetailsChange}
+                          required={true}
+                        ></TextField>
+                      </Grid>
+
+                      <Grid item>
+                        <DeleteIcon style={{ cursor: "pointer" }} onClick={this.deleteForm} />
+                      </Grid>
+                    </Grid>
+
+                    <Grid item xs={12}>
                       <TextField
-                        name="name"
-                        label="Template Name"
-                        value={this.state.name || ""}
+                        name="desc"
+                        label="Description"
+                        value={this.state.desc || ""}
                         variant="outlined"
                         size="small"
                         fullWidth
+                        multiline
+                        rows={3}
                         onChange={this.handleDetailsChange}
-                        required={true}
                       ></TextField>
                     </Grid>
 
-                    <Grid item>
-                      <DeleteIcon style={{ cursor: "pointer" }} onClick={this.deleteForm} />
+                    <Grid item xs={12}>
+                      {this.state.exercises.map((exercise, index) => (
+                        <Box key={exercise.id} my="1rem">
+                          <Paper variant="outlined">
+                            <Box m="1rem">
+                              <MaterialExerciseForm
+                                key={exercise.id}
+                                id={exercise.id}
+                                wsr={exercise.wsr}
+                                exerciseValue={exercise.name}
+                                wsrValues={exercise.wsr}
+                                handleExerciseChange={this.handleExerciseChange}
+                                handleWeightSetRepChange={this.handleWeightSetRepChange}
+                                addSet={this.addSet}
+                                removeSet={this.removeSet}
+                                removeExercise={this.removeExercise}
+                                newTemplate={this.props.newTemplate || false}
+                              />
+                            </Box>
+                          </Paper>
+                        </Box>
+                      ))}
                     </Grid>
-                  </Grid>
 
-                  <Grid item xs={12}>
-                    <TextField
-                      name="desc"
-                      label="Description"
-                      value={this.state.desc || ""}
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                      multiline
-                      rows={3}
-                      onChange={this.handleDetailsChange}
-                    ></TextField>
-                  </Grid>
-
-                  <Grid item xs={12}>
-                    {this.state.exercises.map((exercise, index) => (
-                      <Box key={exercise.id} my="1rem">
-                        <Paper variant="outlined">
-                          <Box m="1rem">
-                            <MaterialExerciseForm
-                              key={exercise.id}
-                              id={exercise.id}
-                              wsr={exercise.wsr}
-                              exerciseValue={exercise.name}
-                              wsrValues={exercise.wsr}
-                              handleExerciseChange={this.handleExerciseChange}
-                              handleWeightSetRepChange={this.handleWeightSetRepChange}
-                              addSet={this.addSet}
-                              removeSet={this.removeSet}
-                              removeExercise={this.removeExercise}
-                              newTemplate={this.props.newTemplate || false}
-                            />
-                          </Box>
-                        </Paper>
-                      </Box>
-                    ))}
-                  </Grid>
-
-                  <Grid container item justify="space-between" xs={12}>
-                    <Grid container item spacing={1} xs={8}>
-                      <Grid item>
-                        <Button variant="contained" color="secondary" onClick={this.addExercise}>
-                          Add Exercise
-                        </Button>
+                    <Grid container item justify="space-between" xs={12}>
+                      <Grid container item spacing={1} xs={8}>
+                        <Grid item>
+                          <Button variant="contained" color="secondary" onClick={this.addExercise}>
+                            Add Exercise
+                          </Button>
+                        </Grid>
                       </Grid>
 
-                      {/* <Grid item>
-                        <Button variant="contained" color="secondary" onClick={this.removeExercise}>
-                          Remove Exercise
+                      <Grid item>
+                        <Button variant="contained" color="primary" onClick={this.updateWorkout}>
+                          Update {page}
                         </Button>
-                      </Grid> */}
-                    </Grid>
-
-                    <Grid item>
-                      <Button variant="contained" color="primary" onClick={this.updateWorkout}>
-                        Update {page}
-                      </Button>
+                      </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
+                </form>
               </Box>
             </Paper>
           </Grid>

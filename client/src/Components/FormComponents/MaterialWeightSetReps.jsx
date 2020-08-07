@@ -1,6 +1,8 @@
 import React from "react";
 //import { PropTypes } from "prop-types";
 import { Grid, TextField } from "@material-ui/core";
+import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
+import AddCircleIcon from "@material-ui/icons/AddCircle";
 
 class MaterialWeightSetReps extends React.Component {
   shouldComponentUpdate(nextProps) {
@@ -55,6 +57,22 @@ class MaterialWeightSetReps extends React.Component {
               inputProps={{ maxLength: 15 }}
             />
           </Grid>
+
+          <Grid item>
+            <RemoveCircleIcon
+              color="secondary"
+              fontSize="large"
+              style={{ cursor: "pointer" }}
+              onClick={() => this.props.removeSet(this.props.parent, this.props.id)}
+            />
+
+            <AddCircleIcon
+              color="secondary"
+              fontSize="large"
+              style={{ cursor: "pointer" }}
+              onClick={() => this.props.addSet(this.props.parent, this.props.id)}
+            />
+          </Grid>
         </Grid>
       );
     } else {
@@ -102,6 +120,22 @@ class MaterialWeightSetReps extends React.Component {
               onChange={this.props.handleWeightSetRepChange}
               type="number"
               inputProps={{ min: 1, max: 100 }}
+            />
+          </Grid>
+
+          <Grid item>
+            <RemoveCircleIcon
+              color="secondary"
+              fontSize="large"
+              style={{ cursor: "pointer" }}
+              onClick={() => this.props.removeSet(this.props.parent, this.props.id)}
+            />
+
+            <AddCircleIcon
+              color="secondary"
+              fontSize="large"
+              style={{ cursor: "pointer" }}
+              onClick={() => this.props.addSet(this.props.parent, this.props.id)}
             />
           </Grid>
         </Grid>

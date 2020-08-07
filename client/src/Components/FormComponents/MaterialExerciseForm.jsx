@@ -1,9 +1,9 @@
 import React from "react";
 import MaterialWeightSetReps from "./MaterialWeightSetReps";
-import { Button, Grid, TextField } from "@material-ui/core";
+import { Grid, TextField } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
-class MaterialExerciseForm extends React.PureComponent {
+class MaterialExerciseForm extends React.Component {
   constructor(props) {
     super(props);
 
@@ -64,6 +64,7 @@ class MaterialExerciseForm extends React.PureComponent {
               fullWidth
               onChange={this.handleExerciseChange}
               inputProps={{ maxLength: 40 }}
+              required
             ></TextField>
           </Grid>
 
@@ -87,30 +88,10 @@ class MaterialExerciseForm extends React.PureComponent {
               values={this.getWsrValues(index)}
               handleWeightSetRepChange={this.props.handleWeightSetRepChange}
               newTemplate={this.props.newTemplate || false}
+              addSet={this.props.addSet}
+              removeSet={this.props.removeSet}
             />
           ))}
-        </Grid>
-
-        <Grid container item spacing={1}>
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => this.props.addSet(this.props.id)}
-            >
-              Add Set
-            </Button>
-          </Grid>
-
-          <Grid item>
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={() => this.props.removeSet(this.props.id)}
-            >
-              Remove Set
-            </Button>
-          </Grid>
         </Grid>
       </Grid>
     );

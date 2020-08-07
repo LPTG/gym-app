@@ -31,32 +31,45 @@ const removeExerciseFunc = (exerciseState, exerciseID) => {
   return exerciseCopy;
 };
 
-const addSetFunc = (exerciseState, exerciseID) => {
+const addSetFunc = (exerciseState, exerciseID, wsrID) => {
+  // Get index of current exercise
+  const exerciseIndex = exerciseState.findIndex((x) => x.id === exerciseID);
+  const wsrIndex = exerciseState[exerciseIndex].wsr.findIndex((x) => x.id === wsrID);
+
+  // Who needs more than 10 sets?
+  if (exerciseState[exerciseIndex].wsr.length >= 10) return exerciseState;
+
   // Copy the exercises array
   const exerciseCopy = exerciseState.slice();
 
-  // Get index of current exercise
-  const exerciseIndex = exerciseCopy.findIndex((x) => x.id === exerciseID);
+  // Add a new set to the current exercise after the specified wsr
+  exerciseCopy[exerciseIndex].wsr.splice(wsrIndex + 1, 0, {
+    id: "wsr" + (wsrIndex + 2),
+  });
 
-  // Who needs more than 10 sets?
-  if (exerciseCopy[exerciseIndex].wsr.length >= 10) return exerciseCopy;
-
-  // Add a new set to the current exercise
-  exerciseCopy[exerciseIndex].wsr = exerciseCopy[exerciseIndex].wsr.concat([
-    { id: "wsr" + (exerciseCopy[exerciseIndex].wsr.length + 1) },
-  ]);
+  // Increment each wsr id after new wsr
+  for (let i = wsrIndex + 2; i < exerciseCopy[exerciseIndex].wsr.length; i++) {
+    exerciseCopy[exerciseIndex].wsr[i].id = "wsr" + (i + 1);
+  }
 
   return exerciseCopy;
 };
 
-const removeSetFunc = (exerciseState, exerciseID) => {
+const removeSetFunc = (exerciseState, exerciseID, wsrID) => {
   // Copy the exercises array
   const exerciseCopy = exerciseState.slice();
 
   // Get index of current exercise
   const exerciseIndex = exerciseCopy.findIndex((x) => x.id === exerciseID);
+  const wsrIndex = exerciseCopy[exerciseIndex].wsr.findIndex((x) => x.id === wsrID);
 
-  exerciseCopy[exerciseIndex].wsr = exerciseCopy[exerciseIndex].wsr.slice(0, -1);
+  exerciseCopy[exerciseIndex].wsr.splice(wsrIndex, 1);
+
+  for (let i = wsrIndex, x = 1; i < exerciseCopy[exerciseIndex].wsr.length; i++, x++) {
+    exerciseCopy[exerciseIndex].wsr[i].id = "wsr" + (wsrIndex + x);
+  }
+
+  console.log(exerciseCopy[exerciseIndex].wsr);
 
   return exerciseCopy;
 };

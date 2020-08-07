@@ -12,7 +12,7 @@ class WorkoutName extends React.PureComponent {
         fullWidth
         onChange={this.props.handleDetailsChange}
         inputProps={{ maxLength: 40 }}
-        required={true}
+        required
       />
     );
   }
