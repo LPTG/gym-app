@@ -19,14 +19,14 @@ function App() {
           component={(props) => <ItemView {...props} page="templated" />}
         />
         <ProtectedRoute path="/:user/new-workout" component={NewWorkout} />
-        <ProtectedRoute path="/:user/new-template" newTemplate={true} component={NewWorkout} />
+        <ProtectedRoute path="/:user/new-template" newTemplate component={NewWorkout} />
         <ProtectedRoute
           path="/:user/workouts/:workoutID"
           component={(props) => <ItemView {...props} page="workouts" />}
         />
         <ProtectedRoute
           path="/:user/templates/:templateID"
-          component={(props) => <ItemView {...props} page="templates" />}
+          component={(props) => <ItemView {...props} newTemplate page="templates" />}
         />
         <ProtectedRoute
           path="/:user/workouts"

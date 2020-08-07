@@ -2,7 +2,9 @@ import React from "react";
 import axios from "axios";
 import auth from "../../Auth";
 import MaterialExerciseForm from "../FormComponents/MaterialExerciseForm";
-import { Box, Paper, Grid, TextField, Button } from "@material-ui/core";
+import { Box, Paper, Grid, Button } from "@material-ui/core";
+import WorkoutName from "../FormComponents/WorkoutName";
+import WorkoutDesc from "../FormComponents/WorkoutDesc";
 import {
   addExerciseFunc,
   removeExerciseFunc,
@@ -128,45 +130,34 @@ class NewWorkout extends React.Component {
               <Box m="1rem">
                 <Grid container spacing={2}>
                   <Grid item xs={4}>
-                    <TextField
-                      name="name"
-                      label="Workout Name"
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                      onChange={this.handleDetailsChange}
-                      required={true}
-                    ></TextField>
+                    <WorkoutName
+                      handleDetailsChange={this.handleDetailsChange}
+                      length={this.state.name.length}
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
-                    <TextField
-                      name="desc"
-                      label="Description"
-                      variant="outlined"
-                      size="small"
-                      fullWidth
-                      multiline
-                      rows={3}
-                      onChange={this.handleDetailsChange}
-                    ></TextField>
+                    <WorkoutDesc
+                      handleDetailsChange={this.handleDetailsChange}
+                      length={this.state.desc.length}
+                    />
                   </Grid>
 
                   <Grid item xs={12}>
                     {this.state.exercises.map((exercise) => (
-                      <Box my="1rem">
+                      <Box key={exercise.id} my="1rem">
                         <Paper variant="outlined">
                           <Box m="1rem">
                             <MaterialExerciseForm
                               key={exercise.id}
                               id={exercise.id}
-                              wsr={exercise.wsr}
                               exerciseValue={exercise.name}
                               wsrValues={exercise.wsr}
                               handleExerciseChange={this.handleExerciseChange}
                               handleWeightSetRepChange={this.handleWeightSetRepChange}
                               addSet={this.addSet}
                               removeSet={this.removeSet}
+                              newTemplate={this.props.newTemplate}
                             />
                           </Box>
                         </Paper>

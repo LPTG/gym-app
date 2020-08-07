@@ -1,93 +1,127 @@
 import React from "react";
+//import { PropTypes } from "prop-types";
 import { Grid, TextField } from "@material-ui/core";
 
-class MaterialWeightSetReps extends React.PureComponent {
+class MaterialWeightSetReps extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    if (this.props.values.weight !== nextProps.values.weight) return true;
+
+    if (this.props.values.sets !== nextProps.values.sets) return true;
+
+    if (this.props.values.reps !== nextProps.values.reps) return true;
+
+    return false;
+  }
+
   render() {
-    return (
-      <div>
-        {this.props.fromTemplate && (
-          <Grid container justify="flex-start" spacing={2}>
-            <Grid item xs={4} sm={3}>
-              <TextField
-                id={this.props.parent + "-" + this.props.id + "-w"}
-                label="Weight"
-                variant="outlined"
-                value={this.props.weightValue || ""}
-                placeholder={this.props.weightText || ""}
-                size="small"
-                onChange={this.props.onWeightChange}
-              />
-            </Grid>
-
-            <Grid item xs={4} sm={3}>
-              <TextField
-                id={this.props.parent + "-" + this.props.id + "-s"}
-                label="Sets"
-                variant="outlined"
-                value={this.props.setsValue || ""}
-                placeholder={this.props.setsText || ""}
-                size="small"
-                onChange={this.props.onSetChange}
-              />
-            </Grid>
-
-            <Grid item xs={4} sm={3}>
-              <TextField
-                id={this.props.parent + "-" + this.props.id + "-r"}
-                label="Reps"
-                variant="outlined"
-                value={this.props.repsValue || ""}
-                placeholder={this.props.repsText || ""}
-                size="small"
-                onChange={this.props.onRepChange}
-              />
-            </Grid>
+    if (this.props.newTemplate) {
+      return (
+        <Grid container justify="flex-start" spacing={2}>
+          <Grid item xs={4} sm={3}>
+            <TextField
+              id={this.props.parent + "-" + this.props.id + "-w"}
+              label="Weight"
+              variant="outlined"
+              value={this.props.values.weight || ""}
+              placeholder={this.props.placeholders.weight || ""}
+              size="small"
+              onChange={this.props.handleWeightSetRepChange}
+              inputProps={{ maxLength: 15 }}
+            />
           </Grid>
-        )}
 
-        {/* // Might not be necessary */}
-        {!this.props.fromTemplate && (
-          <Grid container justify="flex-start" spacing={2}>
-            <Grid item xs={4} sm={3}>
-              <TextField
-                id={this.props.parent + "-" + this.props.id + "-w"}
-                label="Weight"
-                variant="outlined"
-                value={this.props.weightValue || ""}
-                placeholder={this.props.weightText || ""}
-                size="small"
-                onChange={this.props.onWeightChange}
-              />
-            </Grid>
-
-            <Grid item xs={4} sm={3}>
-              <TextField
-                id={this.props.parent + "-" + this.props.id + "-s"}
-                label="Sets"
-                variant="outlined"
-                value={this.props.setsValue || ""}
-                placeholder={this.props.setsText || ""}
-                size="small"
-                onChange={this.props.onSetChange}
-              />
-            </Grid>
-
-            <Grid item xs={4} sm={3}>
-              <TextField
-                id={this.props.parent + "-" + this.props.id + "-r"}
-                label="Reps"
-                variant="outlined"
-                value={this.props.repsValue || ""}
-                placeholder={this.props.repsText || ""}
-                size="small"
-                onChange={this.props.onRepChange}
-              />
-            </Grid>
+          <Grid item xs={4} sm={3}>
+            <TextField
+              id={this.props.parent + "-" + this.props.id + "-s"}
+              label="Sets"
+              variant="outlined"
+              value={this.props.values.sets || ""}
+              placeholder={this.props.placeholders.sets || ""}
+              size="small"
+              onChange={this.props.handleWeightSetRepChange}
+              inputProps={{ maxLength: 15 }}
+            />
           </Grid>
-        )}
-      </div>
-    );
+
+          <Grid item xs={4} sm={3}>
+            <TextField
+              id={this.props.parent + "-" + this.props.id + "-r"}
+              label="Reps"
+              variant="outlined"
+              value={this.props.values.reps || ""}
+              placeholder={this.props.placeholders.reps || ""}
+              size="small"
+              onChange={this.props.handleWeightSetRepChange}
+              inputProps={{ maxLength: 15 }}
+            />
+          </Grid>
+        </Grid>
+      );
+    } else {
+      return (
+        <Grid container justify="flex-start" spacing={2}>
+          <Grid item xs={4} sm={3}>
+            <TextField
+              id={this.props.parent + "-" + this.props.id + "-w"}
+              label="Weight"
+              variant="outlined"
+              value={this.props.values.weight || ""}
+              placeholder={this.props.placeholders.weight || ""}
+              size="small"
+              fullWidth
+              onChange={this.props.handleWeightSetRepChange}
+              type="number"
+              inputProps={{ min: 1, max: 2000 }}
+            />
+          </Grid>
+
+          <Grid item xs={4} sm={3}>
+            <TextField
+              id={this.props.parent + "-" + this.props.id + "-s"}
+              label="Sets"
+              variant="outlined"
+              value={this.props.values.sets || ""}
+              placeholder={this.props.placeholders.sets || ""}
+              size="small"
+              fullWidth
+              onChange={this.props.handleWeightSetRepChange}
+              type="number"
+              inputProps={{ min: 1, max: 20 }}
+            />
+          </Grid>
+
+          <Grid item xs={4} sm={3}>
+            <TextField
+              id={this.props.parent + "-" + this.props.id + "-r"}
+              label="Reps"
+              variant="outlined"
+              value={this.props.values.reps || ""}
+              placeholder={this.props.placeholders.reps || ""}
+              size="small"
+              fullWidth
+              onChange={this.props.handleWeightSetRepChange}
+              type="number"
+              inputProps={{ min: 1, max: 100 }}
+            />
+          </Grid>
+        </Grid>
+      );
+    }
   }
 }
+
+// This isn't working for some reason so I'm using (|| "") for now
+MaterialWeightSetReps.defaultProps = {
+  placeholders: {
+    weight: "",
+    sets: "",
+    reps: "",
+  },
+  values: {
+    weight: "",
+    reps: "",
+    sets: "",
+  },
+};
 
 export default MaterialWeightSetReps;

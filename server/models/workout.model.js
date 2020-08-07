@@ -5,7 +5,7 @@ const ExerciseSchema = require("./exercise.model");
 // Model for an entire workout
 let WorkoutSchema = new Schema({
   name: { type: String, required: true, maxlength: 40 },
-  desc: { type: String, maxlength: 100 },
+  desc: { type: String, maxlength: 200 },
   notes: { type: String, maxlength: 350 },
   exercises: [ExerciseSchema.schema],
 });

@@ -114,18 +114,18 @@ class WorkoutFromTemplate extends React.Component {
     return (
       <div>
         <Grid container justify="center">
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} md={6}>
             <Paper variant="outlined">
               <Box m="1rem">
                 <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    {/* // Removed 'placeholder' */}
+                  <Grid item xs={4}>
                     <TextField
                       name="name"
                       label="Workout Name"
                       defaultValue={this.props.template.name || ""}
                       variant="outlined"
                       size="small"
+                      fullWidth
                       onChange={this.handleDetailsChange}
                       required={true}
                     ></TextField>
@@ -147,7 +147,7 @@ class WorkoutFromTemplate extends React.Component {
 
                   <Grid item xs={12}>
                     {this.state.exercises.map((exercise, index) => (
-                      <Box my="1rem">
+                      <Box key={exercise.id} my="1rem">
                         <Paper variant="outlined">
                           <Box m="1rem">
                             <MaterialExerciseForm
@@ -162,7 +162,7 @@ class WorkoutFromTemplate extends React.Component {
                               handleWeightSetRepChange={this.handleWeightSetRepChange}
                               addSet={this.addSet}
                               removeSet={this.removeSet}
-                              fromTemplate={true}
+                              newTemplate
                             />
                           </Box>
                         </Paper>

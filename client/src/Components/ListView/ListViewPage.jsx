@@ -19,14 +19,13 @@ class ListView extends React.Component {
   componentDidMount() {
     const page = this.props.page;
 
-    axios.get(`/api/users/${auth.user.username}/${page}`).then((res) => {
+    axios.get(`/api/users/${auth.getUser().username}/${page}`).then((res) => {
       if (page === "workouts") this.setState({ list: res.data.workouts });
       else if (page === "templates") this.setState({ list: res.data.templates });
     });
   }
 
   handleClick(id) {
-    const { user } = this.props.match.params;
     const page = this.props.page;
     let list = [];
 
@@ -35,7 +34,7 @@ class ListView extends React.Component {
 
     for (let item of list) {
       if (item._id === id) {
-        this.props.history.push(`/${user}/${page}/${id}`);
+        this.props.history.push(`/${auth.getUser().username}/${page}/${id}`);
         break;
       }
     }

@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   Typography,
-  ButtonBase,
   CardActionArea,
   CardActions,
 } from "@material-ui/core";
@@ -34,17 +33,15 @@ function ItemCard(props) {
 
   return (
     <Card className={classes.root} variant="outlined">
-      <CardActionArea className={classes.details}>
-        <ButtonBase className={classes.cardAction} onClick={props.handleClick}>
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              {name}
-            </Typography>
-            <Typography variant="body2" component="p" wrap="nowrap">
-              {description}
-            </Typography>
-          </CardContent>
-        </ButtonBase>
+      <CardActionArea className={classes.cardAction} onClick={props.handleClick}>
+        <CardContent>
+          <Typography variant="h5" component="h2">
+            {name}
+          </Typography>
+          <Typography variant="body2" component="p" wrap="nowrap">
+            {description}
+          </Typography>
+        </CardContent>
       </CardActionArea>
       {templateCard && (
         <CardActions>

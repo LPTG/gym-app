@@ -11,6 +11,8 @@ class MaterialExerciseForm extends React.PureComponent {
     this.handleWeightChange = this.handleWeightChange.bind(this);
     this.handleSetChange = this.handleSetChange.bind(this);
     this.handleRepChange = this.handleRepChange.bind(this);
+    this.getWsrValues = this.getWsrValues.bind(this);
+    this.getWsrPlaceholders = this.getWsrPlaceholders.bind(this);
   }
 
   handleClick() {
@@ -34,104 +36,46 @@ class MaterialExerciseForm extends React.PureComponent {
     this.props.handleWeightSetRepChange(event);
   }
 
+  getWsrValues(index) {
+    if (this.props.wsrValues && this.props.wsrValues[index]) return this.props.wsrValues[index];
+    else return false;
+  }
+
+  getWsrPlaceholders(index) {
+    if (this.props.wsrPlaceholders && this.props.wsrPlaceholders[index])
+      return this.props.wsrPlaceholders[index];
+    else return false;
+  }
+
   render() {
     return (
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          {this.props.fromTemplate && (
-            <TextField
-              id={this.props.id}
-              name={this.props.id}
-              label="Exercise Name"
-              variant="outlined"
-              placeholder={this.props.exercisePlaceholder || ""}
-              size="small"
-              onChange={this.handleExerciseChange}
-            ></TextField>
-          )}
-
-          {!this.props.fromTemplate && (
-            <TextField
-              id={this.props.id}
-              name={this.props.id}
-              label="Exercise Name"
-              variant="outlined"
-              value={this.props.exerciseValue || ""}
-              placeholder={this.props.exercisePlaceholder || ""}
-              size="small"
-              onChange={this.handleExerciseChange}
-            ></TextField>
-          )}
+          <TextField
+            id={this.props.id}
+            name={this.props.id}
+            label="Exercise Name"
+            variant="outlined"
+            value={this.props.exerciseValue}
+            placeholder={this.props.exercisePlaceholder}
+            size="small"
+            onChange={this.handleExerciseChange}
+            inputProps={{ maxLength: 40 }}
+          ></TextField>
         </Grid>
 
         <Grid item xs={12}>
-          {this.props.wsrPlaceholders &&
-            this.props.wsrValues &&
-            this.props.wsr.map((wsr, index) => (
-              <MaterialWeightSetReps
-                key={wsr.id}
-                parent={this.props.id}
-                id={wsr.id}
-                weightText={
-                  // Is checking for this.props.wsrPlaceholders necessary?
-                  this.props.wsrPlaceholders
-                    ? this.props.wsrPlaceholders[index]
-                      ? this.props.wsrPlaceholders[index].weight
-                      : ""
-                    : ""
-                }
-                setsText={
-                  this.props.wsrPlaceholders
-                    ? this.props.wsrPlaceholders[index]
-                      ? this.props.wsrPlaceholders[index].sets
-                      : ""
-                    : ""
-                }
-                repsText={
-                  this.props.wsrPlaceholders
-                    ? this.props.wsrPlaceholders[index]
-                      ? this.props.wsrPlaceholders[index].reps
-                      : ""
-                    : ""
-                }
-                weightValue={this.props.wsrValues[index].weight}
-                setsValue={this.props.wsrValues[index].sets}
-                repsValue={this.props.wsrValues[index].reps}
-                onWeightChange={this.handleWeightChange}
-                onSetChange={this.handleSetChange}
-                onRepChange={this.handleRepChange}
-                fromTemplate={true}
-              />
-            ))}
-
-          {!this.props.wsrPlaceholders &&
-            this.props.wsrValues &&
-            this.props.wsr.map((wsr, index) => (
-              <MaterialWeightSetReps
-                key={wsr.id}
-                parent={this.props.id}
-                id={wsr.id}
-                weightValue={this.props.wsrValues[index].weight}
-                setsValue={this.props.wsrValues[index].sets}
-                repsValue={this.props.wsrValues[index].reps}
-                onWeightChange={this.handleWeightChange}
-                onSetChange={this.handleSetChange}
-                onRepChange={this.handleRepChange}
-              />
-            ))}
-
-          {!this.props.wsrPlaceholders &&
-            !this.props.wsrValues &&
-            this.props.wsr.map((wsr) => (
-              <MaterialWeightSetReps
-                key={wsr.id}
-                parent={this.props.id}
-                id={wsr.id}
-                onWeightChange={this.handleWeightChange}
-                onSetChange={this.handleSetChange}
-                onRepChange={this.handleRepChange}
-              />
-            ))}
+          {this.props.wsrValues.map((wsr, index) => (
+            <MaterialWeightSetReps
+              key={wsr.id}
+              id={wsr.id}
+              parent={this.props.id}
+              placeholders={this.getWsrPlaceholders(index)}
+              values={this.getWsrValues(index)}
+              handleWeightSetRepChange={this.props.handleWeightSetRepChange}
+              newTemplate={this.props.newTemplate || false}
+            />
+          ))}
         </Grid>
 
         <Grid container item spacing={1}>
@@ -159,5 +103,10 @@ class MaterialExerciseForm extends React.PureComponent {
     );
   }
 }
+
+MaterialWeightSetReps.defaultProps = {
+  exerciseValue: "",
+  exercisePlaceholder: "",
+};
 
 export default MaterialExerciseForm;
