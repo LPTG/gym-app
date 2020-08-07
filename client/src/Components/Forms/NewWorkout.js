@@ -48,8 +48,8 @@ class NewWorkout extends React.Component {
   }
 
   // Removes the last exercise from the list of exercises
-  removeExercise() {
-    this.setState({ exercises: removeExerciseFunc(this.state.exercises) });
+  removeExercise(exerciseID) {
+    this.setState({ exercises: removeExerciseFunc(this.state.exercises, exerciseID) });
   }
 
   // Adds another set to the exercise specified by the given exercise id
@@ -157,6 +157,7 @@ class NewWorkout extends React.Component {
                               handleWeightSetRepChange={this.handleWeightSetRepChange}
                               addSet={this.addSet}
                               removeSet={this.removeSet}
+                              removeExercise={this.removeExercise}
                               newTemplate={this.props.newTemplate}
                             />
                           </Box>

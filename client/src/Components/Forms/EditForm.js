@@ -3,6 +3,7 @@ import axios from "axios";
 import auth from "../../Auth";
 import MaterialExerciseForm from "../FormComponents/MaterialExerciseForm";
 import { Box, Paper, Grid, TextField, Button } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import {
   addExerciseFunc,
   removeExerciseFunc,
@@ -41,8 +42,8 @@ class EditForm extends React.Component {
   }
 
   // Removes the last exercise from the list of exercises
-  removeExercise() {
-    this.setState({ exercises: removeExerciseFunc(this.state.exercises) });
+  removeExercise(exerciseID) {
+    this.setState({ exercises: removeExerciseFunc(this.state.exercises, exerciseID) });
   }
 
   // Adds another set to the exercise specified by the given exercise id
@@ -152,9 +153,7 @@ class EditForm extends React.Component {
                     </Grid>
 
                     <Grid item>
-                      <Button variant="contained" color="secondary" onClick={this.deleteForm}>
-                        Delete {page}
-                      </Button>
+                      <DeleteIcon style={{ cursor: "pointer" }} onClick={this.deleteForm} />
                     </Grid>
                   </Grid>
 
@@ -187,6 +186,7 @@ class EditForm extends React.Component {
                               handleWeightSetRepChange={this.handleWeightSetRepChange}
                               addSet={this.addSet}
                               removeSet={this.removeSet}
+                              removeExercise={this.removeExercise}
                               newTemplate={this.props.newTemplate || false}
                             />
                           </Box>
@@ -203,11 +203,11 @@ class EditForm extends React.Component {
                         </Button>
                       </Grid>
 
-                      <Grid item>
+                      {/* <Grid item>
                         <Button variant="contained" color="secondary" onClick={this.removeExercise}>
                           Remove Exercise
                         </Button>
-                      </Grid>
+                      </Grid> */}
                     </Grid>
 
                     <Grid item>

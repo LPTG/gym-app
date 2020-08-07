@@ -19,9 +19,16 @@ const addExerciseFunc = (exerciseState) => {
 };
 
 // Removes the last exercise from the list of exercises
-const removeExerciseFunc = (exerciseState) => {
-  // Return copy of exercises array minus the last exercise
-  return exerciseState.slice(0, -1);
+const removeExerciseFunc = (exerciseState, exerciseID) => {
+  console.log(exerciseState);
+  const exerciseCopy = exerciseState.slice();
+
+  const exerciseIndex = exerciseCopy.findIndex((x) => x.id === exerciseID);
+  console.log(exerciseCopy.splice(exerciseIndex, 1));
+
+  console.log(exerciseCopy);
+
+  return exerciseCopy;
 };
 
 const addSetFunc = (exerciseState, exerciseID) => {

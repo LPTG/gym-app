@@ -1,6 +1,7 @@
 import React from "react";
 import MaterialWeightSetReps from "./MaterialWeightSetReps";
 import { Button, Grid, TextField } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 
 class MaterialExerciseForm extends React.PureComponent {
   constructor(props) {
@@ -50,18 +51,30 @@ class MaterialExerciseForm extends React.PureComponent {
   render() {
     return (
       <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <TextField
-            id={this.props.id}
-            name={this.props.id}
-            label="Exercise Name"
-            variant="outlined"
-            value={this.props.exerciseValue}
-            placeholder={this.props.exercisePlaceholder}
-            size="small"
-            onChange={this.handleExerciseChange}
-            inputProps={{ maxLength: 40 }}
-          ></TextField>
+        <Grid container item justify="space-between" xs={12}>
+          <Grid item xs={4}>
+            <TextField
+              id={this.props.id}
+              name={this.props.id}
+              label="Exercise Name"
+              variant="outlined"
+              value={this.props.exerciseValue || ""}
+              placeholder={this.props.exercisePlaceholder || ""}
+              size="small"
+              fullWidth
+              onChange={this.handleExerciseChange}
+              inputProps={{ maxLength: 40 }}
+            ></TextField>
+          </Grid>
+
+          <Grid item>
+            <CloseIcon
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                this.props.removeExercise(this.props.id);
+              }}
+            />
+          </Grid>
         </Grid>
 
         <Grid item xs={12}>
