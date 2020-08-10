@@ -4,6 +4,7 @@ class Auth {
   constructor() {
     this.authenticated = false;
     this.user = [];
+    this.currentPage = "";
   }
 
   register(postData, cb) {

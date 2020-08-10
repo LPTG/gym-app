@@ -1,5 +1,4 @@
-import React from "react";
-import "./Register.css";
+import React, { useState } from "react";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import auth from "../../Auth";
@@ -16,33 +15,20 @@ const useStyles = (theme) => ({
   },
 });
 
-class Register extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { registerView: false };
+function Register(props) {
+  const [register, setRegister] = useState(false);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleClick = this.handleClick.bind(this);
-  }
+  const handleSubmit = (e) => {
+    e.preventDefault();
 
-  componentWillMount() {
-    auth.checkSession(() => {
-      if (auth.getAuth()) {
-        const user = auth.getUser().username;
-        this.props.history.push(`/${user}/workouts`);
-      }
-    });
-  }
+    // const username = this.state.username;
+    // const email = this.state.email;
+    // const password = this.state.password;
 
-  handleSubmit(event) {
-    event.preventDefault();
-
-    const username = this.state.username;
-    const email = this.state.email;
-    const password = this.state.password;
-
-    if (this.state.registerView) {
+    if (register) {
       const postData = {
         username,
         email,
@@ -67,76 +53,76 @@ class Register extends React.Component {
         auth.checkSession(() => {
           if (auth.getAuth()) {
             const user = auth.getUser().username;
-            this.props.history.push(`/${user}/workouts`);
+            props.history.push(`/${user}/workouts`);
           }
         });
       });
     }
-  }
+  };
 
-  handleChange(event) {
-    const target = event.target;
+  const handleClick = (e) => {
+    setRegister(!register);
+  };
 
-    const value = target.value;
-    const name = target.name;
+  const handleUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
 
-    this.setState({
-      [name]: value,
-    });
-  }
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
 
-  handleClick(event) {
-    // Toggle to show email field or not
-    console.log("Changing registerView");
-    this.setState({ registerView: !this.state.registerView });
-  }
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+  };
 
-  render() {
-    const { classes } = this.props;
-    const containerProps = {
-      justify: "flex-end",
-      spacing: 1,
-    };
+  const { classes } = props;
+  const containerProps = {
+    justify: "flex-end",
+    spacing: 1,
+  };
 
-    return (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        alignItems="center"
-        justify="space-evenly"
-        style={{ minHeight: "100vh", backgroundColor: "#90DDF0" }}
-      >
-        <Grid item />
-        <Grid item xs={12} md={8}>
-          <Typography className={classes.title} variant="h1" component="h1" color="textPrimary">
-            Workout Creator
-          </Typography>
-        </Grid>
-
-        <Grid item xs={6} md={2}>
-          <Paper className={classes.paper} elevation={10} style={{ backgroundColor: "#F0EDEE" }}>
-            {this.state.registerView ? (
-              <RegisterForm
-                containerProps={containerProps}
-                handleSubmit={this.handleSubmit}
-                handleChange={this.handleChange}
-                handleClick={this.handleClick}
-              />
-            ) : (
-              <LoginForm
-                containerProps={containerProps}
-                handleSubmit={this.handleSubmit}
-                handleChange={this.handleChange}
-                handleClick={this.handleClick}
-              />
-            )}
-          </Paper>
-        </Grid>
-        <Grid item />
+  return (
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justify="space-evenly"
+      style={{ minHeight: "100vh", backgroundColor: "#90DDF0" }}
+    >
+      <Grid item />
+      <Grid item xs={12} md={8}>
+        <Typography className={classes.title} variant="h1" component="h1" color="textPrimary">
+          Workout Creator
+        </Typography>
       </Grid>
-    );
-  }
+
+      <Grid item xs={6} md={2}>
+        <Paper className={classes.paper} elevation={10} style={{ backgroundColor: "#F0EDEE" }}>
+          {register ? (
+            <RegisterForm
+              containerProps={containerProps}
+              handleSubmit={handleSubmit}
+              handleUsernameChange={handleUsernameChange}
+              handleEmailChange={handleEmailChange}
+              handlePasswordChange={handlePasswordChange}
+              handleClick={handleClick}
+            />
+          ) : (
+            <LoginForm
+              containerProps={containerProps}
+              handleSubmit={handleSubmit}
+              handleUsernameChange={handleUsernameChange}
+              handlePasswordChange={handlePasswordChange}
+              handleClick={handleClick}
+            />
+          )}
+        </Paper>
+      </Grid>
+      <Grid item />
+    </Grid>
+  );
 }
 
 export default withStyles(useStyles)(Register);

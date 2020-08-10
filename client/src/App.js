@@ -5,7 +5,6 @@ import NewWorkout from "./Components/Forms/NewWorkout";
 import ListView from "./Components/ListView/ListViewPage";
 import ItemView from "./Components/ListView/ItemView";
 import { ProtectedRoute } from "./Components/SiteComponents/ProtectedRoute";
-
 import "./App.css";
 
 function App() {

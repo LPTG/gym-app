@@ -9,6 +9,7 @@ export const ProtectedRoute = ({ component: Component, ...rest }) => {
       {...rest}
       render={(props) => {
         if (auth.getAuth()) {
+          //auth.currentPage = props.history.location.pathname;
           return (
             <div>
               <NavBar {...props} />
