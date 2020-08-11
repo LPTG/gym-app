@@ -5,7 +5,7 @@ import ItemList from "./ItemList";
 import { Grid, Typography, Button } from "@material-ui/core";
 import auth from "../../Auth";
 
-class ListView extends React.Component {
+class ListViewPage extends React.Component {
   constructor(props) {
     super(props);
 
@@ -85,4 +85,4 @@ class ListView extends React.Component {
   }
 }
 
-export default ListView;
+export default ListViewPage;

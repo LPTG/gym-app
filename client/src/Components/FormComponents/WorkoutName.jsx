@@ -1,21 +1,19 @@
-import React from "react";
+import React, { memo } from "react";
 import { TextField } from "@material-ui/core";
 
-class WorkoutName extends React.PureComponent {
-  render() {
-    return (
-      <TextField
-        name="name"
-        label="Workout Name"
-        variant="outlined"
-        size="small"
-        fullWidth
-        onChange={this.props.handleDetailsChange}
-        inputProps={{ maxLength: 40 }}
-        required
-      />
-    );
-  }
+function WorkoutName(props) {
+  return (
+    <TextField
+      name="name"
+      label="Workout Name"
+      variant="outlined"
+      size="small"
+      fullWidth
+      onChange={props.handleDetailsChange}
+      inputProps={{ maxLength: 40 }}
+      required
+    />
+  );
 }
 
-export default WorkoutName;
+export default memo(WorkoutName);
