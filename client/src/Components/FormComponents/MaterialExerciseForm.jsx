@@ -4,37 +4,8 @@ import { Grid, TextField } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
 function MaterialExerciseForm(props) {
-  // constructor(props) {
-  //   super(props);
-
-  //   this.handleClick = this.handleClick.bind(this);
-  //   this.handleExerciseChange = this.handleExerciseChange.bind(this);
-  //   this.handleWeightChange = this.handleWeightChange.bind(this);
-  //   this.handleSetChange = this.handleSetChange.bind(this);
-  //   this.handleRepChange = this.handleRepChange.bind(this);
-  //   this.getWsrValues = this.getWsrValues.bind(this);
-  //   this.getWsrPlaceholders = this.getWsrPlaceholders.bind(this);
-  // }
-
-  const handleClick = () => {
-    // Add a set to the current exercise
-    props.addSet(this.props.id);
-  };
-
   const handleExerciseChange = (e) => {
     props.handleExerciseChange(e);
-  };
-
-  const handleWeightChange = (e) => {
-    props.handleWeightSetRepChange(e);
-  };
-
-  const handleSetChange = (e) => {
-    props.handleWeightSetRepChange(e);
-  };
-
-  const handleRepChange = (e) => {
-    props.handleWeightSetRepChange(e);
   };
 
   const getWsrValues = (index) => {

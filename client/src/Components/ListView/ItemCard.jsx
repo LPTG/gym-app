@@ -47,7 +47,7 @@ function ItemCard(props) {
         <CardActions>
           <Button
             color="secondary"
-            onClick={() => props.history.push(`/${auth.user.username}/new-workout/${itemId}`)}
+            onClick={() => props.history.push(`/${auth.getUser().username}/new-workout/${itemId}`)}
           >
             Use Template
           </Button>

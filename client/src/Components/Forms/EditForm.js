@@ -101,7 +101,6 @@ class EditForm extends React.Component {
       .put(`/api/users/${auth.getUser().username}/${this.props.page}/${id}`, { update })
       .then((response) => {
         // Pop up an error if workout could not be created
-        console.log(response);
         if (
           response.data === "Workout updated successfully!" ||
           response.data === "Template updated successfully!"
@@ -120,7 +119,6 @@ class EditForm extends React.Component {
     axios
       .delete(`/api/users/${auth.getUser().username}/${this.props.page}/${id}`)
       .then((response) => {
-        console.log(response);
         if (
           response.data === "Workout deleted successfully!" ||
           response.data === "Template deleted successfully!"
