@@ -4,10 +4,6 @@ import { Grid, TextField } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
 function MaterialExerciseForm(props) {
-  const handleExerciseChange = (e) => {
-    props.handleExerciseChange(e);
-  };
-
   const getWsrValues = (index) => {
     if (props.wsrValues && props.wsrValues[index]) return props.wsrValues[index];
     else return false;
@@ -31,7 +27,7 @@ function MaterialExerciseForm(props) {
             placeholder={props.exercisePlaceholder || ""}
             size="small"
             fullWidth
-            onChange={handleExerciseChange}
+            onChange={props.handleExerciseChange}
             inputProps={{ maxLength: 40 }}
             required
           ></TextField>
@@ -66,9 +62,9 @@ function MaterialExerciseForm(props) {
   );
 }
 
-MaterialWeightSetReps.defaultProps = {
-  exerciseValue: "",
-  exercisePlaceholder: "",
-};
+// MaterialWeightSetReps.defaultProps = {
+//   exerciseValue: "",
+//   exercisePlaceholder: "",
+// };
 
 export default MaterialExerciseForm;

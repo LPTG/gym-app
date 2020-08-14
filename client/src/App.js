@@ -5,6 +5,7 @@ import NewWorkout from "./Components/Forms/NewWorkout";
 import ListView from "./Components/ListView/ListViewPage";
 import ItemView from "./Components/ListView/ItemView";
 import { ProtectedRoute } from "./Components/SiteComponents/ProtectedRoute";
+import TestForm from "./Components/Forms/TestsForm";
 import "./App.css";
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Switch>
         <Route path="/" exact component={Register} />
         <Route path="/login" component={Register} />
+        <Route path="/test" component={TestForm} />
         <ProtectedRoute
           path="/:user/new-workout/:templateID"
           component={(props) => <ItemView {...props} page="templated" />}

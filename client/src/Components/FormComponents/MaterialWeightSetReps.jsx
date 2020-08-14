@@ -143,17 +143,17 @@ function MaterialWeightSetReps(props) {
 }
 
 // This isn't working for some reason so I'm using (|| "") for now
-MaterialWeightSetReps.defaultProps = {
-  placeholders: {
-    weight: "",
-    sets: "",
-    reps: "",
-  },
-  values: {
-    weight: "",
-    reps: "",
-    sets: "",
-  },
-};
+// MaterialWeightSetReps.defaultProps = {
+//   placeholders: {
+//     weight: "",
+//     sets: "",
+//     reps: "",
+//   },
+//   values: {
+//     weight: "",
+//     reps: "",
+//     sets: "",
+//   },
+// };
 
 export default memo(MaterialWeightSetReps, arePropsEqual);
