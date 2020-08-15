@@ -1,16 +1,13 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Register from "./Components/Register/Register";
-import NewWorkout from "./Components/Forms/NewWorkout";
-import ListView from "./Components/ListView/ListViewPage";
-import ItemView from "./Components/ListView/ItemView";
 import { ProtectedRoute } from "./Components/SiteComponents/ProtectedRoute";
+import Register from "./Components/Register/Register";
+import ListView from "./Components/ListView/ListViewPage";
 import FormHandler from "./Components/Forms/FormHandler";
-import "./App.css";
 
 function App() {
   const formTypeRegex = "(workouts|templates)";
-  const creatorPath = `/:user/:formType${formTypeRegex}/new`;
+  const creatorPath = `/:user/:formType${formTypeRegex}/new/:id*`;
   const editorPath = `/:user/:formType${formTypeRegex}/:id`;
 
   return (
@@ -19,22 +16,11 @@ function App() {
       <Switch>
         <Route path="/" exact component={Register} />
         <Route path="/login" component={Register} />
-        <ProtectedRoute path={creatorPath} component={(props) => <FormHandler {...props} />} />
+        <ProtectedRoute
+          path={creatorPath}
+          component={(props) => <FormHandler {...props} useTemplate />}
+        />
         <ProtectedRoute path={editorPath} component={(props) => <FormHandler {...props} />} />
-        <ProtectedRoute
-          path="/:user/new-workout/:templateID"
-          component={(props) => <ItemView {...props} page="templated" />}
-        />
-        <ProtectedRoute path="/:user/new-workout" component={NewWorkout} />
-        <ProtectedRoute path="/:user/new-template" newTemplate component={NewWorkout} />
-        {/* <ProtectedRoute
-          path="/:user/workouts/:workoutID"
-          component={(props) => <ItemView {...props} page="workouts" />}
-        />
-        <ProtectedRoute
-          path="/:user/templates/:templateID"
-          component={(props) => <ItemView {...props} newTemplate page="templates" />}
-        /> */}
         <ProtectedRoute
           path="/:user/workouts"
           component={(props) => <ListView {...props} page="workouts" />}

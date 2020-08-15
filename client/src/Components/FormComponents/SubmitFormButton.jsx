@@ -2,9 +2,12 @@ import React from "react";
 import { Button } from "@material-ui/core";
 
 function SubmitFormbutton(props) {
+  const action = props.action === "create" || props.useTemplate ? "Create" : "Update";
+  const type = props.type === "workouts" ? "Workout" : "Template";
+
   return (
     <Button type="submit" variant="contained" color="primary">
-      Create Workout
+      {action + " " + type}
     </Button>
   );
 }

@@ -6,13 +6,15 @@ import DeleteIcon from "@material-ui/icons/Delete";
 function WorkoutDetails(props) {
   const [state, dispatch] = useForm();
 
+  const labelName = props.type === "workouts" ? "Workout" : "Template";
+
   return (
     <>
       <Grid container item justify="space-between" xs={12}>
         <Grid item xs={4}>
           <TextField
             name="name"
-            label="Workout Name"
+            label={labelName + " Name"}
             value={state.name || ""}
             variant="outlined"
             size="small"

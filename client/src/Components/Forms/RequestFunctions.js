@@ -27,9 +27,9 @@ const getWorkout = async (user, workoutId) => {
   });
 };
 
-const getTemplate = (user, templateId) => {
-  axios.get(`/api/users/${user}/templates/${templateId}`).then((res) => {
-    console.log(res);
+const getTemplate = async (user, templateId) => {
+  return axios.get(`/api/users/${user}/templates/${templateId}`).then((res) => {
+    return res.data;
   });
 };
 

@@ -3,33 +3,44 @@ import { Box, Paper, Grid } from "@material-ui/core";
 import { FormProvider } from "./FormContext";
 import WorkoutForm from "./NewForm";
 import { getWorkout, getTemplate } from "./RequestFunctions";
-import { workoutStateToDB, workoutDBToState } from "./ConvertDataFunctions";
+import {
+  workoutDBToEditState,
+  templateDBToEditState,
+  templateDBToWorkoutState,
+} from "./ConvertDataFunctions";
 import auth from "../../Auth";
 
 function FormContainer(props) {
   const [state, setState] = useState(null);
-  const action = props.match.params.formType && props.match.params.id ? "update" : "create";
+  const action =
+    props.match.params.formType && props.match.params.id && !props.useTemplate
+      ? "update"
+      : "create";
   const type = props.match.params.formType;
 
   useEffect(() => {
     // Only attempt to fetch the data if we are updating a workout or template
     if (props.match.params.id) {
       (async () => {
-        if (props.match.params.formType === "workouts") {
+        if (props.useTemplate) {
+          let templateID = props.match.params.id;
+          let template = await getTemplate(auth.getUser().username, templateID);
+          setState(templateDBToWorkoutState(template));
+        } else if (props.match.params.formType === "workouts") {
           let workoutID = props.match.params.id;
           let workout = await getWorkout(auth.getUser().username, workoutID);
-          setState(workoutDBToState(workout));
-        } else {
-          //let templateID = props.match.params.id;
-          //let template = getTemplate(auth.getUser().username, templateID);
-          console.log("Need a templateDBToState conversion function");
+          setState(workoutDBToEditState(workout));
+        } else if (props.match.params.formType === "templates") {
+          let templateID = props.match.params.id;
+          let template = await getTemplate(auth.getUser().username, templateID);
+          setState(templateDBToEditState(template));
         }
       })();
     }
-  }, [props.match.params.formType, props.match.params.id]);
+  }, [props.useTemplate, props.match.params.formType, props.match.params.id]);
 
   // If we are creating a workout or template then we will use the default initial state found in FormContext.js
-  if (action === "create" || state) {
+  if ((action === "create" && !props.useTemplate) || state) {
     return (
       <FormProvider providedState={state}>
         <Grid container justify="center">
@@ -38,7 +49,12 @@ function FormContainer(props) {
               <Box m="1rem">
                 {/* Action can be create or update */}
                 {/* Type can be workout or template */}
-                <WorkoutForm action={action} type={type} />
+                <WorkoutForm
+                  action={action}
+                  type={type}
+                  match={props.match}
+                  useTemplate={props.useTemplate}
+                />
               </Box>
             </Paper>
           </Grid>
