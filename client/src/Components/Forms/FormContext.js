@@ -9,11 +9,11 @@ const initialState = {
   desc: "",
   exercises: ["ex1"],
   exercisesById: { ex1: { name: "", namePlaceholder: "", wsr: ["ex1-wsr1"], wsrCount: 1 } },
-  wsrById: { "ex1-wsr1": { w: "", wPH: "", s: "", sPH: "", r: "", rPH: "" } },
+  wsrById: { "ex1-wsr1": { weight: "", weightPH: "", sets: "", setsPH: "", reps: "", repsPH: "" } },
   exerciseCount: 1,
 };
 
-const initialWsrState = { w: "", wPH: "", s: "", sPH: "", r: "", rPH: "" };
+const initialWsrState = { weight: "", weightPH: "", sets: "", setsPH: "", reps: "", repsPH: "" };
 
 function formReducer(state, action) {
   switch (action.type) {
@@ -30,19 +30,19 @@ function formReducer(state, action) {
     case "weight_change":
       const stateCopyW = { ...state, wsrById: { ...state.wsrById } };
       const newWsrW = { ...state.wsrById[action.id] };
-      newWsrW.w = action.value;
+      newWsrW.weight = action.value;
       stateCopyW.wsrById[action.id] = newWsrW;
       return stateCopyW;
     case "set_change":
       const stateCopyS = { ...state, wsrById: { ...state.wsrById } };
       const newWsrS = { ...state.wsrById[action.id] };
-      newWsrS.s = action.value;
+      newWsrS.sets = action.value;
       stateCopyS.wsrById[action.id] = newWsrS;
       return stateCopyS;
     case "rep_change":
       const stateCopyR = { ...state, wsrById: { ...state.wsrById } };
       const newWsrR = { ...state.wsrById[action.id] };
-      newWsrR.r = action.value;
+      newWsrR.reps = action.value;
       stateCopyR.wsrById[action.id] = newWsrR;
       return stateCopyR;
     case "add_exercise":
@@ -132,11 +132,11 @@ function formReducer(state, action) {
   }
 }
 
-function FormProvider({ children }) {
-  const [state, dispatch] = React.useReducer(formReducer, initialState);
+function FormProvider(props) {
+  const [state, dispatch] = React.useReducer(formReducer, props.providedState || initialState);
   return (
     <FormStateContext.Provider value={state}>
-      <FormDispatchContext.Provider value={dispatch}>{children}</FormDispatchContext.Provider>
+      <FormDispatchContext.Provider value={dispatch}>{props.children}</FormDispatchContext.Provider>
     </FormStateContext.Provider>
   );
 }

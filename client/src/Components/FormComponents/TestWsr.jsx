@@ -16,8 +16,8 @@ function TestWsr(props) {
           id={props.id + "-w"}
           label="Weight"
           variant="outlined"
-          value={wsr.w || ""}
-          placeholder={wsr.wPH || ""}
+          value={wsr.weight || ""}
+          placeholder={wsr.weightPH || ""}
           size="small"
           fullWidth
           onChange={(e) => dispatch({ type: "weight_change", id: props.id, value: e.target.value })}
@@ -31,8 +31,8 @@ function TestWsr(props) {
           id={props.id + "-s"}
           label="Sets"
           variant="outlined"
-          value={wsr.s || ""}
-          placeholder={wsr.sPH || ""}
+          value={wsr.sets || ""}
+          placeholder={wsr.setsPH || ""}
           size="small"
           fullWidth
           onChange={(e) => dispatch({ type: "set_change", id: props.id, value: e.target.value })}
@@ -46,8 +46,8 @@ function TestWsr(props) {
           id={props.id + "-r"}
           label="Reps"
           variant="outlined"
-          value={wsr.r || ""}
-          placeholder={wsr.rPH || ""}
+          value={wsr.reps || ""}
+          placeholder={wsr.repsPH || ""}
           size="small"
           fullWidth
           onChange={(e) => dispatch({ type: "rep_change", id: props.id, value: e.target.value })}

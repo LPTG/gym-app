@@ -12,7 +12,7 @@ function WorkoutDetails(props) {
         <Grid item xs={4}>
           <TextField
             name="name"
-            label="Template Name"
+            label="Workout Name"
             value={state.name || ""}
             variant="outlined"
             size="small"

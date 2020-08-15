@@ -5,30 +5,36 @@ import NewWorkout from "./Components/Forms/NewWorkout";
 import ListView from "./Components/ListView/ListViewPage";
 import ItemView from "./Components/ListView/ItemView";
 import { ProtectedRoute } from "./Components/SiteComponents/ProtectedRoute";
-import TestForm from "./Components/Forms/TestsForm";
+import FormHandler from "./Components/Forms/FormHandler";
 import "./App.css";
 
 function App() {
+  const formTypeRegex = "(workouts|templates)";
+  const creatorPath = `/:user/:formType${formTypeRegex}/new`;
+  const editorPath = `/:user/:formType${formTypeRegex}/:id`;
+
   return (
     <Router>
+      {/* Add regex for url params */}
       <Switch>
         <Route path="/" exact component={Register} />
         <Route path="/login" component={Register} />
-        <Route path="/test" component={TestForm} />
+        <ProtectedRoute path={creatorPath} component={(props) => <FormHandler {...props} />} />
+        <ProtectedRoute path={editorPath} component={(props) => <FormHandler {...props} />} />
         <ProtectedRoute
           path="/:user/new-workout/:templateID"
           component={(props) => <ItemView {...props} page="templated" />}
         />
         <ProtectedRoute path="/:user/new-workout" component={NewWorkout} />
         <ProtectedRoute path="/:user/new-template" newTemplate component={NewWorkout} />
-        <ProtectedRoute
+        {/* <ProtectedRoute
           path="/:user/workouts/:workoutID"
           component={(props) => <ItemView {...props} page="workouts" />}
         />
         <ProtectedRoute
           path="/:user/templates/:templateID"
           component={(props) => <ItemView {...props} newTemplate page="templates" />}
-        />
+        /> */}
         <ProtectedRoute
           path="/:user/workouts"
           component={(props) => <ListView {...props} page="workouts" />}
