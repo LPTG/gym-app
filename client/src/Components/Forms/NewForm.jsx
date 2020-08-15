@@ -14,7 +14,6 @@ function CreateNewForm(props) {
 
   const submitForm = (e, state) => {
     e.preventDefault();
-    console.log(props);
     if (props.type === "workouts") {
       var workout = workoutStateToDB(state);
     } else {
@@ -28,15 +27,15 @@ function CreateNewForm(props) {
 
     if (props.type === "workouts") {
       if (props.action === "create") {
-        createWorkout(auth.getUser().username, workout);
+        createWorkout(auth.getUser(), workout);
       } else {
-        updateWorkout(auth.getUser().username, props.match.params.id, workout);
+        updateWorkout(auth.getUser(), props.match.params.id, workout);
       }
     } else {
       if (props.action === "create") {
-        createTemplate(auth.getUser().username, template);
+        createTemplate(auth.getUser(), template);
       } else {
-        updateTemplate(auth.getUser().username, props.match.params.id, template);
+        updateTemplate(auth.getUser(), props.match.params.id, template);
       }
     }
   };

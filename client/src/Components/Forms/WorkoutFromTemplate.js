@@ -95,11 +95,11 @@ class WorkoutFromTemplate extends React.Component {
 
     workout.exercises = exercises;
 
-    axios.post(`/api/users/${auth.getUser().username}/workouts`, { workout }).then((response) => {
+    axios.post(`/api/users/${auth.getUser()}/workouts`, { workout }).then((response) => {
       // Pop up an error if workout could not be created
       console.log(response);
       if (response.data === "Workout added successfully!") {
-        this.props.history.push(`/${auth.getUser().username}/workouts`);
+        this.props.history.push(`/${auth.getUser()}/workouts`);
       }
     });
   }

@@ -32,14 +32,16 @@ function Register(props) {
       const postData = {
         username,
         email,
-        password,
+        pwd: password,
       };
 
       // username must be at least 3 characters long
       // password must be at least 8 characters long and contain a special char, regex check?
       // regex check email
 
-      auth.register(postData);
+      auth.register(postData, () => {
+        setRegister(false);
+      });
     } else {
       const postData = {
         username,
@@ -52,7 +54,7 @@ function Register(props) {
       auth.login(postData, () => {
         auth.checkSession(() => {
           if (auth.getAuth()) {
-            const user = auth.getUser().username;
+            const user = auth.getUser();
             props.history.push(`/${user}/workouts`);
           }
         });

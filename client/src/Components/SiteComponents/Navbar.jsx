@@ -21,14 +21,14 @@ class Navbar extends React.Component {
             <Grid item>
               <Button
                 color="inherit"
-                onClick={() => this.props.history.push(`/${auth.user.username}/workouts`)}
+                onClick={() => this.props.history.push(`/${auth.getUser()}/workouts`)}
               >
                 Workouts
               </Button>
 
               <Button
                 color="inherit"
-                onClick={() => this.props.history.push(`/${auth.user.username}/templates`)}
+                onClick={() => this.props.history.push(`/${auth.getUser()}/templates`)}
               >
                 Templates
               </Button>

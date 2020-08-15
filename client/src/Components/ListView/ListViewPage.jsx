@@ -9,7 +9,7 @@ function ListViewPage(props) {
 
   useEffect(() => {
     // Fetch workouts or templates depending on the page prop
-    axios.get(`/api/users/${auth.getUser().username}/${props.page}`).then((res) => {
+    axios.get(`/api/users/${auth.getUser()}/${props.page}`).then((res) => {
       if (props.page === "workouts") setList(res.data.workouts);
       else if (props.page === "templates") setList(res.data.templates);
     });
@@ -22,7 +22,7 @@ function ListViewPage(props) {
     for (let item of list) {
       if (item._id === id) {
         // Then redirect to that page
-        props.history.push(`/${auth.getUser().username}/${props.page}/${id}`);
+        props.history.push(`/${auth.getUser()}/${props.page}/${id}`);
         //props.history.push(`/${auth.getUser().username}/${props.page}/${id}`);
         break;
       }

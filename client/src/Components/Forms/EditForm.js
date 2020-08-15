@@ -81,29 +81,27 @@ function EditForm(props) {
       exercises: formattedExercises,
     };
 
-    axios
-      .put(`/api/users/${auth.getUser().username}/${props.page}/${id}`, { update })
-      .then((response) => {
-        // Pop up an error if workout could not be created
-        if (
-          response.data === "Workout updated successfully!" ||
-          response.data === "Template updated successfully!"
-        ) {
-          props.history.push(`/${auth.getUser().username}/${props.page}`);
-        }
-      });
+    axios.put(`/api/users/${auth.getUser()}/${props.page}/${id}`, { update }).then((response) => {
+      // Pop up an error if workout could not be created
+      if (
+        response.data === "Workout updated successfully!" ||
+        response.data === "Template updated successfully!"
+      ) {
+        props.history.push(`/${auth.getUser()}/${props.page}`);
+      }
+    });
   };
 
   const deleteForm = () => {
     const id =
       props.page === "workouts" ? props.match.params.workoutID : props.match.params.templateID;
 
-    axios.delete(`/api/users/${auth.getUser().username}/${props.page}/${id}`).then((response) => {
+    axios.delete(`/api/users/${auth.getUser()}/${props.page}/${id}`).then((response) => {
       if (
         response.data === "Workout deleted successfully!" ||
         response.data === "Template deleted successfully!"
       ) {
-        props.history.push(`/${auth.getUser().username}/${props.page}`);
+        props.history.push(`/${auth.getUser()}/${props.page}`);
       }
     });
   };

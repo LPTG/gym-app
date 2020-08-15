@@ -7,7 +7,8 @@ import FormHandler from "./Components/Forms/FormHandler";
 
 function App() {
   const formTypeRegex = "(workouts|templates)";
-  const creatorPath = `/:user/:formType${formTypeRegex}/new/:id*`;
+  const creatorPath = `/:user/:formType${formTypeRegex}/new/`;
+  const useTemplatePath = `/:user/:formType${formTypeRegex}/new/:id+`;
   const editorPath = `/:user/:formType${formTypeRegex}/:id`;
 
   return (
@@ -17,9 +18,10 @@ function App() {
         <Route path="/" exact component={Register} />
         <Route path="/login" component={Register} />
         <ProtectedRoute
-          path={creatorPath}
+          path={useTemplatePath}
           component={(props) => <FormHandler {...props} useTemplate />}
         />
+        <ProtectedRoute path={creatorPath} component={(props) => <FormHandler {...props} />} />
         <ProtectedRoute path={editorPath} component={(props) => <FormHandler {...props} />} />
         <ProtectedRoute
           path="/:user/workouts"

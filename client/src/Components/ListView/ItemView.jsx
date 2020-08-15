@@ -13,7 +13,7 @@ function ItemView(props) {
   const [frame, setFrame] = useState([]);
 
   useEffect(() => {
-    const user = auth.getUser().username;
+    const user = auth.getUser();
     const page = props.page === "templated" ? "templates" : props.page;
     const id = page === "workouts" ? props.match.params.workoutID : props.match.params.templateID;
 

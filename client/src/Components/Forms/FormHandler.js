@@ -24,15 +24,15 @@ function FormContainer(props) {
       (async () => {
         if (props.useTemplate) {
           let templateID = props.match.params.id;
-          let template = await getTemplate(auth.getUser().username, templateID);
+          let template = await getTemplate(auth.getUser(), templateID);
           setState(templateDBToWorkoutState(template));
         } else if (props.match.params.formType === "workouts") {
           let workoutID = props.match.params.id;
-          let workout = await getWorkout(auth.getUser().username, workoutID);
+          let workout = await getWorkout(auth.getUser(), workoutID);
           setState(workoutDBToEditState(workout));
         } else if (props.match.params.formType === "templates") {
           let templateID = props.match.params.id;
-          let template = await getTemplate(auth.getUser().username, templateID);
+          let template = await getTemplate(auth.getUser(), templateID);
           setState(templateDBToEditState(template));
         }
       })();

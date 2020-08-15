@@ -14,7 +14,16 @@ exports.create_session = function (req, res, err, user, info) {
       return next(err1);
     }
 
-    return res.json({ loggedIn: true });
+    safeUser = {
+      type: req.user.type,
+      workouts: req.user.workouts,
+      templates: req.user.templates,
+      prevex: req.user.prevex,
+      username: req.user.username,
+      email: req.user.email,
+    };
+    // May only need to send username
+    return res.json({ loggedIn: true, user: safeUser });
   });
 };
 

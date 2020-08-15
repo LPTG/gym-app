@@ -104,23 +104,21 @@ class NewWorkout extends React.Component {
 
     this.props.newTemplate
       ? axios
-          .post(`/api/users/${auth.getUser().username}/templates`, { template: workout })
+          .post(`/api/users/${auth.getUser()}/templates`, { template: workout })
           .then((response) => {
             // Pop up an error if workout could not be created
             console.log(response);
             if (response.data === "Template added successfully!") {
-              this.props.history.push(`/${auth.getUser().username}/templates`);
+              this.props.history.push(`/${auth.getUser()}/templates`);
             }
           })
-      : axios
-          .post(`/api/users/${auth.getUser().username}/workouts`, { workout })
-          .then((response) => {
-            // Pop up an error if workout could not be created
-            console.log(response);
-            if (response.data === "Workout added successfully!") {
-              this.props.history.push(`/${auth.getUser().username}/workouts`);
-            }
-          });
+      : axios.post(`/api/users/${auth.getUser()}/workouts`, { workout }).then((response) => {
+          // Pop up an error if workout could not be created
+          console.log(response);
+          if (response.data === "Workout added successfully!") {
+            this.props.history.push(`/${auth.getUser()}/workouts`);
+          }
+        });
   }
 
   render() {

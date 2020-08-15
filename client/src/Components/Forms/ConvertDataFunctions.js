@@ -18,7 +18,6 @@ const workoutStateToDB = (state) => {
     workout.exercises.push(exercise);
   });
 
-  console.log(workout);
   return workout;
 };
 
