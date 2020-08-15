@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Box, Paper, Grid } from "@material-ui/core";
 import { FormProvider } from "./FormContext";
-import WorkoutForm from "./NewForm";
-import { getWorkout, getTemplate } from "./RequestFunctions";
+import FormHandler from "./FormHandler";
+import { getWorkout, getTemplate } from "../HelperFunctions/RequestFunctions";
 import {
   workoutDBToEditState,
   templateDBToEditState,
   templateDBToWorkoutState,
-} from "./ConvertDataFunctions";
+} from "../HelperFunctions/ConvertDataFunctions";
 import auth from "../../Auth";
 
 function FormContainer(props) {
@@ -49,7 +49,7 @@ function FormContainer(props) {
               <Box m="1rem">
                 {/* Action can be create or update */}
                 {/* Type can be workout or template */}
-                <WorkoutForm
+                <FormHandler
                   action={action}
                   type={type}
                   match={props.match}

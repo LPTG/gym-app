@@ -12,6 +12,7 @@ function WorkoutDetails(props) {
     <>
       <Grid container item justify="space-between" xs={12}>
         <Grid item xs={4}>
+          {/* inputProps={{ maxLength: 40 }} */}
           <TextField
             name="name"
             label={labelName + " Name"}
@@ -30,6 +31,8 @@ function WorkoutDetails(props) {
       </Grid>
 
       <Grid item xs={12}>
+        {/* inputProps={{ maxLength: 200 }}
+            helperText={`${props.length}/200`} */}
         <TextField
           name="desc"
           label="Description"

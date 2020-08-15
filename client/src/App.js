@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { ProtectedRoute } from "./Components/SiteComponents/ProtectedRoute";
-import Register from "./Components/Register/Register";
+import Register from "./Components/UserAuth/LoginOrRegister";
 import ListView from "./Components/ListView/ListViewPage";
-import FormHandler from "./Components/Forms/FormHandler";
+import FormHandler from "./Components/Forms/FormContainer";
 
 function App() {
   const formTypeRegex = "(workouts|templates)";

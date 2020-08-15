@@ -1,5 +1,5 @@
 import React from "react";
-import TestExerciseForm from "./TestExerciseForm";
+import Exercise from "./Exercise";
 import { Box, Paper } from "@material-ui/core";
 import { useForm } from "../Forms/FormContext";
 
@@ -12,7 +12,7 @@ function ExerciseList(props) {
         <Box key={exercise} my="1rem">
           <Paper variant="outlined">
             <Box m="1rem">
-              <TestExerciseForm id={exercise} />
+              <Exercise id={exercise} />
             </Box>
           </Paper>
         </Box>

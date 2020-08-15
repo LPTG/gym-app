@@ -1,15 +1,26 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
 import { useForm } from "./FormContext";
-import WorkoutDetails from "../FormComponents/WorkoutDetails";
-import ExerciseList from "../FormComponents/ExerciseList";
-import AddExerciseButton from "../FormComponents/AddExerciseButton";
-import SubmitFormButton from "../FormComponents/SubmitFormButton";
-import { workoutStateToDB, templateStateToDB } from "./ConvertDataFunctions";
-import { createWorkout, createTemplate, updateWorkout, updateTemplate } from "./RequestFunctions";
+import {
+  WorkoutDetails,
+  ExerciseList,
+  AddExerciseButton,
+  SubmitFormButton,
+} from "../FormComponents";
+// import WorkoutDetails from "../FormComponents/WorkoutDetails";
+// import ExerciseList from "../FormComponents/ExerciseList";
+// import AddExerciseButton from "../FormComponents/AddExerciseButton";
+// import SubmitFormButton from "../FormComponents/SubmitFormButton";
+import { workoutStateToDB, templateStateToDB } from "../HelperFunctions/ConvertDataFunctions";
+import {
+  createWorkout,
+  createTemplate,
+  updateWorkout,
+  updateTemplate,
+} from "../HelperFunctions/RequestFunctions";
 import auth from "../../Auth";
 
-function CreateNewForm(props) {
+function FormHandler(props) {
   const [state] = useForm();
 
   const submitForm = (e, state) => {
@@ -71,4 +82,4 @@ function CreateNewForm(props) {
   );
 }
 
-export default CreateNewForm;
+export default FormHandler;

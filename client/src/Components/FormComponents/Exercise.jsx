@@ -1,9 +1,8 @@
 import React from "react";
-//import MaterialWeightSetReps from "./MaterialWeightSetReps";
 import { Grid, TextField } from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
 import { useForm } from "../Forms/FormContext";
-import TestWsr from "./TestWsr";
+import TestWsr from "./WeightSetsReps";
+import CloseIcon from "@material-ui/icons/Close";
 
 function TestExerciseForm(props) {
   const [state, dispatch] = useForm();

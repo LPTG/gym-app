@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "@material-ui/core";
 
-function SubmitFormbutton(props) {
+function SubmitFormButton(props) {
   const action = props.action === "create" || props.useTemplate ? "Create" : "Update";
   const type = props.type === "workouts" ? "Workout" : "Template";
 
@@ -12,4 +12,4 @@ function SubmitFormbutton(props) {
   );
 }
 
-export default SubmitFormbutton;
+export default SubmitFormButton;

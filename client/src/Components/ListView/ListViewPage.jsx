@@ -13,6 +13,9 @@ function ListViewPage(props) {
       if (props.page === "workouts") setList(res.data.workouts);
       else if (props.page === "templates") setList(res.data.templates);
     });
+    // .catch(() => {
+    //   props.history.push(`/`);
+    // });
 
     // Store in local storage?
   }, [props.page]);
@@ -23,7 +26,6 @@ function ListViewPage(props) {
       if (item._id === id) {
         // Then redirect to that page
         props.history.push(`/${auth.getUser()}/${props.page}/${id}`);
-        //props.history.push(`/${auth.getUser().username}/${props.page}/${id}`);
         break;
       }
     }
@@ -58,11 +60,7 @@ function ListViewPage(props) {
             variant="contained"
             color="primary"
             onClick={() => {
-              //if (title === "Workout") {
               props.history.push(`/${props.match.params.user}/${props.page}/new`);
-              // } else {
-              //   props.history.push(`/${props.match.params.user}/new-template`);
-              // }
             }}
           >{`Add ${title}`}</Button>
         </Grid>
