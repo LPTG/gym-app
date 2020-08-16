@@ -40,5 +40,5 @@ passport.use(
       .catch((err) => {
         return done(null, false, { message: err });
       });
-  }) // Change what is sent in user object
+  })
 );

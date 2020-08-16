@@ -6,7 +6,6 @@ const session_controller = require("../controllers/session.controller");
 // DELETE   /session                        // log user out
 // GET      /session                        // check if user is logged in
 
-//router.get("/new", session_controller.create_session);
 router.post("/", function (req, res, next) {
   passport.authenticate("local", function (err, user, info) {
     session_controller.create_session(req, res, err, user, info);

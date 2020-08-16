@@ -1,17 +1,15 @@
 const Template = require("../models/template.model");
 const User = require("../models/user.model");
 
-// TODO: Check if template is in user's templates list before modifying/reading them
-
 // Takes user _id and new template
 exports.create_template = function (req, res) {
   // Check that we have all required data
-  if (!req.username || !req.body.template) {
+  if (!req.body.template) {
     return res.send("Missing required data.");
   }
 
   // See if user exists
-  User.findOne({ username: req.username }, function (err, user) {
+  User.findOne({ username: req.user.username }, function (err, user) {
     if (err) return err;
 
     if (!user) {
@@ -43,10 +41,12 @@ exports.create_template = function (req, res) {
   });
 };
 
-// Need to check if templateID is in user templates array
-// Takes template _id and update option
+// Takes template _id
 exports.read_template = function (req, res) {
-  console.log("looking for template");
+  // Check if user has a template with given templateID
+  if (!req.user.templates.includes(req.params.templateID))
+    return res.status(403).send({ message: "Template not found." });
+
   Template.findById(req.params.templateID, function (err, template) {
     if (err) {
       return res.send("Could not find template.");
@@ -57,12 +57,8 @@ exports.read_template = function (req, res) {
 };
 
 exports.read_templates = function (req, res) {
-  if (!req.username) {
-    return res.send("Missing required data.");
-  }
-
   // See if user exists
-  User.findOne({ username: req.username }, function (err, templates) {
+  User.findOne({ username: req.user.username }, function (err, templates) {
     if (err) return err;
 
     if (!templates) {
@@ -106,12 +102,12 @@ exports.update_template = function (req, res) {
 
 // Takes username and template _id
 exports.delete_template = function (req, res) {
-  if (!req.username || !req.params.templateID) {
+  if (!req.params.templateID) {
     return res.send("Missing required data.");
   }
   // See if user exists and update it
   User.update(
-    { username: req.username },
+    { username: req.user.username },
     { $pull: { templates: req.params.templateID } },
     function (err, res1) {
       if (err) {
