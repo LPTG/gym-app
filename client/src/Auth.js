@@ -12,8 +12,6 @@ class Auth {
 
   register(postData, cb) {
     axios.post("/api/users", postData).then((res) => {
-      console.log(res.data);
-
       // login?
       cb();
     });
@@ -25,7 +23,7 @@ class Auth {
       .then((res) => {
         if (res.loggedIn) {
           sessionStorage.setItem("authenticated", true);
-          sessionStorage.setItem("user", res.data.user.username);
+          sessionStorage.setItem("user", res.data.user);
         } else {
           sessionStorage.setItem("authenticated", false);
         }
@@ -51,7 +49,7 @@ class Auth {
       sessionStorage.setItem("authenticated", res.data.loggedIn);
 
       if (sessionStorage.getItem("authenticated") === "true") {
-        sessionStorage.setItem("user", res.data.user.username);
+        sessionStorage.setItem("user", res.data.user);
       }
       cb();
     });
@@ -64,7 +62,6 @@ class Auth {
   }
 
   getUser() {
-    //return sessionStorage.getItem("user");
     return sessionStorage.getItem("user");
   }
 }

@@ -54,8 +54,7 @@ function Register(props) {
       auth.login(postData, () => {
         auth.checkSession(() => {
           if (auth.getAuth()) {
-            const user = auth.getUser();
-            props.history.push(`/${user}/workouts`);
+            props.history.push(`/${auth.getUser()}/workouts`);
           }
         });
       });

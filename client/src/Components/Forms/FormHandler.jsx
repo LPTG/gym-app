@@ -55,7 +55,12 @@ function FormHandler(props) {
     <form onSubmit={(e) => submitForm(e, state)}>
       <Grid container spacing={2}>
         {/* Info */}
-        <WorkoutDetails type={props.type} />
+        <WorkoutDetails
+          action={props.action}
+          type={props.type}
+          match={props.match}
+          useTemplate={props.useTemplate}
+        />
 
         <Grid item xs={12}>
           {/* Exercise list */}

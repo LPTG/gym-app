@@ -1,7 +1,9 @@
 import React from "react";
 import { Grid, TextField } from "@material-ui/core";
 import { useForm } from "../Forms/FormContext";
+import { deleteWorkout, deleteTemplate } from "../HelperFunctions/RequestFunctions";
 import DeleteIcon from "@material-ui/icons/Delete";
+import auth from "../../Auth";
 
 function WorkoutDetails(props) {
   const [state, dispatch] = useForm();
@@ -25,9 +27,19 @@ function WorkoutDetails(props) {
           ></TextField>
         </Grid>
 
-        <Grid item>
-          <DeleteIcon style={{ cursor: "pointer" }} onClick={null} />
-        </Grid>
+        {/* Only display the delete icon if we are not creating a new template or workout from scratch */}
+        {(props.action === "update" || props.useTemplate) && (
+          <Grid item>
+            <DeleteIcon
+              style={{ cursor: "pointer" }}
+              onClick={() => {
+                props.type === "workouts"
+                  ? deleteWorkout(auth.getUser(), props.match.params.id)
+                  : deleteTemplate(auth.getUser(), props.match.params.id);
+              }}
+            />
+          </Grid>
+        )}
       </Grid>
 
       <Grid item xs={12}>
