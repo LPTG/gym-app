@@ -5,31 +5,28 @@ const saltRounds = 10;
 
 exports.read_all = function (req, res) {
   User.find({}, function (err, res1) {
-    if (err) throw err;
+    if (err) return res.status(400).send({ error: "Could not find users" });
 
-    res.send(res1);
+    return res.status(200).send(res1);
   }).select("type username email -_id");
 };
 
 exports.create_user = function (req, res) {
-  if (!req.body.username || !req.body.email || !req.body.pwd) {
-    return res.send("Missing required data.");
-  }
+  if (!req.body.username || !req.body.email || !req.body.pwd)
+    return res.status(400).send({ error: "Missing required data in request body." });
+
   // Search to see if user already exists
   User.findOne({ username: req.body.username }, "username", function (err, user) {
-    if (err) {
-      console.log(err);
-    }
+    if (err) return res.status(400).send({ error: "Error creating user." });
 
     if (req.body.pwd.length < 8) {
       // Further constrainsts needed (special chars, etc.)
-      return res.send("Password must be at least 8 characters");
+      return res.status(400).send({ error: "Password needs to be at least 8 characters long." });
     }
 
     // If the user already exists
     if (user) {
-      console.log("Username '" + user.username + "' is already taken.");
-      res.send("Username '" + user.username + "' is already taken.");
+      return res.status(400).send({ error: "Username is already taken." });
       // Otherwise
     } else {
       // Generate a unique salt for the user
@@ -46,17 +43,11 @@ exports.create_user = function (req, res) {
             prevex: [],
           });
 
-          console.log(user);
-
           // Insert the user into the User collection
           user.save(function (err2) {
-            if (err2) {
-              console.log("User '" + user.username + "' could not be created.");
-              res.send("User '" + user.username + "' could not be created.");
-            } else {
-              console.log("User '" + user.username + "' successfully created!");
-              res.send("User '" + user.username + "' successfully created!");
-            }
+            if (err2) return res.status(400).send("User could not be created.");
+
+            return res.status(201).send({});
           });
         });
       });
@@ -65,28 +56,32 @@ exports.create_user = function (req, res) {
 };
 
 exports.read_user = function (req, res) {
-  User.findOne({ username: req.params.username }, function (err, res1) {
-    if (err) throw err;
+  // Need to update so that Admins can read any user
+  if (req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to update self." });
 
-    res.send(res1);
+  User.findOne({ username: req.params.username }, function (err, res1) {
+    if (err) return res.status(400).send({ error: "Error finding user." });
+
+    return res.status(200).send(res1);
   })
     .populate("workouts")
     .select("-pwd -_id");
 };
 
 exports.update_user = function (req, res) {
-  if (!req.body.userID || !req.body.update) {
-    res.send("Missing required data.");
-  }
+  // Need to update so that Admins can change any user
+  if (req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to update self." });
+
+  if (!req.body.update) return res.status(400).send({ error: "Update required in request body." });
+
   // See if user exists
-  User.findById(req.body.userID, function (err, res1) {
+  User.findOne({ username: req.user.username }, function (err, res1) {
     res1.update(req.body.update, function (err) {
-      if (err) {
-        console.log(err);
-        res.send("User could not be updated.");
-      } else {
-        res.send("User updated successfully!");
-      }
+      if (err) return res.status(400).send({ error: "User could not be updated." });
+
+      return res.status(204).send({});
     });
   });
 };

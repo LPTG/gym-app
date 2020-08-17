@@ -8,7 +8,15 @@ const template_route = require("../routes/template.route");
 // GET      /users/:username                            // returns information on single user
 // PUT      /users/:username                            // update a single user
 
-router.get("/", users_controller.read_all);
+router.get(
+  "/",
+  function (req, res, next) {
+    if (req.user.type !== "Admin") return res.status(403).send({ error: "Admin access only." });
+
+    next();
+  },
+  users_controller.read_all
+);
 router.post("/", users_controller.create_user);
 router.get("/:username", users_controller.read_user);
 router.put("/:username", users_controller.update_user);

@@ -10,6 +10,20 @@ function WorkoutDetails(props) {
 
   const labelName = props.type === "workouts" ? "Workout" : "Template";
 
+  const deleteForm = (user, type, id) => {
+    (async () => {
+      if (type === "workouts") {
+        let workoutStatus = await deleteWorkout(user, id);
+        if (workoutStatus.error) console.log(workoutStatus.error);
+        else props.history.push(`/${user}/workouts`);
+      } else {
+        let templateStatus = await deleteTemplate(user, id);
+        if (templateStatus.error) console.log(templateStatus.error);
+        else props.history.push(`/${user}/templates`);
+      }
+    })();
+  };
+
   return (
     <>
       <Grid container item justify="space-between" xs={12}>
@@ -33,9 +47,7 @@ function WorkoutDetails(props) {
             <DeleteIcon
               style={{ cursor: "pointer" }}
               onClick={() => {
-                props.type === "workouts"
-                  ? deleteWorkout(auth.getUser(), props.match.params.id)
-                  : deleteTemplate(auth.getUser(), props.match.params.id);
+                deleteForm(auth.getUser(), props.type, props.match.params.id);
               }}
             />
           </Grid>

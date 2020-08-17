@@ -21,24 +21,24 @@ passport.use(
       .then((user) => {
         // User does not exist
         if (!user) {
-          return done(null, false, { message: "User does not exist" });
+          return done(null, false, { error: "User does not exist" });
         } else {
           // Compare stored user hash with newly inputted password
           bcrypt.compare(password, user.pwd, function (err1, same) {
             if (err1) {
-              return done(null, false, { message: "Error validating user" });
+              return done(null, false, { error: "Error validating user" });
             }
 
             if (same) {
               return done(null, user);
             } else {
-              return done(null, false, { message: "Invalid credentials" });
+              return done(null, false, { error: "Invalid credentials" });
             }
           });
         }
       })
       .catch((err) => {
-        return done(null, false, { message: err });
+        return done(null, false, { error: err });
       });
   })
 );

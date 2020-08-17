@@ -25,15 +25,18 @@ function FormContainer(props) {
         if (props.useTemplate) {
           let templateID = props.match.params.id;
           let template = await getTemplate(auth.getUser(), templateID);
-          setState(templateDBToWorkoutState(template));
+          if (template.error) console.log(template.error);
+          else setState(templateDBToWorkoutState(template));
         } else if (props.match.params.formType === "workouts") {
           let workoutID = props.match.params.id;
           let workout = await getWorkout(auth.getUser(), workoutID);
-          setState(workoutDBToEditState(workout));
+          if (workout.error) console.log(workout.error);
+          else setState(workoutDBToEditState(workout));
         } else if (props.match.params.formType === "templates") {
           let templateID = props.match.params.id;
           let template = await getTemplate(auth.getUser(), templateID);
-          setState(templateDBToEditState(template));
+          if (template.error) console.log(template.error);
+          else setState(templateDBToEditState(template));
         }
       })();
     }
@@ -53,6 +56,7 @@ function FormContainer(props) {
                   action={action}
                   type={type}
                   match={props.match}
+                  history={props.history}
                   useTemplate={props.useTemplate}
                 />
               </Box>

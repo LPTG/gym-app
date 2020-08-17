@@ -24,7 +24,7 @@ router.use(
       // req.isAuthenticated() will return true if user is logged in
       next();
     } else {
-      res.status(401).send({ message: "Authentication required" });
+      return res.status(401).send({ error: "Authentication required" });
     }
   },
   users

@@ -1,35 +1,45 @@
 import axios from "axios";
 
-const createWorkout = (user, workout) => {
-  axios.post(`/api/users/${user}/workouts`, { username: user, workout }).then((res) => {
-    console.log(res);
+const statusHandler = (res, code) => {
+  if (code === 201 || code === 204) return "success";
+  if (code === 200 || code === 400 || code === 403) return res.data;
+
+  return res.data;
+};
+
+const createWorkout = async (user, workout) => {
+  return axios.post(`/api/users/${user}/workouts`, { username: user, workout }).then((res) => {
+    return statusHandler(res, res.status);
   });
 };
 
-const createTemplate = (user, template) => {
-  axios.post(`/api/users/${user}/templates`, { username: user, template }).then((res) => {
-    console.log(res);
+const createTemplate = async (user, template) => {
+  return axios.post(`/api/users/${user}/templates`, { username: user, template }).then((res) => {
+    return statusHandler(res, res.status);
+  });
+};
 
-    return res.data;
+const getWorkouts = async (user) => {
+  return axios.get(`/api/users/${user}/workouts`).then((res) => {
+    return statusHandler(res, res.status);
   });
 };
 
 const getWorkout = async (user, workoutId) => {
   return axios.get(`/api/users/${user}/workouts/${workoutId}`).then((res) => {
-    if (res.status === 200) {
-      return res.data;
-    }
+    return statusHandler(res, res.status);
+  });
+};
 
-    // Case where workoutid is not a valid id
-
-    // need handle errors
-    return res.data;
+const getTemplates = async (user) => {
+  return axios.get(`/api/users/${user}/templates`).then((res) => {
+    return statusHandler(res, res.status);
   });
 };
 
 const getTemplate = async (user, templateId) => {
   return axios.get(`/api/users/${user}/templates/${templateId}`).then((res) => {
-    return res.data;
+    return statusHandler(res, res.status);
   });
 };
 
@@ -37,33 +47,35 @@ const updateWorkout = (user, workoutId, update) => {
   // Right now we're sending the entire workout/template as an update but
   // maybe we could use a lodash function to find the difference between the
   // original workout/template and the new one to only send the updated pieces
-  axios.put(`/api/users/${user}/workouts/${workoutId}`, { update }).then((res) => {
-    console.log(res);
+  return axios.put(`/api/users/${user}/workouts/${workoutId}`, { update }).then((res) => {
+    return statusHandler(res, res.status);
   });
 };
 
-const updateTemplate = (user, templateId, update) => {
-  axios.put(`/api/users/${user}/templates/${templateId}`, { update }).then((res) => {
-    console.log(res);
+const updateTemplate = async (user, templateId, update) => {
+  return axios.put(`/api/users/${user}/templates/${templateId}`, { update }).then((res) => {
+    return statusHandler(res, res.status);
   });
 };
 
-const deleteWorkout = (user, workoutId) => {
-  axios.delete(`/api/users/${user}/workouts/${workoutId}`).then((res) => {
-    console.log(res);
+const deleteWorkout = async (user, workoutId) => {
+  return axios.delete(`/api/users/${user}/workouts/${workoutId}`).then((res) => {
+    return statusHandler(res, res.status);
   });
 };
 
-const deleteTemplate = (user, templateId) => {
-  axios.delete(`/api/users/${user}/templates/${templateId}`).then((res) => {
-    console.log(res);
+const deleteTemplate = async (user, templateId) => {
+  return axios.delete(`/api/users/${user}/templates/${templateId}`).then((res) => {
+    return statusHandler(res, res.status);
   });
 };
 
 export {
   createWorkout,
   createTemplate,
+  getWorkouts,
   getWorkout,
+  getTemplates,
   getTemplate,
   updateWorkout,
   updateTemplate,

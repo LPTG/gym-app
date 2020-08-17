@@ -35,20 +35,37 @@ function FormHandler(props) {
     // Update workout
     // Create template
     // Update template
-
-    if (props.type === "workouts") {
-      if (props.action === "create") {
-        createWorkout(auth.getUser(), workout);
+    (async () => {
+      if (props.type === "workouts") {
+        if (props.action === "create") {
+          let createWorkoutStatus = await createWorkout(auth.getUser(), workout);
+          if (createWorkoutStatus.error) console.log(createWorkoutStatus.error);
+          else props.history.push(`/${auth.getUser()}/workouts`);
+        } else {
+          let updateWorkoutStatus = await updateWorkout(
+            auth.getUser(),
+            props.match.params.id,
+            workout
+          );
+          if (updateWorkoutStatus.error) console.log(updateWorkoutStatus.error);
+          else props.history.push(`/${auth.getUser()}/workouts`);
+        }
       } else {
-        updateWorkout(auth.getUser(), props.match.params.id, workout);
+        if (props.action === "create") {
+          let createTemplateStatus = await createTemplate(auth.getUser(), template);
+          if (createTemplateStatus.error) console.log(createTemplateStatus.error);
+          else props.history.push(`/${auth.getUser()}/templates`);
+        } else {
+          let updateTemplateStatus = await updateTemplate(
+            auth.getUser(),
+            props.match.params.id,
+            template
+          );
+          if (updateTemplateStatus.error) console.log(updateTemplateStatus.error);
+          else props.history.push(`/${auth.getUser()}/templates`);
+        }
       }
-    } else {
-      if (props.action === "create") {
-        createTemplate(auth.getUser(), template);
-      } else {
-        updateTemplate(auth.getUser(), props.match.params.id, template);
-      }
-    }
+    })();
   };
 
   return (
@@ -59,6 +76,7 @@ function FormHandler(props) {
           action={props.action}
           type={props.type}
           match={props.match}
+          history={props.history}
           useTemplate={props.useTemplate}
         />
 

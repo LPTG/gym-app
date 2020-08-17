@@ -56,8 +56,6 @@ class Auth {
   }
 
   getAuth() {
-    //console.log(JSON.stringify(sessionStorage.getItem("user"), null, 4));
-
     return sessionStorage.getItem("authenticated") === "true";
   }
 
