@@ -1,12 +1,7 @@
 import React from "react";
-import {
-  Button,
-  Card,
-  CardContent,
-  Typography,
-  CardActionArea,
-  CardActions,
-} from "@material-ui/core";
+import { Card, CardContent, Typography, CardActions } from "@material-ui/core";
+import EditIcon from "@material-ui/icons/Edit";
+import ForwardIcon from "@material-ui/icons/Forward";
 import auth from "../../Auth";
 import { makeStyles } from "@material-ui/core/styles";
 import { withRouter } from "react-router-dom";
@@ -14,12 +9,14 @@ import { withRouter } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
+    backgroundColor: "#73C1C6",
+    minWidth: 250,
   },
-  cardAction: {
+  cardContent: {
     display: "block",
     textAlign: "initial",
     width: "100%",
-    heigh: "100%",
+    height: "100%",
   },
   details: {
     display: "flex",
@@ -30,27 +27,35 @@ function ItemCard(props) {
   const { name, description, templateCard, itemId } = props;
   const classes = useStyles();
   //const theme = useTheme();
-
   return (
-    <Card className={classes.root} variant="outlined">
-      <CardActionArea className={classes.cardAction} onClick={props.handleClick}>
-        <CardContent>
-          <Typography variant="h5" component="h2">
-            {name}
-          </Typography>
-          <Typography variant="body2" component="p" wrap="nowrap">
-            {description}
-          </Typography>
-        </CardContent>
-      </CardActionArea>
+    <Card className={classes.root}>
+      <CardContent className={classes.cardContent}>
+        <Typography variant="h5">{name}</Typography>
+        <Typography variant="subtitle1" wrap="nowrap">
+          {description}
+        </Typography>
+      </CardContent>
+
+      {!templateCard && (
+        <CardActions>
+          <ForwardIcon cursor="pointer" fontSize="large" onClick={props.handleClick} />
+        </CardActions>
+      )}
       {templateCard && (
         <CardActions>
-          <Button
-            color="secondary"
+          <EditIcon cursor="pointer" fontSize="large" onClick={props.handleClick} />
+          <ForwardIcon
+            cursor="pointer"
+            fontSize="large"
+            onClick={() => props.history.push(`/${auth.getUser()}/workouts/new/${itemId}`)}
+          />
+          {/* <Button
+            color="textPrimary"
+            variant="contained"
             onClick={() => props.history.push(`/${auth.getUser()}/workouts/new/${itemId}`)}
           >
             Use Template
-          </Button>
+          </Button> */}
         </CardActions>
       )}
     </Card>

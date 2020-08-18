@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import auth from "../../Auth";
-import { withStyles } from "@material-ui/core/styles";
+import { withStyles, useTheme } from "@material-ui/core/styles";
 import { Paper, Grid, Typography } from "@material-ui/core";
 
 const useStyles = (theme) => ({
@@ -10,12 +10,17 @@ const useStyles = (theme) => ({
     textAlign: "center",
   },
   paper: {
+    //background: rgb(201, 18, 18),
+    background: "#f5f0f0",
     padding: theme.spacing(2),
     maxWidth: 500,
+    minWidth: 200,
   },
 });
 
 function Register(props) {
+  let theme = useTheme();
+
   const [register, setRegister] = useState(false);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -90,17 +95,31 @@ function Register(props) {
       direction="column"
       alignItems="center"
       justify="space-evenly"
-      style={{ minHeight: "100vh", backgroundColor: "#90DDF0" }}
+      style={{ minHeight: "100vh", backgroundColor: theme.palette.background.default }}
     >
       <Grid item />
-      <Grid item xs={12} md={8}>
-        <Typography className={classes.title} variant="h1" component="h1" color="textPrimary">
-          Workout Creator
+
+      <Grid item xs={6} md={12}>
+        <Typography
+          className={classes.title}
+          align="center"
+          variant="h1"
+          component="h1"
+          color="textPrimary"
+        >
+          <b> Workout Creator </b>{" "}
+          <span role="img" aria-label="female-weightlifter">
+            🏋
+          </span>
         </Typography>
       </Grid>
 
-      <Grid item xs={6} md={2}>
-        <Paper className={classes.paper} elevation={10} style={{ backgroundColor: "#F0EDEE" }}>
+      <Grid item xs={6} sm={5} md={3}>
+        <Paper
+          className={classes.paper}
+          elevation={10}
+          //style={{ backgroundColor: theme.palette.background.default }}
+        >
           {register ? (
             <RegisterForm
               containerProps={containerProps}

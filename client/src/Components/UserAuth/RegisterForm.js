@@ -43,17 +43,17 @@ function RegisterForm(props) {
             onChange={props.handlePasswordChange}
             required={true}
           ></TextField>
+        </Grid>
 
-          <Grid item xs={12}>
-            <Button onClick={props.handleClick} color="secondary">
-              Already Registered?
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button type="submit" variant="contained" color="primary">
-              Register
-            </Button>
-          </Grid>
+        <Grid item xs={12}>
+          <Button onClick={props.handleClick} color="secondary">
+            Already Registered?
+          </Button>
+        </Grid>
+        <Grid item xs={12}>
+          <Button type="submit" variant="contained" color="secondary">
+            Register
+          </Button>
         </Grid>
       </Grid>
     </form>

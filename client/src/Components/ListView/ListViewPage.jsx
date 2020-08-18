@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 //import axios from "axios";
 import ItemList from "./ItemList";
-import { Grid, Typography, Button } from "@material-ui/core";
+import { Box, Grid, Typography, Button, CircularProgress } from "@material-ui/core";
 import { getWorkouts, getTemplates } from "../HelperFunctions/RequestFunctions";
 import auth from "../../Auth";
 
@@ -10,11 +10,6 @@ function ListViewPage(props) {
 
   useEffect(() => {
     // Fetch workouts or templates depending on the page prop
-    // axios.get(`/api/users/${auth.getUser()}/${props.page}`).then((res) => {
-    //   if (props.page === "workouts") setList(res.data.workouts);
-    //   else if (props.page === "templates") setList(res.data.templates);
-    // });
-
     (async () => {
       if (props.page === "workouts") {
         let workouts = await getWorkouts(auth.getUser());
@@ -43,41 +38,51 @@ function ListViewPage(props) {
 
   if (list) {
     return (
-      <>
+      <Grid container>
         <Grid
           container
+          item
           direction="column"
           justify="center"
           alignItems="center"
           styles={{ backgroundColor: "blue" }}
         >
-          <Grid item>
+          <Box m={2}>
             <Typography variant="h2" component="h2" color="textPrimary">
-              {title}s
+              <b>{title}s</b>
             </Typography>
-          </Grid>
+          </Box>
         </Grid>
 
-        {title === "Workout" && <ItemList list={list} handleClick={handleClick} />}
-        {title === "Template" && (
-          <ItemList list={list} handleClick={handleClick} templateCard={true} />
-        )}
+        <ItemList list={list} handleClick={handleClick} templateCard={props.page === "templates"} />
 
-        <Grid container justify="center" spacing={2}>
+        <Grid container item justify="center" spacing={2}>
           <Grid item>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                props.history.push(`/${props.match.params.user}/${props.page}/new`);
-              }}
-            >{`Add ${title}`}</Button>
+            <Box m={2}>
+              <Button
+                variant="contained"
+                size="large"
+                color="secondary"
+                onClick={() => {
+                  props.history.push(`/${props.match.params.user}/${props.page}/new`);
+                }}
+              >{`Add ${title}`}</Button>
+            </Box>
           </Grid>
         </Grid>
-      </>
+      </Grid>
     );
   } else {
-    return <>Loading...</>;
+    return (
+      <Grid container direction="column" justify="center" alignItems="center">
+        <Box m={2}>
+          <Typography variant="h2" component="h2" color="textPrimary">
+            <b>{title}s</b>
+          </Typography>
+        </Box>
+        <CircularProgress color="secondary" />
+      </Grid>
+    );
   }
 }
 

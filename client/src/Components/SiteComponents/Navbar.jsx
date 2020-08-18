@@ -1,54 +1,71 @@
 import React from "react";
 import auth from "../../Auth";
 import { Grid, Button, AppBar, Toolbar } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
-class Navbar extends React.Component {
-  logout() {
+const useStyles = (theme) => ({
+  navButton: {
+    minHeight: 60,
+  },
+});
+
+function Navbar(props) {
+  const logout = () => {
     auth.logout(() => {
       auth.checkSession(() => {
         if (!auth.getAuth()) {
-          this.props.history.push(`/`);
+          props.history.push(`/`);
         }
       });
     });
-  }
+  };
 
-  render() {
-    return (
-      <AppBar position="static" variant="outlined">
-        <Toolbar>
-          <Grid container justify="space-between" spacing={2}>
-            <Grid item>
-              <Button
-                color="inherit"
-                onClick={() => this.props.history.push(`/${auth.getUser()}/workouts`)}
-              >
-                Workouts
-              </Button>
+  const { classes } = props;
 
-              <Button
-                color="inherit"
-                onClick={() => this.props.history.push(`/${auth.getUser()}/templates`)}
-              >
-                Templates
-              </Button>
+  return (
+    <Grid container>
+      <Grid item xs={12}>
+        <AppBar position="static" variant="outlined" color="primary">
+          <Toolbar variant="dense">
+            <Grid container direction="row" justify="space-between">
+              <Grid item>
+                <Button
+                  className={classes.navButton}
+                  size="large"
+                  color="inherit"
+                  onClick={() => props.history.push(`/${auth.getUser()}/workouts`)}
+                >
+                  Workouts
+                </Button>
+
+                <Button
+                  className={classes.navButton}
+                  size="large"
+                  color="inherit"
+                  onClick={() => props.history.push(`/${auth.getUser()}/templates`)}
+                >
+                  Templates
+                </Button>
+              </Grid>
+
+              <Grid item>
+                <Button
+                  className={classes.navButton}
+                  size="large"
+                  color="inherit"
+                  onClick={() => {
+                    logout();
+                  }}
+                >
+                  Logout
+                </Button>
+              </Grid>
             </Grid>
-
-            <Grid item>
-              <Button
-                color="inherit"
-                onClick={() => {
-                  this.logout();
-                }}
-              >
-                Logout
-              </Button>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-    );
-  }
+          </Toolbar>
+        </AppBar>
+      </Grid>
+    </Grid>
+  );
 }
 
-export default Navbar;
+export default withStyles(useStyles)(Navbar);

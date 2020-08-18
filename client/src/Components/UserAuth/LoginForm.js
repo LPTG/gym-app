@@ -38,7 +38,7 @@ function LoginForm(props) {
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <Button type="submit" variant="contained" color="primary">
+          <Button type="submit" variant="contained" color="secondary">
             Login
           </Button>
         </Grid>
