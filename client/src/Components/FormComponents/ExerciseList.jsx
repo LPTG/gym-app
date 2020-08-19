@@ -12,7 +12,7 @@ function ExerciseList(props) {
         <Box key={exercise} my="1rem">
           <Paper variant="outlined">
             <Box m="1rem">
-              <Exercise id={exercise} />
+              <Exercise id={exercise} formType={props.formType} />
             </Box>
           </Paper>
         </Box>

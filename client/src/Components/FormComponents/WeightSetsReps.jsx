@@ -21,7 +21,7 @@ function WeightSetsReps(props) {
           fullWidth
           onChange={(e) => dispatch({ type: "weight_change", id: props.id, value: e.target.value })}
           type={props.formType === "workouts" ? "number" : "text"}
-          inputProps={props.formType === "workouts" ? { min: 1, max: 2000 } : { maxlength: 15 }}
+          inputProps={props.formType === "workouts" ? { min: 1, max: 2000 } : { maxLength: 15 }}
         />
       </Grid>
 
@@ -36,7 +36,7 @@ function WeightSetsReps(props) {
           fullWidth
           onChange={(e) => dispatch({ type: "set_change", id: props.id, value: e.target.value })}
           type={props.formType === "workouts" ? "number" : "text"}
-          inputProps={props.formType === "workouts" ? { min: 1, max: 20 } : { maxlength: 15 }}
+          inputProps={props.formType === "workouts" ? { min: 1, max: 20 } : { maxLength: 15 }}
         />
       </Grid>
 
@@ -51,7 +51,7 @@ function WeightSetsReps(props) {
           fullWidth
           onChange={(e) => dispatch({ type: "rep_change", id: props.id, value: e.target.value })}
           type={props.formType === "workouts" ? "number" : "text"}
-          inputProps={props.formType === "workouts" ? { min: 1, max: 100 } : { maxlength: 15 }}
+          inputProps={props.formType === "workouts" ? { min: 1, max: 100 } : { maxLength: 15 }}
         />
       </Grid>
 
