@@ -1,10 +1,10 @@
 import React from "react";
 import { Grid, TextField } from "@material-ui/core";
 import { useForm } from "../Forms/FormContext";
-import TestWsr from "./WeightSetsReps";
+import WeightSetsReps from "./WeightSetsReps";
 import CloseIcon from "@material-ui/icons/Close";
 
-function TestExerciseForm(props) {
+function ExerciseList(props) {
   const [state, dispatch] = useForm();
   const exercise = state.exercisesById[props.id];
 
@@ -13,7 +13,7 @@ function TestExerciseForm(props) {
       <Grid container item justify="space-between" xs={12}>
         <Grid item xs={4}>
           <TextField
-            id={props.id} // why?
+            //id={props.id} // why?
             name={props.id}
             label="Exercise Name"
             variant="outlined"
@@ -42,11 +42,11 @@ function TestExerciseForm(props) {
 
       <Grid item xs={12}>
         {exercise.wsr.map((wsr) => (
-          <TestWsr key={wsr} id={wsr} parent={props.id} />
+          <WeightSetsReps key={wsr} id={wsr} parent={props.id} formType={props.formType} />
         ))}
       </Grid>
     </Grid>
   );
 }
 
-export default TestExerciseForm;
+export default ExerciseList;

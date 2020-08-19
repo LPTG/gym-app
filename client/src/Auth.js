@@ -28,11 +28,13 @@ class Auth {
           sessionStorage.setItem("authenticated", false);
         }
 
-        cb();
+        cb(res);
       })
       .catch((err) => {
+        //console.log(err.response.data);
+
         sessionStorage.setItem("authenticated", false);
-        cb();
+        cb(err.response.data);
       });
   }
 

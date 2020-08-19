@@ -21,18 +21,18 @@ passport.use(
       .then((user) => {
         // User does not exist
         if (!user) {
-          return done(null, false, { error: "User does not exist" });
+          return done(null, false, { error: "Incorrect username or password." });
         } else {
           // Compare stored user hash with newly inputted password
           bcrypt.compare(password, user.pwd, function (err1, same) {
             if (err1) {
-              return done(null, false, { error: "Error validating user" });
+              return done(null, false, { error: "Incorrect username or password." });
             }
 
             if (same) {
               return done(null, user);
             } else {
-              return done(null, false, { error: "Invalid credentials" });
+              return done(null, false, { error: "Incorrect username or password." });
             }
           });
         }

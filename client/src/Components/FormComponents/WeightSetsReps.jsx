@@ -4,7 +4,7 @@ import { useForm } from "../Forms/FormContext";
 import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
 
-function TestWsr(props) {
+function WeightSetsReps(props) {
   const [state, dispatch] = useForm();
   const wsr = state.wsrById[props.id];
 
@@ -20,8 +20,8 @@ function TestWsr(props) {
           size="small"
           fullWidth
           onChange={(e) => dispatch({ type: "weight_change", id: props.id, value: e.target.value })}
-          type="number"
-          inputProps={{ min: 1, max: 2000 }}
+          type={props.formType === "workouts" ? "number" : "text"}
+          inputProps={props.formType === "workouts" ? { min: 1, max: 2000 } : { maxlength: 15 }}
         />
       </Grid>
 
@@ -35,8 +35,8 @@ function TestWsr(props) {
           size="small"
           fullWidth
           onChange={(e) => dispatch({ type: "set_change", id: props.id, value: e.target.value })}
-          type="number"
-          inputProps={{ min: 1, max: 20 }}
+          type={props.formType === "workouts" ? "number" : "text"}
+          inputProps={props.formType === "workouts" ? { min: 1, max: 20 } : { maxlength: 15 }}
         />
       </Grid>
 
@@ -50,8 +50,8 @@ function TestWsr(props) {
           size="small"
           fullWidth
           onChange={(e) => dispatch({ type: "rep_change", id: props.id, value: e.target.value })}
-          type="number"
-          inputProps={{ min: 1, max: 100 }}
+          type={props.formType === "workouts" ? "number" : "text"}
+          inputProps={props.formType === "workouts" ? { min: 1, max: 100 } : { maxlength: 15 }}
         />
       </Grid>
 
@@ -74,4 +74,4 @@ function TestWsr(props) {
   );
 }
 
-export default TestWsr;
+export default WeightSetsReps;

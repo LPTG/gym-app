@@ -4,10 +4,8 @@ const Workout = require("./workout.model");
 const Template = require("../models/template.model");
 
 function emailValidator(email) {
-  const regex = RegExp(
-    "A[a-z0-9!#$%&'*+/=?^_‘{|}~-]+(?:.[a-z0-9!#$%&'*+/=?^_‘{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?z"
-  );
-  return regex.text(email);
+  const regex = /^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/;
+  return regex.test(email);
 }
 
 // Need to validate username length / regex

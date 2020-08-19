@@ -38,7 +38,7 @@ function ItemCard(props) {
 
       {!templateCard && (
         <CardActions>
-          <ForwardIcon cursor="pointer" fontSize="large" onClick={props.handleClick} />
+          <EditIcon cursor="pointer" fontSize="large" onClick={props.handleClick} />
         </CardActions>
       )}
       {templateCard && (
@@ -49,13 +49,6 @@ function ItemCard(props) {
             fontSize="large"
             onClick={() => props.history.push(`/${auth.getUser()}/workouts/new/${itemId}`)}
           />
-          {/* <Button
-            color="textPrimary"
-            variant="contained"
-            onClick={() => props.history.push(`/${auth.getUser()}/workouts/new/${itemId}`)}
-          >
-            Use Template
-          </Button> */}
         </CardActions>
       )}
     </Card>

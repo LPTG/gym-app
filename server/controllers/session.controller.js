@@ -1,6 +1,7 @@
 exports.create_session = function (req, res, err, user, info) {
   if (err) return next(err);
 
+  console.log(info);
   // If user does not exist
   if (!user) return res.status(400).send(info);
 

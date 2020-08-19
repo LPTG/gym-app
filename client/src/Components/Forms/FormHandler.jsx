@@ -7,10 +7,6 @@ import {
   AddExerciseButton,
   SubmitFormButton,
 } from "../FormComponents";
-// import WorkoutDetails from "../FormComponents/WorkoutDetails";
-// import ExerciseList from "../FormComponents/ExerciseList";
-// import AddExerciseButton from "../FormComponents/AddExerciseButton";
-// import SubmitFormButton from "../FormComponents/SubmitFormButton";
 import { workoutStateToDB, templateStateToDB } from "../HelperFunctions/ConvertDataFunctions";
 import {
   createWorkout,
@@ -82,7 +78,7 @@ function FormHandler(props) {
 
         <Grid item xs={12}>
           {/* Exercise list */}
-          <ExerciseList />
+          <ExerciseList formType={props.match.params.formType} />
         </Grid>
 
         <Grid container item justify="space-between" xs={12}>

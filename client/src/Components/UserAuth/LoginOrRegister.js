@@ -4,18 +4,11 @@ import LoginForm from "./LoginForm";
 import auth from "../../Auth";
 import { useTheme } from "@material-ui/core/styles";
 import { Paper, Grid, Typography } from "@material-ui/core";
-
-// const styles = {
-//   paper: {
-//     padding: theme.spacing(2),
-//     maxWidth: 500,
-//     minWidth: 200,
-//   },
-// };
+import Alert from "@material-ui/lab/Alert";
+import Collapse from "@material-ui/core/Collapse";
 
 function Register(props) {
   let theme = useTheme();
-  //const { classes } = props;
   const containerProps = {
     justify: "flex-end",
     spacing: 1,
@@ -24,6 +17,8 @@ function Register(props) {
   const emailRegex = /^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/;
 
   const [register, setRegister] = useState(false);
+
+  const [alertMessage, setAlertMessage] = useState("");
 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -36,20 +31,12 @@ function Register(props) {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // const username = this.state.username;
-    // const email = this.state.email;
-    // const password = this.state.password;
-
     if (register) {
       const postData = {
         username,
         email,
         pwd: password,
       };
-
-      // username must be at least 3 characters long
-      // password must be at least 8 characters long and contain a special char, regex check?
-      // regex check email
 
       auth.register(postData, () => {
         setRegister(false);
@@ -60,10 +47,9 @@ function Register(props) {
         password,
       };
 
-      // username must be at least 3 characters long
-      // password must be at least 8 characters long and contain a special char, regex check?
+      auth.login(postData, (res) => {
+        if (res.error) setAlertMessage(res.error);
 
-      auth.login(postData, () => {
         auth.checkSession(() => {
           if (auth.getAuth()) {
             props.history.push(`/${auth.getUser()}/workouts`);
@@ -126,11 +112,20 @@ function Register(props) {
       justify="space-evenly"
       style={{ minHeight: "100vh", backgroundColor: theme.palette.background.default }}
     >
+      <Collapse in={alertMessage !== ""}>
+        <Alert
+          severity="error"
+          onClose={() => {
+            setAlertMessage("");
+          }}
+        >
+          {alertMessage}
+        </Alert>
+      </Collapse>
       <Grid item />
 
       <Grid item xs={12} md={12}>
         <Typography
-          //className={theme.title}
           align="center"
           variant="h1"
           component="h1"
