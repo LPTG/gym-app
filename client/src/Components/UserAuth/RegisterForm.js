@@ -11,10 +11,13 @@ function RegisterForm(props) {
             label="Username"
             autoComplete="username"
             size="small"
-            variant="outlined"
+            variant="filled"
+            color="secondary"
             fullWidth={true}
             onChange={props.handleUsernameChange}
             required={true}
+            error={props.usernameError !== ""}
+            helperText={props.usernameError}
           ></TextField>
         </Grid>
 
@@ -24,10 +27,13 @@ function RegisterForm(props) {
             label="Email"
             autoComplete="email"
             size="small"
-            variant="outlined"
+            variant="filled"
+            color="secondary"
             fullWidth={true}
             onChange={props.handleEmailChange}
             required={true}
+            error={props.emailError !== ""}
+            helperText={props.emailError}
           ></TextField>
         </Grid>
 
@@ -38,10 +44,13 @@ function RegisterForm(props) {
             label="Password"
             autoComplete="password"
             size="small"
-            variant="outlined"
+            variant="filled"
+            color="secondary"
             fullWidth={true}
             onChange={props.handlePasswordChange}
             required={true}
+            error={props.passwordError !== ""}
+            helperText={props.passwordError}
           ></TextField>
         </Grid>
 

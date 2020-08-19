@@ -48,19 +48,21 @@ function FormContainer(props) {
       <FormProvider providedState={state}>
         <Grid container justify="center">
           <Grid item xs={12} md={6}>
-            <Paper variant="outlined">
-              <Box m="1rem">
-                {/* Action can be create or update */}
-                {/* Type can be workout or template */}
-                <FormHandler
-                  action={action}
-                  type={type}
-                  match={props.match}
-                  history={props.history}
-                  useTemplate={props.useTemplate}
-                />
-              </Box>
-            </Paper>
+            <Box mt="3rem">
+              <Paper variant="outlined">
+                <Box m="1rem">
+                  {/* Action can be create or update */}
+                  {/* Type can be workout or template */}
+                  <FormHandler
+                    action={action}
+                    type={type}
+                    match={props.match}
+                    history={props.history}
+                    useTemplate={props.useTemplate}
+                  />
+                </Box>
+              </Paper>
+            </Box>
           </Grid>
         </Grid>
       </FormProvider>

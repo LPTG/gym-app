@@ -2,29 +2,36 @@ import React, { useState } from "react";
 import RegisterForm from "./RegisterForm";
 import LoginForm from "./LoginForm";
 import auth from "../../Auth";
-import { withStyles, useTheme } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
 import { Paper, Grid, Typography } from "@material-ui/core";
 
-const useStyles = (theme) => ({
-  title: {
-    textAlign: "center",
-  },
-  paper: {
-    //background: rgb(201, 18, 18),
-    background: "#f5f0f0",
-    padding: theme.spacing(2),
-    maxWidth: 500,
-    minWidth: 200,
-  },
-});
+// const styles = {
+//   paper: {
+//     padding: theme.spacing(2),
+//     maxWidth: 500,
+//     minWidth: 200,
+//   },
+// };
 
 function Register(props) {
   let theme = useTheme();
+  //const { classes } = props;
+  const containerProps = {
+    justify: "flex-end",
+    spacing: 1,
+  };
+
+  const emailRegex = /^(\D)+(\w)*((\.(\w)+)?)+@(\D)+(\w)*((\.(\D)+(\w)*)+)?(\.)[a-z]{2,}$/;
 
   const [register, setRegister] = useState(false);
+
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [usernameError, setUsernameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,22 +77,44 @@ function Register(props) {
     setRegister(!register);
   };
 
-  const handleUsernameChange = (e) => {
+  const handleRegisterUsernameChange = (e) => {
+    if (e.target.value.length < 3 || e.target.value.length > 15) {
+      setUsernameError("Username must be between 3-15 characters long.");
+    } else if (usernameError !== "") {
+      setUsernameError("");
+    }
+
     setUsername(e.target.value);
   };
 
-  const handleEmailChange = (e) => {
+  const handleRegisterEmailChange = (e) => {
+    if (e.target.value.length > 320) {
+      setEmailError("Email must be less than 320 characters long.");
+    } else if (!emailRegex.test(e.target.value)) {
+      setEmailError("Please enter a valid email address.");
+    } else if (emailError !== "") {
+      setEmailError("");
+    }
+
     setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
+  const handleRegisterPasswordChange = (e) => {
+    if (e.target.value.length < 6 || e.target.value.length > 20) {
+      setPasswordError("Password must be between 6-20 characters long.");
+    } else if (passwordError !== "") {
+      setPasswordError("");
+    }
+
     setPassword(e.target.value);
   };
 
-  const { classes } = props;
-  const containerProps = {
-    justify: "flex-end",
-    spacing: 1,
+  const handleLoginUsernameChange = (e) => {
+    setUsername(e.target.value);
+  };
+
+  const handleLoginPasswordChange = (e) => {
+    setPassword(e.target.value);
   };
 
   return (
@@ -99,42 +128,49 @@ function Register(props) {
     >
       <Grid item />
 
-      <Grid item xs={6} md={12}>
+      <Grid item xs={12} md={12}>
         <Typography
-          className={classes.title}
+          //className={theme.title}
           align="center"
           variant="h1"
           component="h1"
-          color="textPrimary"
+          style={{ color: theme.palette.text.white }}
         >
           <b> Workout Creator </b>{" "}
-          <span role="img" aria-label="female-weightlifter">
+          <span role="img" aria-label="weightlifter">
             🏋
           </span>
         </Typography>
       </Grid>
 
-      <Grid item xs={6} sm={5} md={3}>
+      <Grid item xs={12} sm={5} md={3}>
         <Paper
-          className={classes.paper}
           elevation={10}
-          //style={{ backgroundColor: theme.palette.background.default }}
+          style={{
+            background: theme.palette.primary.main,
+            padding: theme.spacing(2),
+            maxWidth: 500,
+            minWidth: 250,
+          }}
         >
           {register ? (
             <RegisterForm
               containerProps={containerProps}
               handleSubmit={handleSubmit}
-              handleUsernameChange={handleUsernameChange}
-              handleEmailChange={handleEmailChange}
-              handlePasswordChange={handlePasswordChange}
+              handleUsernameChange={handleRegisterUsernameChange}
+              usernameError={usernameError}
+              handleEmailChange={handleRegisterEmailChange}
+              emailError={emailError}
+              handlePasswordChange={handleRegisterPasswordChange}
+              passwordError={passwordError}
               handleClick={handleClick}
             />
           ) : (
             <LoginForm
               containerProps={containerProps}
               handleSubmit={handleSubmit}
-              handleUsernameChange={handleUsernameChange}
-              handlePasswordChange={handlePasswordChange}
+              handleUsernameChange={handleLoginUsernameChange}
+              handlePasswordChange={handleLoginPasswordChange}
               handleClick={handleClick}
             />
           )}
@@ -145,4 +181,4 @@ function Register(props) {
   );
 }
 
-export default withStyles(useStyles)(Register);
+export default Register;

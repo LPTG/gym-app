@@ -17,17 +17,6 @@ const users = require("./users.route");
 // POST     /users/:username/workouts     // create a new workout for a user
 
 router.use("/session", session);
-router.use(
-  "/users",
-  function checkAuthentication(req, res, next) {
-    if (req.isAuthenticated()) {
-      // req.isAuthenticated() will return true if user is logged in
-      next();
-    } else {
-      return res.status(401).send({ error: "Authentication required" });
-    }
-  },
-  users
-);
+router.use("/users", users);
 
 module.exports = router;

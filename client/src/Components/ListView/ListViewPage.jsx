@@ -38,25 +38,20 @@ function ListViewPage(props) {
 
   if (list) {
     return (
-      <Grid container>
-        <Grid
-          container
-          item
-          direction="column"
-          justify="center"
-          alignItems="center"
-          styles={{ backgroundColor: "blue" }}
-        >
+      <>
+        <Grid container item direction="column" justify="center" alignItems="center">
           <Box m={2}>
-            <Typography variant="h2" component="h2" color="textPrimary">
+            <Typography variant="h2" component="h2" style={{ color: "#F49E4C" }}>
               <b>{title}s</b>
             </Typography>
           </Box>
-        </Grid>
 
-        <ItemList list={list} handleClick={handleClick} templateCard={props.page === "templates"} />
+          <ItemList
+            list={list}
+            handleClick={handleClick}
+            templateCard={props.page === "templates"}
+          />
 
-        <Grid container item justify="center" spacing={2}>
           <Grid item>
             <Box m={2}>
               <Button
@@ -70,13 +65,13 @@ function ListViewPage(props) {
             </Box>
           </Grid>
         </Grid>
-      </Grid>
+      </>
     );
   } else {
     return (
       <Grid container direction="column" justify="center" alignItems="center">
         <Box m={2}>
-          <Typography variant="h2" component="h2" color="textPrimary">
+          <Typography variant="h2" component="h2" style={{ color: "#F49E4C" }}>
             <b>{title}s</b>
           </Typography>
         </Box>

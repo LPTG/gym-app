@@ -45,7 +45,10 @@ exports.create_user = function (req, res) {
 
           // Insert the user into the User collection
           user.save(function (err2) {
-            if (err2) return res.status(400).send("User could not be created.");
+            if (err2) {
+              console.log(err2);
+              return res.status(400).send("User could not be created.");
+            }
 
             return res.status(201).send({});
           });
@@ -56,9 +59,8 @@ exports.create_user = function (req, res) {
 };
 
 exports.read_user = function (req, res) {
-  // Need to update so that Admins can read any user
-  if (req.params.username !== req.user.username)
-    return res.status(403).send({ error: "Only able to update self." });
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to read self." });
 
   User.findOne({ username: req.params.username }, function (err, res1) {
     if (err) return res.status(400).send({ error: "Error finding user." });

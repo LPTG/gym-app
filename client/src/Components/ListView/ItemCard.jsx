@@ -9,7 +9,7 @@ import { withRouter } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
-    backgroundColor: "#73C1C6",
+    backgroundColor: "#FBFEF9",
     minWidth: 250,
   },
   cardContent: {

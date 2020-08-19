@@ -11,7 +11,8 @@ function LoginForm(props) {
             label="Username"
             autoComplete="username"
             size="small"
-            variant="outlined"
+            variant="filled"
+            color="secondary"
             fullWidth={true}
             onChange={props.handleUsernameChange}
             required={true}
@@ -25,7 +26,8 @@ function LoginForm(props) {
             label="Password"
             autoComplete="password"
             size="small"
-            variant="outlined"
+            variant="filled"
+            color="secondary"
             fullWidth={true}
             onChange={props.handlePasswordChange}
             required={true}
