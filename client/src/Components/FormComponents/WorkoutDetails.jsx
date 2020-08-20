@@ -27,8 +27,7 @@ function WorkoutDetails(props) {
   return (
     <>
       <Grid container item justify="space-between" xs={12}>
-        <Grid item xs={4}>
-          {/* inputProps={{ maxLength: 40 }} */}
+        <Grid item xs={8} sm={4}>
           <TextField
             name="name"
             label={labelName + " Name"}
@@ -37,6 +36,7 @@ function WorkoutDetails(props) {
             size="small"
             fullWidth
             onChange={(e) => dispatch({ type: "workout_name_change", value: e.target.value })}
+            inputProps={{ maxLength: 40, style: { fontSize: "1.3rem" } }}
             required={true}
           ></TextField>
         </Grid>
@@ -67,6 +67,8 @@ function WorkoutDetails(props) {
           multiline
           rows={3}
           onChange={(e) => dispatch({ type: "desc_change", value: e.target.value })}
+          inputProps={{ maxLength: 200 }}
+          helperText={`${state.desc.length}/200`}
         ></TextField>
       </Grid>
     </>

@@ -11,7 +11,7 @@ function ExerciseList(props) {
   return (
     <Grid container spacing={2}>
       <Grid container item justify="space-between" xs={12}>
-        <Grid item xs={4}>
+        <Grid item xs={8} sm={4}>
           <TextField
             //id={props.id} // why?
             name={props.id}

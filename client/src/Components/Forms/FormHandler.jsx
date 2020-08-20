@@ -82,7 +82,7 @@ function FormHandler(props) {
         </Grid>
 
         <Grid container item justify="space-between" xs={12}>
-          <Grid container item spacing={1} xs={8}>
+          <Grid container item spacing={1} xs={6}>
             <Grid item>
               <AddExerciseButton />
             </Grid>

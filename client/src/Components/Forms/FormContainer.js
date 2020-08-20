@@ -47,7 +47,7 @@ function FormContainer(props) {
     return (
       <FormProvider providedState={state}>
         <Grid container justify="center">
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={8} lg={6}>
             <Box mt="3rem">
               <Paper variant="outlined">
                 <Box m="1rem">

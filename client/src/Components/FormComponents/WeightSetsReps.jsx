@@ -10,7 +10,7 @@ function WeightSetsReps(props) {
 
   return (
     <Grid container justify="flex-start" spacing={2}>
-      <Grid item xs={4} sm={3}>
+      <Grid item xs={3}>
         <TextField
           id={props.id + "-w"}
           label="Weight"
@@ -25,7 +25,7 @@ function WeightSetsReps(props) {
         />
       </Grid>
 
-      <Grid item xs={4} sm={3}>
+      <Grid item xs={3}>
         <TextField
           id={props.id + "-s"}
           label="Sets"
@@ -40,7 +40,7 @@ function WeightSetsReps(props) {
         />
       </Grid>
 
-      <Grid item xs={4} sm={3}>
+      <Grid item xs={3}>
         <TextField
           id={props.id + "-r"}
           label="Reps"
@@ -55,17 +55,17 @@ function WeightSetsReps(props) {
         />
       </Grid>
 
-      <Grid item>
+      <Grid item margin="auto" xs={3}>
         <RemoveCircleIcon
           color="secondary"
-          fontSize="large"
+          fontSize="default"
           style={{ cursor: "pointer" }}
           onClick={() => dispatch({ type: "remove_set", id: props.id, parent: props.parent })}
         />
 
         <AddCircleIcon
           color="secondary"
-          fontSize="large"
+          fontSize="default"
           style={{ cursor: "pointer" }}
           onClick={() => dispatch({ type: "add_set", id: props.id, parent: props.parent })}
         />
