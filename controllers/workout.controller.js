@@ -1,8 +1,11 @@
 const User = require("../models/user.model");
 const Workout = require("../models/workout.model");
 
-// Takes user _id and new workout
+// Takes username and new workout
 exports.create_workout = function (req, res) {
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to read self." });
+
   // Check that we have all required data
   if (!req.body.workout)
     return res.status(400).send({ error: "Workout required in request body." });
@@ -35,6 +38,9 @@ exports.create_workout = function (req, res) {
 };
 
 exports.read_workouts = function (req, res) {
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to read self." });
+
   // See if user exists
   User.findOne({ username: req.user.username }, function (err, workouts) {
     if (err) return res.status(400).send({ error: "Could not read workouts." });
@@ -49,6 +55,9 @@ exports.read_workouts = function (req, res) {
 
 // Takes workout _id
 exports.read_workout = function (req, res) {
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to read self." });
+
   // Check if user has a workout with given workoutID
   if (!req.user.workouts.includes(req.params.workoutID))
     return res.status(403).send({ error: "Workout not found in user workouts." });
@@ -62,6 +71,9 @@ exports.read_workout = function (req, res) {
 
 // Takes workout _id and update option
 exports.update_workout = function (req, res) {
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to update self." });
+
   // Check if user has a workout with given workoutID
   if (!req.user.workouts.includes(req.params.workoutID))
     return res.status(403).send({ error: "Workout not found in user workouts." });
@@ -85,6 +97,9 @@ exports.update_workout = function (req, res) {
 
 // Takes user _id and workout _id
 exports.delete_workout = function (req, res) {
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to modify self." });
+
   if (!req.user.workouts.includes(req.params.workoutID))
     return res.status(403).send({ error: "Workout not found in user workouts." });
 

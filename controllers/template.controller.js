@@ -1,8 +1,11 @@
 const Template = require("../models/template.model");
 const User = require("../models/user.model");
 
-// Takes user _id and new template
+// Takes username and new template
 exports.create_template = function (req, res) {
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to modify self." });
+
   // Check that we have all required data
   if (!req.body.template)
     return res.status(400).send({ error: "Template required in request body." });
@@ -26,7 +29,7 @@ exports.create_template = function (req, res) {
 
       // Append template ref to end of templates array in Users collection
       user.update({ $push: { templates: product._id } }, function (err) {
-        if (err) return res.status(400).send({ error: "Workout could not be created." });
+        if (err) return res.status(400).send({ error: "Template could not be created." });
 
         return res.status(201).send({});
       });
@@ -35,6 +38,9 @@ exports.create_template = function (req, res) {
 };
 
 exports.read_templates = function (req, res) {
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to read self." });
+
   // See if user exists
   User.findOne({ username: req.user.username }, function (err, templates) {
     if (err) return res.status(400).send({ error: "Could not read templates." });
@@ -49,6 +55,9 @@ exports.read_templates = function (req, res) {
 
 // Takes template _id
 exports.read_template = function (req, res) {
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to read self." });
+
   // Check if user has a template with given templateID
   if (!req.user.templates.includes(req.params.templateID))
     return res.status(403).send({ error: "Template not found in user templates." });
@@ -62,6 +71,9 @@ exports.read_template = function (req, res) {
 
 // Takes template _id and update option
 exports.update_template = function (req, res) {
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to update self." });
+
   // Check if user has a template with given templateID
   if (!req.user.templates.includes(req.params.templateID))
     return res.status(403).send({ error: "Template not found in user templates." });
@@ -85,6 +97,9 @@ exports.update_template = function (req, res) {
 
 // Takes username and template _id
 exports.delete_template = function (req, res) {
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
+    return res.status(403).send({ error: "Only able to modify self." });
+
   if (!req.user.templates.includes(req.params.templateID))
     return res.status(403).send({ error: "Template not found in user templates." });
 

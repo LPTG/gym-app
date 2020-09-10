@@ -5,7 +5,7 @@ const saltRounds = 10;
 
 exports.read_all = function (req, res) {
   User.find({}, function (err, res1) {
-    if (err) return res.status(400).send({ error: "Could not find users" });
+    if (err) return res.status(400).send({ error: "Could not find users." });
 
     return res.status(200).send(res1);
   }).select("type username email -_id");
@@ -72,8 +72,7 @@ exports.read_user = function (req, res) {
 };
 
 exports.update_user = function (req, res) {
-  // Need to update so that Admins can change any user
-  if (req.params.username !== req.user.username)
+  if (!(req.user.type === "Admin") && req.params.username !== req.user.username)
     return res.status(403).send({ error: "Only able to update self." });
 
   if (!req.body.update) return res.status(400).send({ error: "Update required in request body." });
