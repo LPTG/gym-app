@@ -8,6 +8,9 @@ This project was developed using Node v12.14.1 and React v16.13.1
 - npm install
 - npm run dev
 
+## API Documentation
+See [here](https://documenter.getpostman.com/view/10226978/TVCmQjmU) for more information on API endpoints. Currently, documented routes use locally hosted paths.
+
 ## Examples
 ### Login Page
 ![Login Page](https://i.imgur.com/mJZc7pE.png)
