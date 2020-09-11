@@ -1,6 +1,6 @@
 # Workout Builder
 ## Description
-This webapp currently allows users to build templates and workouts from those templates. A template is defined as the structure for a workout. A workout can be created with or without a template. If a template is used to build a workout, the template will be displayed as placeholder text in the workout creator form. See template structure and workout structure for more information. Also see <a href="#roadmap">roadmap</a> for future development plans.
+This webapp currently allows users to build templates and workouts from those templates. A template is defined as the structure for a workout. A workout can be created with or without a template. If a template is used to build a workout, the template will be displayed as placeholder text in the workout creator form. See [template structure](models/template.model.js) and [workout structure](models/workout.model.js) for more information. Also see <a href="#roadmap">roadmap</a> for future development plans.
 
 ## Installation
 This project was developed using Node v12.14.1 and React v16.13.1
