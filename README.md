@@ -1,6 +1,6 @@
 # Workout Builder
 ## Description
-This webapp currently allows users to build templates and workouts from those templates. A template is defined as the structure for a workout. A workout can be created with or without a template. If a template is used to build a workout, the template will be displayed as placeholder text in the workout creator form. See [template structure](models/template.model.js) and [workout structure](models/workout.model.js) for more information. Also see <a href="#roadmap">roadmap</a> for future development plans.
+This webapp currently allows users to build templates and workouts from those templates. A template is defined as the structure for a workout. A workout can be created with or without a template. If a template is used to build a workout, the template will be displayed as placeholder text in the workout creator form. See [template structure](models/template.model.js) and [workout structure](models/workout.model.js) for more information.
 
 ## Installation
 This project was developed using Node v12.14.1 and React v16.13.1
@@ -33,18 +33,3 @@ Any templates you create will be listed here to view or to select for use in bui
 
 ### Example Workout Created From Template
 ![Workout created from template](https://i.imgur.com/AUBmiKj.png)
-
-## Roadmap
-The current build allows users to login and provides full CRUD functionality for workouts and templates. This section will list goals and expectations for future builds.
-- [x] Create REST API for workouts, templates, and login
-- [x] Manage user sessions in a MongoDB store
-- [x] Build React components for login/registration forms
-- [x] Build React components for templates/workouts list
-- [x] Build React components for template/workout forms
-- [x] Require user authentication to access API
-- [ ] \(Optional) Switch to token based authentication for API
-- [ ] Build user profile page
-- [ ] Allow users to share templates/workouts with other users
-- [ ] Allow users to upload videos of their workouts
-- [ ] Auto fill workout names based on previous workouts
-- [ ] Build workout list page to hold information on how to perform certain workouts
